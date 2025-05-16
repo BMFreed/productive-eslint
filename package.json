@@ -1,0 +1,42 @@
+{
+  "name": "productive-eslint",
+  "version": "1.0.0",
+  "description": "Mildly strict and sufficiently practical ESLint config. Powered by @antfu/eslint-config and based on Evgeny Orekhov's eslint-config-hardcore",
+  "main": "index.ts",
+  "scripts": {
+    "inspect": "npx @eslint/config-inspector@latest --config index.ts"
+  },
+  "keywords": [
+    "eslint",
+    "config",
+    "eslintconfig",
+    "eslint-config",
+    "practical"
+  ],
+  "author": "Bogdan Binitskiy",
+  "contributors": [
+    {
+      "name": "Roman Nikitin",
+      "url": "https://github.com/Stelsovich1"
+    }
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "eslint": "^9.26.0",
+    "jiti": "^2.4.2",
+    "typescript": ">=5.0.0"
+  },
+  "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b",
+  "devDependencies": {
+    "eslint": "^9.26.0",
+    "jiti": "^2.4.2",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@antfu/eslint-config": "^4.13.1",
+    "@eslint/css": "^0.8.0",
+    "eslint-plugin-prefer-arrow-functions": "^3.6.2",
+    "eslint-plugin-vue": "^10.1.0"
+  }
+}

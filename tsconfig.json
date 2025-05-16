@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "noEmit": true,
+    "moduleResolution": "bundler"
+  }
+}
