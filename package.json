@@ -4,6 +4,7 @@
   "description": "Mildly strict and sufficiently practical ESLint config. Powered by @antfu/eslint-config and based on Evgeny Orekhov's eslint-config-hardcore",
   "main": "index.ts",
   "scripts": {
+    "lint": "eslint --ext .ts .",
     "inspect": "npx @eslint/config-inspector@latest --config index.ts"
   },
   "keywords": [
@@ -36,6 +37,8 @@
   "dependencies": {
     "@antfu/eslint-config": "^4.13.1",
     "@eslint/css": "^0.8.0",
+    "eslint-plugin-boundaries": "^5.0.1",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prefer-arrow-functions": "^3.6.2",
     "eslint-plugin-vue": "^10.1.0"
   }
