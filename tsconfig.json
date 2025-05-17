@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
     "baseUrl": ".",
+    "moduleResolution": "bundler",
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "esModuleInterop": true,
-    "target": "ESNext",
     "noEmit": true,
-    "moduleResolution": "bundler"
+    "esModuleInterop": true,
+    "skipLibCheck": true
   }
 }
