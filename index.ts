@@ -5,13 +5,15 @@ import cssPlugin from '@eslint/css'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import { featureSliced } from './featureSliced'
 import { javascript } from './javascript'
+import { promise } from './promise'
 
 const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
   .remove('antfu/perfectionist/setup')
   .remove('antfu/stylistic/rules')
   .override('antfu/javascript/rules', javascript)
-  .append(cssPlugin.configs.recommended)
+  .append({ ...cssPlugin.configs.recommended, name: 'css' })
   .append(featureSliced)
-  .append(eslintPluginPrettierRecommended)
+  .append({ ...eslintPluginPrettierRecommended, name: 'prettier' })
+  .append(promise)
 
 export default config
