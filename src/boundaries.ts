@@ -1,17 +1,12 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-import boundaries from 'eslint-plugin-boundaries'
+import boundariesPlugin from 'eslint-plugin-boundaries'
 
-export const featureSliced: TypedFlatConfigItem = {
-  name: 'feature-sliced',
+export const boundaries: TypedFlatConfigItem = {
+  name: 'boundaries',
   plugins: {
-    boundaries,
+    boundaries: boundariesPlugin,
   },
   settings: {
-    'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
-      },
-    },
     'boundaries/include': ['src/**/*'],
     'boundaries/elements': [
       {
@@ -46,28 +41,6 @@ export const featureSliced: TypedFlatConfigItem = {
     ],
   },
   rules: {
-    'import/order': [
-      'error',
-      {
-        pathGroups: [
-          { group: 'internal', position: 'after', pattern: '*/processes/**' },
-          { group: 'internal', position: 'after', pattern: '*/pages/**' },
-          { group: 'internal', position: 'after', pattern: '*/widgets/**' },
-          { group: 'internal', position: 'after', pattern: '*/features/**' },
-          { group: 'internal', position: 'after', pattern: '*/entities/**' },
-          { group: 'internal', position: 'after', pattern: '*/shared/**' },
-        ],
-        pathGroupsExcludedImportTypes: ['builtin'],
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          'parent',
-          'sibling',
-          'index',
-        ],
-      },
-    ],
     'boundaries/entry-point': [
       'error',
       {

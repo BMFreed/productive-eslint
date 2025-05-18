@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "lint": "tsc && eslint --fix",
-    "inspect": "npx @eslint/config-inspector@latest --config index.ts",
+    "inspect": "npx @eslint/config-inspector@latest --config src/index.ts",
     "build": "tsdown --clean --dts"
   },
   "peerDependencies": {
@@ -40,6 +40,7 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.3.4",
     "eslint-plugin-boundaries": "^5.0.1",
+    "eslint-plugin-no-relative-import-paths": "^1.6.1",
     "eslint-plugin-prefer-arrow-functions": "^3.6.2",
     "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-promise": "^7.2.1",

@@ -23,6 +23,9 @@ importers:
       eslint-plugin-boundaries:
         specifier: ^5.0.1
         version: 5.0.1(@typescript-eslint/parser@8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@4.3.4)(eslint@9.26.0(jiti@2.4.2))
+      eslint-plugin-no-relative-import-paths:
+        specifier: ^1.6.1
+        version: 1.6.1
       eslint-plugin-prefer-arrow-functions:
         specifier: ^3.6.2
         version: 3.6.2(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
@@ -1069,6 +1072,9 @@ packages:
   eslint-plugin-no-only-tests@3.3.0:
     resolution: {integrity: sha512-brcKcxGnISN2CcVhXJ/kEQlNa0MEfGRtwKtWA16SkqXHKitaKIMrfemJKLKX1YqDU5C/5JY3PvZXd5jEW04e0Q==}
     engines: {node: '>=5.0.0'}
+
+  eslint-plugin-no-relative-import-paths@1.6.1:
+    resolution: {integrity: sha512-YZNeOnsOrJcwhFw0X29MXjIzu2P/f5X2BZDPWw1R3VUYBRFxNIh77lyoL/XrMU9ewZNQPcEvAgL/cBOT1P330A==}
 
   eslint-plugin-perfectionist@4.13.0:
     resolution: {integrity: sha512-dsPwXwV7IrG26PJ+h1crQ1f5kxay/gQAU0NJnbVTQc91l5Mz9kPjyIZ7fXgie+QSgi8a+0TwGbfaJx+GIhzuoQ==}
@@ -3547,6 +3553,8 @@ snapshots:
       semver: 7.7.2
 
   eslint-plugin-no-only-tests@3.3.0: {}
+
+  eslint-plugin-no-relative-import-paths@1.6.1: {}
 
   eslint-plugin-perfectionist@4.13.0(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3):
     dependencies:
