@@ -1,7 +1,7 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 
-export const importAdditions: TypedFlatConfigItem = {
+export const importConfig: TypedFlatConfigItem = {
   settings: {
     'import-x/resolver-next': createTypeScriptImportResolver({
       alwaysTryTypes: true,

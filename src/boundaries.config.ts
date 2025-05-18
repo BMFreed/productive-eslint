@@ -1,10 +1,10 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-import boundariesPlugin from 'eslint-plugin-boundaries'
+import boundaries from 'eslint-plugin-boundaries'
 
-export const boundaries: TypedFlatConfigItem = {
+export const boundariesConfig: TypedFlatConfigItem = {
   name: 'boundaries',
   plugins: {
-    boundaries: boundariesPlugin,
+    boundaries,
   },
   settings: {
     'boundaries/include': ['src/**/*'],

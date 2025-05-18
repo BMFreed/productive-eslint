@@ -1,9 +1,9 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-import eslintPluginPromise from 'eslint-plugin-promise'
+import promise from 'eslint-plugin-promise'
 
-export const promise: TypedFlatConfigItem = {
+export const promiseConfig: TypedFlatConfigItem = {
   name: 'promise',
-  plugins: { promise: eslintPluginPromise },
+  plugins: { promise },
   rules: {
     'promise/always-return': 'error',
     'promise/no-return-wrap': 'error',

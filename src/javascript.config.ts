@@ -2,7 +2,7 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 
 /** Adds and overrides JavaScript rules defined in @antfu/eslint-config */
-export const javascriptAdditions: TypedFlatConfigItem = {
+export const javascriptConfig: TypedFlatConfigItem = {
   plugins: { 'prefer-arrow-functions': preferArrowFunctions },
   rules: {
     complexity: ['error', { max: 12 }],

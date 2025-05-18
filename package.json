@@ -19,14 +19,14 @@
     "eslint-config",
     "practical"
   ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.config.js",
+  "types": "./dist/index.config.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "lint": "tsc && eslint --fix",
-    "inspect": "npx @eslint/config-inspector@latest --config src/index.ts",
+    "inspect": "npx @eslint/config-inspector@latest --config src/index.config.ts",
     "build": "tsdown --clean --dts"
   },
   "peerDependencies": {
