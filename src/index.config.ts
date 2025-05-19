@@ -1,24 +1,27 @@
 import type { ConfigNames, TypedFlatConfigItem } from '@antfu/eslint-config'
 import type { FlatConfigComposer } from 'eslint-flat-config-utils'
+
 import antfu from '@antfu/eslint-config'
 import cssPlugin from '@eslint/css'
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths'
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+
 import { boundariesConfig } from './boundaries.config'
-import { javascriptConfig } from './javascript.config'
-import { promiseConfig } from './promise.config'
 import { importConfig } from './import.config'
+import { javascriptConfig } from './javascript.config'
+import { perfectionistConfig } from './perfectionist.config'
+import { promiseConfig } from './promise.config'
 
 const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
-  .remove('antfu/perfectionist/setup')
   .remove('antfu/stylistic/rules')
+  .override('antfu/perfectionist/setup', perfectionistConfig)
   .override('antfu/javascript/rules', javascriptConfig)
   .override('antfu/imports/rules', importConfig)
   .override('antfu/disables/config-files', {
     rules: {
+      'import/no-default-export': 'off',
       'no-magic-numbers': 'off',
       'no-template-curly-in-string': 'off',
-      'import/no-default-export': 'off',
     },
   })
   .override('antfu/disables/dts', {

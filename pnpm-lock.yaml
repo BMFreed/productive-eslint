@@ -26,6 +26,9 @@ importers:
       eslint-plugin-no-relative-import-paths:
         specifier: ^1.6.1
         version: 1.6.1
+      eslint-plugin-perfectionist:
+        specifier: ^4.13.0
+        version: 4.13.0(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
       eslint-plugin-prefer-arrow-functions:
         specifier: ^3.6.2
         version: 3.6.2(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)

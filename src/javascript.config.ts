@@ -1,4 +1,5 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
+
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 
 /** Adds and overrides JavaScript rules defined in @antfu/eslint-config */
@@ -70,8 +71,8 @@ export const javascriptConfig: TypedFlatConfigItem = {
     'no-setter-return': 'error',
     'no-shadow': 'error',
     'no-unused-private-class-members': 'error',
-    'no-useless-escape': 'error',
     'no-useless-concat': 'error',
+    'no-useless-escape': 'error',
     'no-void': ['error', { allowAsStatement: true }],
     'operator-assignment': 'error',
     'prefer-arrow-functions/prefer-arrow-functions': 'error',
