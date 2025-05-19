@@ -41,7 +41,6 @@ export const javascriptConfig: TypedFlatConfigItem = {
         ignoreDefaultValues: true,
       },
     ],
-    'no-nested-ternary': 'error',
     'no-object-constructor': 'error',
     'no-param-reassign': [
       'error',

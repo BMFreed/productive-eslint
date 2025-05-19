@@ -11,6 +11,7 @@ import { importConfig } from './import.config'
 import { javascriptConfig } from './javascript.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { promiseConfig } from './promise.config'
+import { unicornConfig } from './unicorn.config'
 
 const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
   .remove('antfu/stylistic/rules')
@@ -27,6 +28,7 @@ const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
   .override('antfu/disables/dts', {
     rules: { 'import/no-default-export': 'off' },
   })
+  .override('antfu/unicorn/rules', unicornConfig)
   .append({ ...cssPlugin.configs.recommended, name: 'css' })
   .append(boundariesConfig)
   .append({ ...eslintPluginPrettierRecommended, name: 'prettier' })
