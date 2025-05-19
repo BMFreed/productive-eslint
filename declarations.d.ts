@@ -5,3 +5,11 @@ declare module 'eslint-plugin-boundaries' {
 
   export default boundaries
 }
+
+declare module 'eslint-plugin-promise' {
+  import type { ESLint } from 'eslint'
+
+  const promise: ESLint.Plugin
+
+  export default promise
+}

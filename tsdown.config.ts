@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  entry: ['index.ts'],
-  shims: true,
+  entry: ['./src/index.config.ts'],
   format: ['esm'],
+  shims: true,
 })
