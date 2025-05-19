@@ -4,7 +4,7 @@ import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 export const javascript: TypedFlatConfigItem = {
   plugins: { 'prefer-arrow-functions': preferArrowFunctions },
   rules: {
-    'complexity': ['error', { max: 12 }],
+    complexity: ['error', { max: 12 }],
     'consistent-this': 'error',
     'default-case': 'error',
     'default-param-last': 'error',
@@ -19,10 +19,7 @@ export const javascript: TypedFlatConfigItem = {
     ],
     'max-depth': ['error', 2],
     'max-lines': 'error',
-    'new-cap': [
-      'error',
-      { capIsNew: false, newIsCap: true, properties: true },
-    ],
+    'new-cap': ['error', { capIsNew: false, newIsCap: true, properties: true }],
     'no-bitwise': 'error',
     'no-constant-binary-expression': 'error',
     'no-constant-condition': 'error',
@@ -85,6 +82,5 @@ export const javascript: TypedFlatConfigItem = {
     'prefer-object-spread': 'error',
     'require-atomic-updates': 'error',
     'require-await': 'error',
-
   },
 }
