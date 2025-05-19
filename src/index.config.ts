@@ -4,19 +4,21 @@ import type { FlatConfigComposer } from 'eslint-flat-config-utils'
 import antfu from '@antfu/eslint-config'
 import cssPlugin from '@eslint/css'
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths'
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import prettier from 'eslint-plugin-prettier'
 
 import { boundariesConfig } from './boundaries.config'
 import { importConfig } from './import.config'
 import { javascriptConfig } from './javascript.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { promiseConfig } from './promise.config'
+import { sonarJsConfig } from './sonarJs.config'
 import { unicornConfig } from './unicorn.config'
 
 const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
   .remove('antfu/stylistic/rules')
   .override('antfu/perfectionist/setup', perfectionistConfig)
   .override('antfu/javascript/rules', javascriptConfig)
+  .override('antfu/typescript/rules', { rules: { 'no-unreachable': 'error' } })
   .override('antfu/imports/rules', importConfig)
   .override('antfu/disables/config-files', {
     rules: {
@@ -31,7 +33,11 @@ const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
   .override('antfu/unicorn/rules', unicornConfig)
   .append({ ...cssPlugin.configs.recommended, name: 'css' })
   .append(boundariesConfig)
-  .append({ ...eslintPluginPrettierRecommended, name: 'prettier' })
+  .append({
+    name: 'prettier',
+    plugins: { prettier },
+    rules: { 'prettier/prettier': 'error' },
+  })
   .append(promiseConfig)
   .append({
     name: 'no-relative-import-paths',
@@ -40,5 +46,6 @@ const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
       'no-relative-import-paths/no-relative-import-paths': 'error',
     },
   })
+  .append(sonarJsConfig)
 
 export default config

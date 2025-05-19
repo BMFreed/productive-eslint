@@ -6,14 +6,15 @@ import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 export const javascriptConfig: TypedFlatConfigItem = {
   plugins: { 'prefer-arrow-functions': preferArrowFunctions },
   rules: {
+    'arrow-body-style': ['error', 'as-needed'],
     complexity: ['error', { max: 12 }],
     'consistent-this': 'error',
+    curly: ['error', 'all'],
     'default-case': 'error',
     'default-param-last': 'error',
     'for-direction': 'error',
-    'getter-return': 'error',
     'grouped-accessor-pairs': 'error',
-    'id-length': ['error', { exceptions: ['_', 't'] }],
+    'id-length': ['error', { exceptions: ['t'] }],
     'logical-assignment-operators': [
       'error',
       'always',
@@ -67,7 +68,7 @@ export const javascriptConfig: TypedFlatConfigItem = {
     // TODO запретить использование else
     'no-return-assign': 'error',
     'no-script-url': 'error',
-    'no-setter-return': 'error',
+    'no-sequences': 'error',
     'no-shadow': 'error',
     'no-unused-private-class-members': 'error',
     'no-useless-concat': 'error',
@@ -83,5 +84,7 @@ export const javascriptConfig: TypedFlatConfigItem = {
     'prefer-object-spread': 'error',
     'require-atomic-updates': 'error',
     'require-await': 'error',
+    // Заменяется параметром 'unusedLocals' в tsconfig
+    'unused-imports/no-unused-vars': 'off',
   },
 }
