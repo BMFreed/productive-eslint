@@ -58,6 +58,8 @@ export const javascriptConfig: TypedFlatConfigItem = {
     ],
     'no-plusplus': 'error',
     'no-promise-executor-return': 'error',
+    // The default value forbids const enums, which contradicts this config's philosophy
+    'no-restricted-syntax': 'off',
     'no-return-assign': 'error',
     'no-script-url': 'error',
     'no-sequences': 'error',

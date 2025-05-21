@@ -1,7 +1,4 @@
-import type { ConfigNames, TypedFlatConfigItem } from '@antfu/eslint-config'
-import type { FlatConfigComposer } from 'eslint-flat-config-utils'
-
-import antfu from '@antfu/eslint-config'
+import antfu, { isPackageInScope } from '@antfu/eslint-config'
 import cssPlugin from '@eslint/css'
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths'
 import prettier from 'eslint-plugin-prettier'
@@ -15,8 +12,14 @@ import { promiseConfig } from './promise.config'
 import { sonarJsConfig } from './sonarJs.config'
 import { typescriptConfig } from './typescript.config'
 import { unicornConfig } from './unicorn.config'
+import { vueConfig } from './vue.config'
 
-const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
+// No other way to conditionally enable Vue overrides without access to source code
+const configOptions = isPackageInScope('vue')
+  ? { vue: { overrides: vueConfig.rules } }
+  : undefined
+
+const config = antfu(configOptions)
   .remove('antfu/stylistic/rules')
   .override('antfu/perfectionist/setup', perfectionistConfig)
   .override('antfu/javascript/rules', javascriptConfig)
