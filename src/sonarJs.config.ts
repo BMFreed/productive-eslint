@@ -8,6 +8,7 @@ export const sonarJsConfig: TypedFlatConfigItem = {
   rules: {
     'sonarjs/bool-param-default': 'error',
     'sonarjs/comma-or-logical-or-case': 'error',
+    'sonarjs/destructuring-assignment-syntax': 'error',
     'sonarjs/expression-complexity': ['error', { max: 2 }],
     'sonarjs/future-reserved-words': 'error',
     'sonarjs/index-of-compare-to-positive-number': 'error',

@@ -97,6 +97,7 @@ export const unicornConfig: TypedFlatConfigItem = {
       {
         allowList: {
           args: true,
+          docs: true,
           params: true,
           Params: true,
           props: true,

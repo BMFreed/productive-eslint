@@ -2,9 +2,14 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 
+import { nestedIfPlugin } from './plugins/nestedIfPlugin'
+
 /** Adds and overrides JavaScript rules defined in @antfu/eslint-config */
 export const javascriptConfig: TypedFlatConfigItem = {
-  plugins: { 'prefer-arrow-functions': preferArrowFunctions },
+  plugins: {
+    'nested-if': nestedIfPlugin,
+    'prefer-arrow-functions': preferArrowFunctions,
+  },
   rules: {
     'arrow-body-style': ['error', 'as-needed'],
     complexity: ['error', { max: 12 }],
@@ -22,6 +27,7 @@ export const javascriptConfig: TypedFlatConfigItem = {
     ],
     'max-depth': ['error', 2],
     'max-lines': 'error',
+    'nested-if/no-abusive-nested-if': ['error', 2],
     'new-cap': ['error', { capIsNew: false, newIsCap: true, properties: true }],
     'no-bitwise': 'error',
     'no-constant-binary-expression': 'error',
@@ -76,11 +82,6 @@ export const javascriptConfig: TypedFlatConfigItem = {
     'no-void': ['error', { allowAsStatement: true }],
     'operator-assignment': 'error',
     'prefer-arrow-functions/prefer-arrow-functions': 'error',
-    'prefer-destructuring': [
-      'error',
-      { array: true, object: true },
-      { enforceForRenamedProperties: true },
-    ],
     'prefer-object-spread': 'error',
     'require-atomic-updates': 'error',
     'require-await': 'error',

@@ -12,13 +12,14 @@ import { javascriptConfig } from './javascript.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { promiseConfig } from './promise.config'
 import { sonarJsConfig } from './sonarJs.config'
+import { typescriptConfig } from './typescript.config'
 import { unicornConfig } from './unicorn.config'
 
 const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
   .remove('antfu/stylistic/rules')
   .override('antfu/perfectionist/setup', perfectionistConfig)
   .override('antfu/javascript/rules', javascriptConfig)
-  .override('antfu/typescript/rules', { rules: { 'no-unreachable': 'error' } })
+  .override('antfu/typescript/rules', typescriptConfig)
   .override('antfu/imports/rules', importConfig)
   .override('antfu/disables/config-files', {
     rules: {

@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "allowUnreachableCode": false
   }
 }
