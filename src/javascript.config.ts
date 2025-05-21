@@ -2,13 +2,13 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 
-import { nestedIfPlugin } from './plugins/nestedIfPlugin'
+import { productiveEslintPlugin } from './plugins/productiveEslintPlugin'
 
 /** Adds and overrides JavaScript rules defined in @antfu/eslint-config */
 export const javascriptConfig: TypedFlatConfigItem = {
   plugins: {
-    'nested-if': nestedIfPlugin,
     'prefer-arrow-functions': preferArrowFunctions,
+    'productive-eslint': productiveEslintPlugin,
   },
   rules: {
     'arrow-body-style': ['error', 'as-needed'],
@@ -27,7 +27,6 @@ export const javascriptConfig: TypedFlatConfigItem = {
     ],
     'max-depth': ['error', 2],
     'max-lines': 'error',
-    'nested-if/no-abusive-nested-if': ['error', 2],
     'new-cap': ['error', { capIsNew: false, newIsCap: true, properties: true }],
     'no-bitwise': 'error',
     'no-constant-binary-expression': 'error',
@@ -83,6 +82,8 @@ export const javascriptConfig: TypedFlatConfigItem = {
     'operator-assignment': 'error',
     'prefer-arrow-functions/prefer-arrow-functions': 'error',
     'prefer-object-spread': 'error',
+    'productive-eslint/no-abusive-nested-if': ['error', 2],
+    'productive-eslint/no-else': 'error',
     'require-atomic-updates': 'error',
     'require-await': 'error',
     // Заменяется параметром 'unusedLocals' в tsconfig

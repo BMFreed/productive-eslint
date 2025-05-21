@@ -56,8 +56,33 @@ const nestedIfRule = ESLintUtils.RuleCreator.withoutDocs<
   },
 })
 
-export const nestedIfPlugin = {
+const noElseRule = ESLintUtils.RuleCreator.withoutDocs<[], 'noElse'>({
+  create: (context) => ({
+    IfStatement: (node) => {
+      if (node.alternate) {
+        context.report({
+          messageId: 'noElse',
+          node: node.alternate,
+        })
+      }
+    },
+  }),
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Prevent use of else',
+    },
+    messages: {
+      noElse: 'Do not use else/elseIf statements',
+    },
+    schema: [],
+    type: 'problem',
+  },
+})
+
+export const productiveEslintPlugin = {
   rules: {
     'no-abusive-nested-if': nestedIfRule,
+    'no-else': noElseRule,
   } satisfies Record<string, TSESLint.RuleModule<string, Array<unknown>>>,
 }
