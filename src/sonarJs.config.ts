@@ -8,7 +8,6 @@ export const sonarJsConfig: TypedFlatConfigItem = {
   rules: {
     'sonarjs/bool-param-default': 'error',
     'sonarjs/comma-or-logical-or-case': 'error',
-    'sonarjs/destructuring-assignment-syntax': 'error',
     'sonarjs/expression-complexity': ['error', { max: 2 }],
     'sonarjs/future-reserved-words': 'error',
     'sonarjs/index-of-compare-to-positive-number': 'error',
@@ -28,7 +27,6 @@ export const sonarJsConfig: TypedFlatConfigItem = {
     'sonarjs/no-identical-functions': 'error',
     'sonarjs/no-ignored-return': 'error',
     'sonarjs/no-in-misuse': 'error',
-    'sonarjs/no-inconsistent-returns': 'error',
     'sonarjs/no-incorrect-string-concat': 'error',
     'sonarjs/no-internal-api-use': 'error',
     'sonarjs/no-invalid-await': 'error',

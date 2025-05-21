@@ -1,6 +1,6 @@
 import type { TSESLint } from '@typescript-eslint/utils'
 
-import { ESLintUtils } from '@typescript-eslint/utils'
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils'
 
 const MIN_DEPTH = 2
 const DEFAULT_DEPTH = 3
@@ -11,7 +11,9 @@ const nestedIfRule = ESLintUtils.RuleCreator.withoutDocs<
 >({
   create: (context) => ({
     IfStatement: (node) => {
-      const depth = context.options[0] ?? DEFAULT_DEPTH
+      const {
+        options: [depth],
+      } = context
 
       if (depth < MIN_DEPTH) {
         throw new Error('Depth should be 2 or above')
@@ -21,8 +23,8 @@ const nestedIfRule = ESLintUtils.RuleCreator.withoutDocs<
       let { parent: activeNode } = node
 
       while (
-        activeNode.type === 'BlockStatement' &&
-        activeNode.parent.type === 'IfStatement' &&
+        activeNode.type === AST_NODE_TYPES.BlockStatement &&
+        activeNode.parent.type === AST_NODE_TYPES.IfStatement &&
         ifStatementsCount !== depth - 1
       ) {
         ifStatementsCount += 1
@@ -41,14 +43,14 @@ const nestedIfRule = ESLintUtils.RuleCreator.withoutDocs<
   defaultOptions: [DEFAULT_DEPTH],
   meta: {
     docs: {
-      description: 'Prevent excessive use of nested if-statements',
+      description: 'Prevent excessive use of nested if statements',
     },
     messages: {
       tooManyNestedIfStatements:
-        'Too many nested if-statements, maximum allowed is {{ depth }}',
+        'Too many nested if statements, maximum allowed is {{ depth }}',
     },
     schema: {
-      description: 'Allowed number of nested if-statements',
+      description: 'Allowed number of nested if statements',
       items: { type: 'integer' },
       type: 'array',
     },
@@ -70,10 +72,41 @@ const noElseRule = ESLintUtils.RuleCreator.withoutDocs<[], 'noElse'>({
   defaultOptions: [],
   meta: {
     docs: {
-      description: 'Prevent use of else',
+      description: 'Prevent use of else statements',
     },
     messages: {
-      noElse: 'Do not use else/elseIf statements',
+      noElse:
+        'else/elseIf statements make code harder to read and are better replaced with an early return or omitting the else block entirely',
+    },
+    schema: [],
+    type: 'problem',
+  },
+})
+
+const preferConstEnumRule = ESLintUtils.RuleCreator.withoutDocs<
+  [],
+  'preferConstEnum'
+>({
+  create: (context) => ({
+    TSEnumDeclaration: (node) => {
+      if (!node.const) {
+        context.report({
+          messageId: 'preferConstEnum',
+          node,
+        })
+      }
+    },
+  }),
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Prefer const enums over regular ones',
+    },
+    messages: {
+      preferConstEnum:
+        'Regular enums are compiled into functions, which is a redundant runtime overhead. ' +
+        'Use const enums, as they are ignored during compilation, ' +
+        'and their member accesses are compiled into plain strings',
     },
     schema: [],
     type: 'problem',
@@ -84,5 +117,6 @@ export const productiveEslintPlugin = {
   rules: {
     'no-abusive-nested-if': nestedIfRule,
     'no-else': noElseRule,
-  } satisfies Record<string, TSESLint.RuleModule<string, Array<unknown>>>,
+    'prefer-const-enum': preferConstEnumRule,
+  } satisfies Record<string, TSESLint.RuleModule<string, unknown[]>>,
 }

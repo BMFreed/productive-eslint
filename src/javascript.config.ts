@@ -2,13 +2,10 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 
-import { productiveEslintPlugin } from './plugins/productiveEslintPlugin'
-
 /** Adds and overrides JavaScript rules defined in @antfu/eslint-config */
 export const javascriptConfig: TypedFlatConfigItem = {
   plugins: {
     'prefer-arrow-functions': preferArrowFunctions,
-    'productive-eslint': productiveEslintPlugin,
   },
   rules: {
     'arrow-body-style': ['error', 'as-needed'],
@@ -16,7 +13,8 @@ export const javascriptConfig: TypedFlatConfigItem = {
     'consistent-this': 'error',
     curly: ['error', 'all'],
     'default-case': 'error',
-    'default-param-last': 'error',
+    // Replaced by an identical rule in typescript-eslint
+    'dot-notation': 'off',
     'for-direction': 'error',
     'grouped-accessor-pairs': 'error',
     'id-length': ['error', { exceptions: ['t'] }],
@@ -37,16 +35,6 @@ export const javascriptConfig: TypedFlatConfigItem = {
     'no-implicit-coercion': ['error', { disallowTemplateShorthand: true }],
     'no-inner-declarations': 'error',
     'no-invalid-this': 'error',
-    'no-loop-func': 'error',
-    'no-magic-numbers': [
-      'error',
-      {
-        enforceConst: true,
-        ignore: [0, 1],
-        ignoreClassFieldInitialValues: true,
-        ignoreDefaultValues: true,
-      },
-    ],
     'no-object-constructor': 'error',
     'no-param-reassign': [
       'error',
@@ -70,11 +58,12 @@ export const javascriptConfig: TypedFlatConfigItem = {
     ],
     'no-plusplus': 'error',
     'no-promise-executor-return': 'error',
-    // TODO запретить использование else
     'no-return-assign': 'error',
     'no-script-url': 'error',
     'no-sequences': 'error',
     'no-shadow': 'error',
+    // Replaced by an identical rule in typescript-eslint
+    'no-throw-literal': 'off',
     'no-unused-private-class-members': 'error',
     'no-useless-concat': 'error',
     'no-useless-escape': 'error',
@@ -82,11 +71,10 @@ export const javascriptConfig: TypedFlatConfigItem = {
     'operator-assignment': 'error',
     'prefer-arrow-functions/prefer-arrow-functions': 'error',
     'prefer-object-spread': 'error',
-    'productive-eslint/no-abusive-nested-if': ['error', 2],
-    'productive-eslint/no-else': 'error',
+    // Replaced by an identical rule in typescript-eslint
+    'prefer-promise-reject-errors': 'off',
     'require-atomic-updates': 'error',
-    'require-await': 'error',
-    // Заменяется параметром 'unusedLocals' в tsconfig
+    // Is replaced by 'unusedLocals' in tsconfig
     'unused-imports/no-unused-vars': 'off',
   },
 }

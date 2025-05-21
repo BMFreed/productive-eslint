@@ -10,6 +10,7 @@ import { boundariesConfig } from './boundaries.config'
 import { importConfig } from './import.config'
 import { javascriptConfig } from './javascript.config'
 import { perfectionistConfig } from './perfectionist.config'
+import { productiveConfig } from './productive.config'
 import { promiseConfig } from './promise.config'
 import { sonarJsConfig } from './sonarJs.config'
 import { typescriptConfig } from './typescript.config'
@@ -22,9 +23,11 @@ const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
   .override('antfu/typescript/rules', typescriptConfig)
   .override('antfu/imports/rules', importConfig)
   .override('antfu/disables/config-files', {
+    files: ['**/*.plugin.?([cm])[jt]s?(x)'],
     rules: {
+      '@typescript-eslint/naming-convention': 'off',
+      '@typescript-eslint/no-magic-numbers': 'off',
       'import/no-default-export': 'off',
-      'no-magic-numbers': 'off',
       'no-template-curly-in-string': 'off',
     },
   })
@@ -48,5 +51,6 @@ const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu()
     },
   })
   .append(sonarJsConfig)
+  .append(productiveConfig)
 
 export default config
