@@ -24,6 +24,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "lint": "tsc && eslint --fix",
     "inspect": "npx @eslint/config-inspector@latest --config src/index.config.ts",
