@@ -1,3 +1,6 @@
+import type { ConfigNames, TypedFlatConfigItem } from '@antfu/eslint-config'
+import type { FlatConfigComposer } from 'eslint-flat-config-utils'
+
 import antfu, { isPackageInScope } from '@antfu/eslint-config'
 import cssPlugin from '@eslint/css'
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths'
@@ -19,7 +22,9 @@ const configOptions = isPackageInScope('vue')
   ? { vue: { overrides: vueConfig.rules } }
   : undefined
 
-const config = antfu(configOptions)
+const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu(
+  configOptions,
+)
   .remove('antfu/stylistic/rules')
   .override('antfu/perfectionist/setup', perfectionistConfig)
   .override('antfu/javascript/rules', javascriptConfig)
