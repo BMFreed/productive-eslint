@@ -33,12 +33,13 @@
   },
   "scripts": {
     "lint": "tsc && eslint --fix",
-    "inspect": "npx @eslint/config-inspector@latest --config src/index.config.ts",
+    "inspect": "npx @eslint/config-inspector@latest",
     "build": "tsdown --clean --dts"
   },
   "peerDependencies": {
     "eslint": "^9.26.0",
     "prettier": "^3.5.0",
+    "prettier-plugin-jsdoc": "^1.3.2",
     "typescript": "^5.8.0"
   },
   "dependencies": {
@@ -52,8 +53,7 @@
     "eslint-plugin-prefer-arrow-functions": "^3.6.2",
     "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-promise": "^7.2.1",
-    "eslint-plugin-sonarjs": "^3.0.2",
-    "prettier-plugin-jsdoc": "^1.3.2"
+    "eslint-plugin-sonarjs": "^3.0.2"
   },
   "devDependencies": {
     "@typescript-eslint/utils": "^8.32.1",

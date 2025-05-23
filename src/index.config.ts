@@ -1,7 +1,6 @@
-import type { ConfigNames, TypedFlatConfigItem } from '@antfu/eslint-config'
-import type { FlatConfigComposer } from 'eslint-flat-config-utils'
+import type { ConfigNames } from '@antfu/eslint-config'
 
-import antfu, { isPackageInScope } from '@antfu/eslint-config'
+import antfu from '@antfu/eslint-config'
 import cssPlugin from '@eslint/css'
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths'
 import prettier from 'eslint-plugin-prettier'
@@ -17,48 +16,53 @@ import { typescriptConfig } from './typescript.config'
 import { unicornConfig } from './unicorn.config'
 import { vueConfig } from './vue.config'
 
-// No other way to conditionally enable Vue overrides without access to source code
-const configOptions = isPackageInScope('vue')
-  ? { vue: { overrides: vueConfig.rules } }
-  : undefined
+const createConfig: typeof antfu = (options = {}) =>
+  antfu({ ...options })
+    .remove('antfu/stylistic/rules')
+    .override('antfu/perfectionist/setup', perfectionistConfig)
+    .override('antfu/javascript/rules', javascriptConfig)
+    .override('antfu/typescript/rules', typescriptConfig)
+    .override('antfu/imports/rules', importConfig)
+    .override('antfu/disables/config-files', {
+      files: ['**/*.plugin.?([cm])[jt]s?(x)'],
+      rules: {
+        '@typescript-eslint/naming-convention': 'off',
+        '@typescript-eslint/no-magic-numbers': 'off',
+        'import/no-default-export': 'off',
+        'no-template-curly-in-string': 'off',
+      },
+    })
+    .override('antfu/disables/dts', {
+      rules: { 'import/no-default-export': 'off' },
+    })
+    .override('antfu/unicorn/rules', unicornConfig)
+    .append({ ...cssPlugin.configs.recommended, name: 'css' })
+    .append(boundariesConfig)
+    .append({
+      name: 'prettier',
+      plugins: { prettier },
+      rules: { 'prettier/prettier': 'error' },
+    })
+    .append(promiseConfig)
+    .append({
+      name: 'no-relative-import-paths',
+      plugins: { 'no-relative-import-paths': noRelativeImportPaths },
+      rules: {
+        'no-relative-import-paths/no-relative-import-paths': 'error',
+      },
+    })
+    .append(sonarJsConfig)
+    .append(productiveConfig)
+    // Vue config rules require a hard override instead of the default
+    // merge behaviour of the .override() method
+    .onResolved((configs) => {
+      const baseVueConfig = configs.find(
+        (config) => (config.name as ConfigNames) === 'antfu/vue/rules',
+      )
 
-const config: FlatConfigComposer<TypedFlatConfigItem, ConfigNames> = antfu(
-  configOptions,
-)
-  .remove('antfu/stylistic/rules')
-  .override('antfu/perfectionist/setup', perfectionistConfig)
-  .override('antfu/javascript/rules', javascriptConfig)
-  .override('antfu/typescript/rules', typescriptConfig)
-  .override('antfu/imports/rules', importConfig)
-  .override('antfu/disables/config-files', {
-    files: ['**/*.plugin.?([cm])[jt]s?(x)'],
-    rules: {
-      '@typescript-eslint/naming-convention': 'off',
-      '@typescript-eslint/no-magic-numbers': 'off',
-      'import/no-default-export': 'off',
-      'no-template-curly-in-string': 'off',
-    },
-  })
-  .override('antfu/disables/dts', {
-    rules: { 'import/no-default-export': 'off' },
-  })
-  .override('antfu/unicorn/rules', unicornConfig)
-  .append({ ...cssPlugin.configs.recommended, name: 'css' })
-  .append(boundariesConfig)
-  .append({
-    name: 'prettier',
-    plugins: { prettier },
-    rules: { 'prettier/prettier': 'error' },
-  })
-  .append(promiseConfig)
-  .append({
-    name: 'no-relative-import-paths',
-    plugins: { 'no-relative-import-paths': noRelativeImportPaths },
-    rules: {
-      'no-relative-import-paths/no-relative-import-paths': 'error',
-    },
-  })
-  .append(sonarJsConfig)
-  .append(productiveConfig)
+      if (baseVueConfig) {
+        baseVueConfig.rules = vueConfig.rules
+      }
+    })
 
-export default config
+export default createConfig

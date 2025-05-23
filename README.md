@@ -7,13 +7,14 @@ convenient tooling.
 This config is extremely opinionated, so if certain sets of rules don't suit you - you are free to extend and override any
 given rules, but we would suggest creating your own superset of [@antfu/eslint-config](https://github.com/antfu/eslint-config)
 as a more efficient alternative if you plan on making severe modifications to the rulesets.
+
 ---
 
 ### 📦 Installation
 ```bash
-pnpm add -D productive-eslint eslint typescript prettier
+pnpm add -D productive-eslint eslint typescript prettier prettier-plugin-jsdoc
 # or
-npm i -D productive-eslint eslint typescript prettier
+npm i -D productive-eslint eslint typescript prettier prettier-plugin-jsdoc
 ```
 
 ---
@@ -25,19 +26,24 @@ npm i -D productive-eslint eslint typescript prettier
    - Prettier 3.5+
 
 2. Create eslint.config.ts in project root:
-    ```
-    export { default } from 'productive-eslint'
-    ```
+   ````
+   import productiveEslint from 'productive-eslint'
+   
+   export default productiveEslint()
+     .override('antfu/typescript/rules', {
+       languageOptions: { parserOptions: { projectService: true } },
+     })
+   ````
 
 3. Add scripts to package.json:
-````
-"scripts": {
-"lint": "eslint .",
-"lint:fix": "eslint . --fix"
-}
-````
+   ````
+   "scripts": {
+   "lint": "eslint .",
+   "lint:fix": "eslint . --fix"
+   }
+   ````
 
 ---
 
-📄 License: [MIT](LICENSE) © Bogdan Binitskiy  
+📄 License: MIT © Bogdan Binitskiy  
 💻 Contributor: [Roman Nikitin](https://github.com/Stelsovich1)

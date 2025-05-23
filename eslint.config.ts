@@ -1,10 +1,10 @@
-import mainConfig from './src/index.config'
+import createConfig from './src/index.config'
 
-export default mainConfig
+export default createConfig()
   .override('antfu/typescript/rules', {
     languageOptions: { parserOptions: { projectService: true } },
   })
-  // Jiti пока не поддерживает алиасы путей,
-  // из-за чего это правило невозможно использовать в данном репозитории
+  // At the moment, Jiti does not support typescript path aliases,
+  // which makes this config unusable inside this repo.
   // https://github.com/unjs/jiti/issues/373
   .remove('no-relative-import-paths')

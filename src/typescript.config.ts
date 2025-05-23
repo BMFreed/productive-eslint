@@ -30,6 +30,10 @@ export const typescriptConfig: TypedFlatConfigItem = {
         selector: 'default',
       },
       {
+        format: ['strictCamelCase', 'StrictPascalCase'],
+        selector: 'import',
+      },
+      {
         format: ['StrictPascalCase'],
         selector: ['enum', 'class'],
       },
@@ -56,6 +60,12 @@ export const typescriptConfig: TypedFlatConfigItem = {
         modifiers: ['const'],
         selector: 'variable',
       },
+      {
+        format: ['camelCase'],
+        leadingUnderscore: 'allow',
+        modifiers: ['unused'],
+        selector: 'parameter',
+      },
     ],
     '@typescript-eslint/no-base-to-string': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'error',
@@ -75,6 +85,7 @@ export const typescriptConfig: TypedFlatConfigItem = {
         ignore: [0, 1],
         ignoreClassFieldInitialValues: true,
         ignoreDefaultValues: true,
+        ignoreEnums: true,
       },
     ],
     '@typescript-eslint/no-meaningless-void-operator': 'error',
@@ -96,7 +107,6 @@ export const typescriptConfig: TypedFlatConfigItem = {
     '@typescript-eslint/no-unsafe-enum-comparison': 'error',
     '@typescript-eslint/no-unsafe-member-access': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
-    '@typescript-eslint/no-unsafe-type-assertion': 'error',
     '@typescript-eslint/no-unsafe-unary-minus': 'error',
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/no-useless-empty-export': 'error',
@@ -111,7 +121,6 @@ export const typescriptConfig: TypedFlatConfigItem = {
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     '@typescript-eslint/prefer-return-this-type': 'error',
-    '@typescript-eslint/promise-function-async': 'error',
     '@typescript-eslint/related-getter-setter-pairs': 'error',
     '@typescript-eslint/require-array-sort-compare': [
       'error',
