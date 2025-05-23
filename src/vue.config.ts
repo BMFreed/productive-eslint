@@ -49,6 +49,7 @@ const coveredByTypescript: Rules = {
   'vue/return-in-emits-validator': 'off',
 }
 
+//TODO make this a standalone ruleset and don't merge it with antfu's existing rules
 export const vueConfig: TypedFlatConfigItem = {
   rules: {
     'no-restricted-syntax': [
