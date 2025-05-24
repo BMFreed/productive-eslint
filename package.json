@@ -34,7 +34,8 @@
   "scripts": {
     "lint": "tsc && eslint --fix",
     "inspect": "npx @eslint/config-inspector@latest",
-    "build": "tsdown --clean --dts"
+    "build": "tsdown --clean --dts",
+    "release": "pnpm build && pnpm publish"
   },
   "peerDependencies": {
     "eslint": "^9.26.0",
