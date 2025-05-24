@@ -2,6 +2,7 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import promise from 'eslint-plugin-promise'
 
+/** Configuration for eslint-plugin-promise */
 export const promiseConfig: TypedFlatConfigItem = {
   name: 'promise',
   plugins: { promise },

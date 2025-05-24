@@ -1,5 +1,9 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
+/**
+ * Configuration for eslint-plugin-vue. Intended to completely override antfu's
+ * rules
+ */
 export const vueConfig: TypedFlatConfigItem = {
   rules: {
     'antfu/no-top-level-await': 'off',

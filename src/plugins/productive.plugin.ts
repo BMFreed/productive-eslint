@@ -113,6 +113,7 @@ const preferConstEnumRule = ESLintUtils.RuleCreator.withoutDocs<
   },
 })
 
+/** Eslint-plugin-productive */
 export const productiveEslintPlugin = {
   rules: {
     'no-abusive-nested-if': nestedIfRule,

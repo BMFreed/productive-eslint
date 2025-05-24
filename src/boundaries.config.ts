@@ -2,6 +2,7 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import boundaries from 'eslint-plugin-boundaries'
 
+/** Configuration for eslint-plugin-boundaries */
 export const boundariesConfig: TypedFlatConfigItem = {
   name: 'boundaries',
   plugins: {

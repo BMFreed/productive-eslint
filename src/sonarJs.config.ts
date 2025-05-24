@@ -2,6 +2,7 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import sonarjs from 'eslint-plugin-sonarjs'
 
+/** Configuration for eslint-plugin-sonarjs */
 export const sonarJsConfig: TypedFlatConfigItem = {
   name: 'sonarjs',
   plugins: { sonarjs },

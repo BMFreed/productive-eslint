@@ -2,6 +2,7 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import perfectionist from 'eslint-plugin-perfectionist'
 
+/** Configuration overrides for eslint-plugin-perfectionist. */
 export const perfectionistConfig: TypedFlatConfigItem = {
   rules: {
     ...perfectionist.configs['recommended-natural'].rules,

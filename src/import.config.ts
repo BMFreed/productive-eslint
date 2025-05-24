@@ -2,6 +2,7 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 
+/** Configuration overrides for eslint-plugin-import */
 export const importConfig: TypedFlatConfigItem = {
   rules: {
     'import/export': 'error',

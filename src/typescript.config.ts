@@ -1,5 +1,6 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
+/** Configuration overrides for typescript-eslint */
 export const typescriptConfig: TypedFlatConfigItem = {
   rules: {
     '@typescript-eslint/array-type': 'error',

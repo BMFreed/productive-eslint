@@ -1,5 +1,6 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
+/** Configuration for eslint-plugin-unicorn */
 export const unicornConfig: TypedFlatConfigItem = {
   rules: {
     'unicorn/consistent-date-clone': 'error',

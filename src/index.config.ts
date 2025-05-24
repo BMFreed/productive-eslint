@@ -8,6 +8,7 @@ import prettier from 'eslint-plugin-prettier'
 import { boundariesConfig } from './boundaries.config'
 import { importConfig } from './import.config'
 import { javascriptConfig } from './javascript.config'
+import { jsdocConfig } from './jsdoc.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { productiveConfig } from './productive.config'
 import { promiseConfig } from './promise.config'
@@ -16,6 +17,12 @@ import { typescriptConfig } from './typescript.config'
 import { unicornConfig } from './unicorn.config'
 import { vueConfig } from './vue.config'
 
+/**
+ * Main config factory
+ *
+ * @param options – The options for generating the ESLint configurations
+ * @returns The generated ESLint configuration
+ */
 const createConfig: typeof antfu = (options = {}) =>
   antfu({ ...options })
     .remove('antfu/stylistic/rules')
@@ -36,6 +43,10 @@ const createConfig: typeof antfu = (options = {}) =>
       rules: { 'import/no-default-export': 'off' },
     })
     .override('antfu/unicorn/rules', unicornConfig)
+    .override('antfu/jsdoc/rules', (baseConfig) => ({
+      ...baseConfig,
+      ...jsdocConfig,
+    }))
     .append({ ...cssPlugin.configs.recommended, name: 'css' })
     .append(boundariesConfig)
     .append({
