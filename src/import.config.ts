@@ -11,8 +11,10 @@ export const importConfig: TypedFlatConfigItem = {
       'error',
       'always',
       {
+        cjs: 'never',
         js: 'never',
         jsx: 'never',
+        mjs: 'never',
         ts: 'never',
         tsx: 'never',
       },
