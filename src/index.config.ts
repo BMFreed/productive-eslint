@@ -4,11 +4,13 @@ import antfu from '@antfu/eslint-config'
 import cssPlugin from '@eslint/css'
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths'
 import prettier from 'eslint-plugin-prettier'
+import { isPackageExists } from 'local-pkg'
 
 import { boundariesConfig } from './boundaries.config'
 import { importConfig } from './import.config'
 import { javascriptConfig } from './javascript.config'
 import { jsdocConfig } from './jsdoc.config'
+import { nuxtDisablesConfig } from './nuxtDisables.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { productiveConfig } from './productive.config'
 import { promiseConfig } from './promise.config'
@@ -73,6 +75,10 @@ const createConfig: typeof antfu = (options = {}) =>
 
       if (baseVueConfig) {
         baseVueConfig.rules = vueConfig.rules
+      }
+
+      if (isPackageExists('nuxt')) {
+        configs.push(nuxtDisablesConfig)
       }
     })
 

@@ -41,6 +41,9 @@ importers:
       eslint-plugin-sonarjs:
         specifier: ^3.0.2
         version: 3.0.2(eslint@9.27.0(jiti@2.4.2))
+      local-pkg:
+        specifier: ^1.1.1
+        version: 1.1.1
       prettier:
         specifier: ^3.5.0
         version: 3.5.3
