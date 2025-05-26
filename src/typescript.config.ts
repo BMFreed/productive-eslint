@@ -27,6 +27,10 @@ export const typescriptConfig: TypedFlatConfigItem = {
     '@typescript-eslint/naming-convention': [
       'error',
       {
+        filter: {
+          match: false,
+          regex: 'baseURL',
+        },
         format: ['strictCamelCase'],
         selector: 'default',
       },
