@@ -194,7 +194,6 @@ export const vueConfig: TypedFlatConfigItem = {
     'vue/require-toggle-inside-transition': 'error',
     'vue/require-typed-ref': 'error',
     'vue/require-v-for-key': 'error',
-    'vue/script-indent': 'error',
     'vue/slot-name-casing': 'error',
     'vue/this-in-template': 'error',
     'vue/use-v-on-exact': 'error',
