@@ -9,12 +9,10 @@ export const importConfig: TypedFlatConfigItem = {
     'import/exports-last': 'error',
     'import/extensions': [
       'error',
-      'always',
+      'ignorePackages',
       {
-        cjs: 'never',
         js: 'never',
         jsx: 'never',
-        mjs: 'never',
         ts: 'never',
         tsx: 'never',
       },
