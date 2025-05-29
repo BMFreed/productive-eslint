@@ -7,23 +7,6 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 export const vueConfig: TypedFlatConfigItem = {
   rules: {
     'antfu/no-top-level-await': 'off',
-    'no-restricted-syntax': [
-      'error',
-      {
-        message: `Emits aren't guaranteed to have listeners attached to them. 
-        Better pass event handlers as props with the "on" prefix instead`,
-        selector: "CallExpression[callee.name='defineEmits']",
-      },
-      {
-        message: 'Use ref instead of reactive for code consistency',
-        selector: 'CallExpression[callee.name="reactive"]',
-      },
-      {
-        message:
-          'Use the @ (v-on) directive instead and pass the event handler without the "on" prefix',
-        selector: 'VDirectiveKey[argument.rawName=/^on.*/]',
-      },
-    ],
     'vue/attribute-hyphenation': ['error', 'never'],
     'vue/attributes-order': [
       'error',
@@ -148,6 +131,20 @@ export const vueConfig: TypedFlatConfigItem = {
       'DebuggerStatement',
       'LabeledStatement',
       'WithStatement',
+      {
+        message: `Emits aren't guaranteed to have listeners attached to them. 
+        Better pass event handlers as props with the "on" prefix instead`,
+        selector: "CallExpression[callee.name='defineEmits']",
+      },
+      {
+        message: 'Use ref instead of reactive for code consistency',
+        selector: 'CallExpression[callee.name="reactive"]',
+      },
+      {
+        message:
+          'Use the @ (v-on) directive instead and pass the event handler without the "on" prefix',
+        selector: 'VDirectiveKey[argument.rawName=/^on.*/]',
+      },
     ],
     'vue/no-restricted-v-bind': ['error', '/^v-/'],
     'vue/no-root-v-if': 'error',
