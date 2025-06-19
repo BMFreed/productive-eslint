@@ -144,5 +144,10 @@ export const boundariesConfig: TypedFlatConfigItem = {
       },
     ],
     'boundaries/include': ['src/**/*'],
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+      },
+    },
   },
 }
