@@ -70,5 +70,24 @@ export const perfectionistConfig: TypedFlatConfigItem = {
         type: 'natural',
       },
     ],
+    'perfectionist/sort-modules': [
+      'error',
+      {
+        groups: [
+          'declare-enum',
+          'enum',
+          ['declare-interface', 'declare-type'],
+          ['interface', 'type'],
+          'declare-class',
+          'class',
+          'declare-function',
+          'function',
+          'export-enum',
+          ['export-interface', 'export-type'],
+          'export-class',
+          'export-function',
+        ],
+      },
+    ],
   },
 }
