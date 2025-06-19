@@ -6,7 +6,6 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 export const importConfig: TypedFlatConfigItem = {
   rules: {
     'import/export': 'error',
-    'import/exports-last': 'error',
     'import/extensions': [
       'error',
       'ignorePackages',

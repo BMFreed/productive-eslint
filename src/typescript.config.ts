@@ -76,7 +76,10 @@ export const typescriptConfig: TypedFlatConfigItem = {
     '@typescript-eslint/no-confusing-void-expression': 'error',
     '@typescript-eslint/no-duplicate-type-constituents': 'error',
     '@typescript-eslint/no-dynamic-delete': 'error',
-    '@typescript-eslint/no-empty-object-type': 'error',
+    '@typescript-eslint/no-empty-object-type': [
+      'error',
+      { allowInterfaces: 'always' },
+    ],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-extraneous-class': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
