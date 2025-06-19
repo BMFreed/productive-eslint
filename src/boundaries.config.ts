@@ -119,7 +119,7 @@ export const boundariesConfig: TypedFlatConfigItem = {
       },
       {
         capture: ['page'],
-        pattern: 'pages',
+        pattern: 'pages/*',
         type: 'pages',
       },
       {
