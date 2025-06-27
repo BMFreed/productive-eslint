@@ -1,7 +1,7 @@
 {
   "name": "productive-eslint",
   "type": "module",
-  "version": "1.0.0-rc-11",
+  "version": "1.0.0-rc-12",
   "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b",
   "description": "Mildly strict and sufficiently practical ESLint config. Powered by @antfu/eslint-config and based on Evgeny Orekhov's eslint-config-hardcore",
   "author": "Bogdan Binitskiy",
@@ -49,6 +49,7 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.3.5",
     "eslint-plugin-boundaries": "^5.0.1",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-no-relative-import-paths": "^1.6.1",
     "eslint-plugin-perfectionist": "^4.13.0",
     "eslint-plugin-prefer-arrow-functions": "^3.6.2",

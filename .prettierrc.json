@@ -1,5 +1,4 @@
 {
-  "plugins": ["prettier-plugin-jsdoc"],
   "tabWidth": 2,
   "singleQuote": true,
   "semi": false,
