@@ -26,12 +26,12 @@ import { vueConfig } from './vue.config'
  * @returns The generated ESLint configuration
  */
 const createConfig: typeof antfu = (options = {}) =>
-  antfu({ ...options })
+  antfu({ ...options, imports: false })
     .remove('antfu/stylistic/rules')
+    .remove('antfu/imports/rules')
     .override('antfu/perfectionist/setup', perfectionistConfig)
     .override('antfu/javascript/rules', javascriptConfig)
     .override('antfu/typescript/rules', typescriptConfig)
-    .override('antfu/imports/rules', importConfig)
     .override('antfu/disables/config-files', {
       files: ['**/*.plugin.?([cm])[jt]s?(x)'],
       rules: {
@@ -49,6 +49,7 @@ const createConfig: typeof antfu = (options = {}) =>
       ...baseConfig,
       ...jsdocConfig,
     }))
+    .append(importConfig)
     .append({ ...cssPlugin.configs.recommended, name: 'css' })
     .append(boundariesConfig)
     .append({
@@ -66,6 +67,11 @@ const createConfig: typeof antfu = (options = {}) =>
     })
     .append(sonarJsConfig)
     .append(productiveConfig)
+    .append({
+      files: ['**/*.d.ts', '**/*.config.ts'],
+      name: 'disables/imports',
+      rules: { 'import/no-default-export': 'off' },
+    })
     // Vue config rules require a hard override instead of the default
     // merge behaviour of the .override() method
     .onResolved((configs) => {

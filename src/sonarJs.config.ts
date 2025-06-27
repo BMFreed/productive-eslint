@@ -30,7 +30,6 @@ export const sonarJsConfig: TypedFlatConfigItem = {
     'sonarjs/no-in-misuse': 'error',
     'sonarjs/no-incorrect-string-concat': 'error',
     'sonarjs/no-internal-api-use': 'error',
-    'sonarjs/no-invalid-await': 'error',
     'sonarjs/no-invariant-returns': 'error',
     'sonarjs/no-misleading-array-reverse': 'error',
     'sonarjs/no-nested-switch': 'error',
@@ -61,6 +60,5 @@ export const sonarJsConfig: TypedFlatConfigItem = {
     'sonarjs/table-header': 'error',
     'sonarjs/table-header-reference': 'error',
     'sonarjs/too-many-break-or-continue-in-loop': 'error',
-    'sonarjs/updated-loop-counter': 'error',
   },
 }
