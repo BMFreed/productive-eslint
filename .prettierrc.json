@@ -4,5 +4,6 @@
   "singleQuote": true,
   "semi": false,
   "printWidth": 80,
-  "htmlWhitespaceSensitivity": "ignore"
+  "htmlWhitespaceSensitivity": "ignore",
+  "jsdocUseColumns": false
 }
