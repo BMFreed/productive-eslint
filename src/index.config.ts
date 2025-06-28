@@ -22,8 +22,10 @@ import { vueConfig } from './vue.config'
 /**
  * Main config factory.
  *
- * @param options  – The options for generating the ESLint configurations.
- * @returns The generated ESLint configuration.
+ * @param options
+ * The options for generating the ESLint configurations.
+ * @returns
+ * The generated ESLint configuration.
  */
 const createConfig: typeof antfu = (options = {}) =>
   antfu({ ...options, imports: false })
