@@ -210,7 +210,11 @@ export const vueConfig: TypedFlatConfigItem = {
         autofix: true,
       },
     ],
-    'vue/v-on-handler-style': ['error', ['method', 'inline-function']],
+    'vue/v-on-handler-style': [
+      'error',
+      ['method', 'inline-function'],
+      { ignoreIncludesComment: true },
+    ],
     'vue/v-on-style': 'error',
     'vue/v-slot-style': [
       'error',
