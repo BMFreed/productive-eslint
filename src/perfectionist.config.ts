@@ -70,6 +70,25 @@ export const perfectionistConfig: TypedFlatConfigItem = {
         type: 'natural',
       },
     ],
+    'perfectionist/sort-intersection-types': [
+      'error',
+      {
+        groups: [
+          'conditional',
+          'function',
+          'import',
+          'intersection',
+          'keyword',
+          'literal',
+          'named',
+          'object',
+          'operator',
+          'tuple',
+          'union',
+          'nullish',
+        ],
+      },
+    ],
     'perfectionist/sort-modules': [
       'error',
       {
@@ -86,6 +105,25 @@ export const perfectionistConfig: TypedFlatConfigItem = {
           ['export-interface', 'export-type'],
           'export-class',
           'export-function',
+        ],
+      },
+    ],
+    'perfectionist/sort-union-types': [
+      'error',
+      {
+        groups: [
+          'conditional',
+          'function',
+          'import',
+          'intersection',
+          'keyword',
+          'literal',
+          'named',
+          'object',
+          'operator',
+          'tuple',
+          'union',
+          'nullish',
         ],
       },
     ],
