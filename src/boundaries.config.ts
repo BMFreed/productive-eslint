@@ -27,14 +27,7 @@ export const boundariesConfig: TypedFlatConfigItem = {
             message: 'Entity must not import upper layers (${dependency.type})',
           },
           {
-            disallow: [
-              [
-                'entities',
-                {
-                  entity: '!${entity}',
-                },
-              ],
-            ],
+            disallow: [['entities', { entity: '!${entity}' }]],
             from: ['entities'],
             message: 'Entity must not import other entity',
           },
@@ -45,14 +38,7 @@ export const boundariesConfig: TypedFlatConfigItem = {
               'Feature must not import upper layers (${dependency.type})',
           },
           {
-            disallow: [
-              [
-                'features',
-                {
-                  feature: '!${feature}',
-                },
-              ],
-            ],
+            disallow: [['features', { feature: '!${feature}' }]],
             from: ['features'],
             message: 'Feature must not import other feature',
           },
@@ -128,9 +114,19 @@ export const boundariesConfig: TypedFlatConfigItem = {
         type: 'widgets',
       },
       {
+        capture: ['featuresGroup', 'feature'],
+        pattern: 'features/*/*',
+        type: 'features',
+      },
+      {
         capture: ['feature'],
         pattern: 'features/*',
         type: 'features',
+      },
+      {
+        capture: ['entitiesGroup', 'entity'],
+        pattern: 'entities/*/*',
+        type: 'entities',
       },
       {
         capture: ['entity'],
