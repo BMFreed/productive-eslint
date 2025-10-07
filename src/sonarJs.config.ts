@@ -16,7 +16,6 @@ export const sonarJsConfig: TypedFlatConfigItem = {
     'sonarjs/no-all-duplicated-branches': 'error',
     'sonarjs/no-array-delete': 'error',
     'sonarjs/no-async-constructor': 'error',
-    'sonarjs/no-dead-store': 'error',
     'sonarjs/no-duplicate-in-composite': 'error',
     'sonarjs/no-fallthrough': 'error',
     'sonarjs/no-for-in-iterable': 'error',
