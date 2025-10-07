@@ -80,7 +80,7 @@ const createConfig: typeof antfu = (options = {}) =>
       )
 
       if (baseVueConfig) {
-        baseVueConfig.rules = vueConfig.rules
+        baseVueConfig.rules = vueConfig.rules ?? {}
       }
 
       if (isPackageExists('nuxt')) {
