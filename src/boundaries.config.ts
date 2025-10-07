@@ -119,18 +119,8 @@ export const boundariesConfig: TypedFlatConfigItem = {
         type: 'features',
       },
       {
-        capture: ['featuresGroup', 'feature'],
-        pattern: 'features/*/*',
-        type: 'features',
-      },
-      {
         capture: ['entity'],
         pattern: 'entities/*',
-        type: 'entities',
-      },
-      {
-        capture: ['entitiesGroup', 'entity'],
-        pattern: 'entities/*/*',
         type: 'entities',
       },
       {
