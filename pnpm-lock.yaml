@@ -14,12 +14,6 @@ importers:
       '@eslint/css':
         specifier: ^0.8.1
         version: 0.8.1
-      '@homer0/prettier-plugin-jsdoc':
-        specifier: ^10.0.0
-        version: 10.0.0(prettier@3.6.2)
-      eslint-config-prettier:
-        specifier: ^10.1.5
-        version: 10.1.5(eslint@9.30.0(jiti@2.4.2))
       eslint-import-resolver-typescript:
         specifier: ^4.3.5
         version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.30.0(jiti@2.4.2))
@@ -250,12 +244,6 @@ packages:
   '@eslint/plugin-kit@0.3.3':
     resolution: {integrity: sha512-1+WqvgNMhmlAambTvT3KPtCl/Ibr68VldY2XY40SL1CE0ZXiakFR/cbTspaF5HsnpDMvcYYoJHfl4980NBjGag==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@homer0/prettier-plugin-jsdoc@10.0.0':
-    resolution: {integrity: sha512-LCZhpM0moGgsCQZU+wsY8B++HqSKnA3yfWlkWddW4/aF/678He8LZUqCgDQlSl3p1gOQIHQVATppJ4gCvxc+tA==}
-    engines: {node: '>=18.17 <23'}
-    peerDependencies:
-      prettier: ^3.5.3
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1939,9 +1927,6 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  ramda@0.30.1:
-    resolution: {integrity: sha512-tEF5I22zJnuclswcZMc8bDIrwRHRzf+NqVEmqg50ShAZMP7MWeR/RGDthfM/p+BlqvF2fXAzpn8i+SJcYD3alw==}
-
   readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
@@ -2508,12 +2493,6 @@ snapshots:
     dependencies:
       '@eslint/core': 0.15.1
       levn: 0.4.1
-
-  '@homer0/prettier-plugin-jsdoc@10.0.0(prettier@3.6.2)':
-    dependencies:
-      comment-parser: 1.4.1
-      prettier: 3.6.2
-      ramda: 0.30.1
 
   '@humanfs/core@0.19.1': {}
 
@@ -3249,6 +3228,7 @@ snapshots:
   eslint-config-prettier@10.1.5(eslint@9.30.0(jiti@2.4.2)):
     dependencies:
       eslint: 9.30.0(jiti@2.4.2)
+    optional: true
 
   eslint-flat-config-utils@2.1.0:
     dependencies:
@@ -4493,8 +4473,6 @@ snapshots:
   quansync@0.2.10: {}
 
   queue-microtask@1.2.3: {}
-
-  ramda@0.30.1: {}
 
   readdirp@4.1.2: {}
 
