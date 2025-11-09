@@ -53,7 +53,6 @@ export const sonarJsConfig: TypedFlatConfigItem = {
     'sonarjs/prefer-promise-shorthand': 'error',
     'sonarjs/public-static-readonly': 'error',
     'sonarjs/reduce-initial-value': 'error',
-    'sonarjs/redundant-type-aliases': 'error',
     'sonarjs/strings-comparison': 'error',
     'sonarjs/super-invocation': 'error',
     'sonarjs/table-header': 'error',
