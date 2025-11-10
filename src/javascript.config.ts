@@ -24,7 +24,7 @@ export const javascriptConfig: TypedFlatConfigItem = {
       { enforceForIfStatements: true },
     ],
     'max-depth': ['error', 2],
-    'max-lines': 'error',
+    'max-lines': ['error', { max: 500 }],
     'new-cap': ['error', { capIsNew: false, newIsCap: true, properties: true }],
     'no-bitwise': 'error',
     'no-constant-binary-expression': 'error',
