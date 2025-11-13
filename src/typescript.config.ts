@@ -34,8 +34,14 @@ export const typescriptConfig: TypedFlatConfigItem = {
         format: ['strictCamelCase'],
         selector: 'default',
       },
+      //We can't control the naming of properties coming from external sources
       {
-        format: ['strictCamelCase', 'StrictPascalCase'],
+        format: null,
+        selector: ['objectLiteralProperty'],
+      },
+      //We can't control the naming of entities coming from external sources
+      {
+        format: null,
         selector: 'import',
       },
       {
