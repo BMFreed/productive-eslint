@@ -14,6 +14,7 @@ import { nuxtDisablesConfig } from './nuxtDisables.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { productiveConfig } from './productive.config'
 import { promiseConfig } from './promise.config'
+import { rxjsConfig } from './rxjs.config'
 import { sonarJsConfig } from './sonarJs.config'
 import { typescriptConfig } from './typescript.config'
 import { unicornConfig } from './unicorn.config'
@@ -85,6 +86,10 @@ const createConfig: typeof antfu = (options = {}) =>
 
       if (isPackageExists('nuxt')) {
         configs.push(nuxtDisablesConfig)
+      }
+
+      if (isPackageExists('rxjs')) {
+        configs.push(rxjsConfig)
       }
     })
 

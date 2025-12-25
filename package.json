@@ -1,8 +1,8 @@
 {
   "name": "productive-eslint",
   "type": "module",
-  "version": "1.0.7",
-  "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b",
+  "version": "1.1.0",
+  "packageManager": "pnpm@10.26.2+sha512.0e308ff2005fc7410366f154f625f6631ab2b16b1d2e70238444dd6ae9d630a8482d92a451144debc492416896ed16f7b114a86ec68b8404b2443869e68ffda6",
   "description": "Mildly strict and sufficiently practical ESLint config. Powered by @antfu/eslint-config and based on Evgeny Orekhov's eslint-config-hardcore",
   "author": "Bogdan Binitskiy",
   "contributors": [
@@ -44,25 +44,26 @@
     "typescript": "^5.8.0"
   },
   "dependencies": {
-    "@antfu/eslint-config": "^4.13.2",
-    "@eslint/css": "^0.8.1",
-    "eslint-import-resolver-typescript": "^4.3.5",
-    "eslint-plugin-boundaries": "^5.0.1",
+    "@antfu/eslint-config": "^6.7.3",
+    "@eslint/css": "^0.14.1",
+    "@smarttools/eslint-plugin-rxjs": "^1.0.22",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-boundaries": "^5.3.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-no-relative-import-paths": "^1.6.1",
-    "eslint-plugin-perfectionist": "^4.13.0",
-    "eslint-plugin-prefer-arrow-functions": "^3.6.2",
-    "eslint-plugin-prettier": "^5.4.0",
+    "eslint-plugin-perfectionist": "^5.1.0",
+    "eslint-plugin-prefer-arrow-functions": "^3.9.1",
+    "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-promise": "^7.2.1",
-    "eslint-plugin-sonarjs": "^3.0.2",
-    "local-pkg": "^1.1.1"
+    "eslint-plugin-sonarjs": "^3.0.5",
+    "local-pkg": "^1.1.2"
   },
   "devDependencies": {
-    "@typescript-eslint/utils": "^8.32.1",
-    "eslint": "^9.27.0",
-    "eslint-flat-config-utils": "^2.1.0",
-    "jiti": "^2.4.2",
-    "tsdown": "^0.12.2",
-    "typescript": "^5.8.3"
+    "@typescript-eslint/utils": "^8.50.1",
+    "eslint": "^9.39.2",
+    "eslint-flat-config-utils": "^2.1.4",
+    "jiti": "^2.6.1",
+    "tsdown": "^0.18.3",
+    "typescript": "^5.9.3"
   }
 }

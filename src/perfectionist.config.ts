@@ -1,11 +1,15 @@
 import type { TypedFlatConfigItem } from '@antfu/eslint-config'
+import type { Config } from 'eslint/config'
 
 import perfectionist from 'eslint-plugin-perfectionist'
 
 /** Configuration overrides for eslint-plugin-perfectionist. */
 export const perfectionistConfig: TypedFlatConfigItem = {
+  plugins: {
+    perfectionist,
+  },
   rules: {
-    ...perfectionist.configs['recommended-natural'].rules,
+    ...(perfectionist.configs?.['recommended-natural'] as Config).rules,
     'perfectionist/sort-exports': [
       'error',
       {

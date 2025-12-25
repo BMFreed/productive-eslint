@@ -26,14 +26,6 @@ export const typescriptConfig: TypedFlatConfigItem = {
     '@typescript-eslint/max-params': ['error', { max: 3 }],
     '@typescript-eslint/naming-convention': [
       'error',
-      {
-        filter: {
-          match: false,
-          regex: 'baseURL',
-        },
-        format: ['strictCamelCase'],
-        selector: 'default',
-      },
       //We can't control the naming of properties coming from external sources
       {
         format: null,
@@ -143,7 +135,6 @@ export const typescriptConfig: TypedFlatConfigItem = {
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/restrict-template-expressions': 'error',
     '@typescript-eslint/return-await': 'error',
-    '@typescript-eslint/strict-boolean-expressions': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',
