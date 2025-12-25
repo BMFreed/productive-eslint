@@ -29,7 +29,6 @@ import { vueConfig } from './vue.config'
 const createConfig: typeof antfu = (options = {}) =>
   antfu({ ...options, imports: false })
     .remove('antfu/stylistic/rules')
-    .remove('antfu/imports/rules')
     .override('antfu/perfectionist/setup', perfectionistConfig)
     .override('antfu/javascript/rules', javascriptConfig)
     .override('antfu/typescript/rules', typescriptConfig)
