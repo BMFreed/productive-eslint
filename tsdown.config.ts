@@ -1,13 +1,13 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
+  cjsDefault: false,
   entry: ['./src/index.config.ts'],
   format: ['esm'],
   minify: true,
-  shims: false,
-  cjsDefault: false,
   outExtensions: () => ({
-    js: '.js',
     dts: '.d.ts',
+    js: '.js',
   }),
+  shims: false,
 })
