@@ -4,6 +4,7 @@ import rxjs from '@smarttools/eslint-plugin-rxjs'
 
 /** Configuration for eslint-plugin-rxjs */
 export const rxjsConfig: TypedFlatConfigItem = {
+  files: ['**/*.{ts,tsx,js,jsx,mjs,cjs}'],
   name: 'rxjs',
   plugins: { rxjs },
   rules: {
@@ -15,8 +16,6 @@ export const rxjsConfig: TypedFlatConfigItem = {
     'rxjs/no-create': 'error',
     // Useful rules
     'rxjs/no-cyclic-action': 'error',
-
-    'rxjs/no-explicit-generics': 'error',
     'rxjs/no-exposed-subjects': 'error',
     // Recommended rules
     'rxjs/no-ignored-error': 'error',

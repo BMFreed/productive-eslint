@@ -88,7 +88,7 @@ export const typescriptConfig: TypedFlatConfigItem = {
       'error',
       {
         enforceConst: true,
-        ignore: [0, 1],
+        ignore: [0, 1, 100, -1],
         ignoreClassFieldInitialValues: true,
         ignoreDefaultValues: true,
         ignoreEnums: true,
