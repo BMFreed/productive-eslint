@@ -54,7 +54,6 @@ export const sonarJsConfig: TypedFlatConfigItem = {
     'sonarjs/public-static-readonly': 'error',
     'sonarjs/reduce-initial-value': 'error',
     'sonarjs/strings-comparison': 'error',
-    'sonarjs/super-invocation': 'error',
     'sonarjs/table-header': 'error',
     'sonarjs/table-header-reference': 'error',
     'sonarjs/too-many-break-or-continue-in-loop': 'error',

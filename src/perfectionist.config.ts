@@ -9,6 +9,7 @@ export const perfectionistConfig: TypedFlatConfigItem = {
     perfectionist,
   },
   rules: {
+    // eslint-disable-next-line ts/no-unnecessary-condition -- plugin types may omit configs
     ...(perfectionist.configs?.['recommended-natural'] as Config).rules,
     'perfectionist/sort-exports': [
       'error',
