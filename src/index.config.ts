@@ -10,7 +10,6 @@ import { boundariesConfig } from './boundaries.config'
 import { importConfig } from './import.config'
 import { javascriptConfig } from './javascript.config'
 import { jsdocConfig } from './jsdoc.config'
-import { nuxtDisablesConfig } from './nuxtDisables.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { productiveConfig } from './productive.config'
 import { promiseConfig } from './promise.config'
@@ -37,7 +36,6 @@ const createConfig: typeof antfu = (options = {}) =>
       rules: {
         '@typescript-eslint/naming-convention': 'off',
         '@typescript-eslint/no-magic-numbers': 'off',
-        'import/no-default-export': 'off',
         'no-template-curly-in-string': 'off',
       },
     })
@@ -67,11 +65,6 @@ const createConfig: typeof antfu = (options = {}) =>
     })
     .append(sonarJsConfig)
     .append(productiveConfig)
-    .append({
-      files: ['**/*.d.ts', '**/*.config.ts'],
-      name: 'disables/imports',
-      rules: { 'import/no-default-export': 'off' },
-    })
     // Vue config rules require a hard override instead of the default
     // merge behaviour of the .override() method
     .onResolved((configs) => {
@@ -81,10 +74,6 @@ const createConfig: typeof antfu = (options = {}) =>
 
       if (baseVueConfig) {
         baseVueConfig.rules = vueConfig.rules ?? {}
-      }
-
-      if (isPackageExists('nuxt')) {
-        configs.push(nuxtDisablesConfig)
       }
 
       if (isPackageExists('rxjs')) {

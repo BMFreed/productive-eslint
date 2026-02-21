@@ -23,7 +23,6 @@ export const importConfig: TypedFlatConfigItem = {
     'import/newline-after-import': ['error', { count: 1 }],
     'import/no-commonjs': 'error',
     'import/no-cycle': 'error',
-    'import/no-default-export': 'error',
     'import/no-duplicates': 'error',
     'import/no-empty-named-blocks': 'error',
     'import/no-mutable-exports': 'error',
