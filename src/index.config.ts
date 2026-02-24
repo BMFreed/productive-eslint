@@ -2,7 +2,6 @@ import type { ConfigNames } from '@antfu/eslint-config'
 
 import antfu from '@antfu/eslint-config'
 import cssPlugin from '@eslint/css'
-import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths'
 import prettier from 'eslint-plugin-prettier'
 import { isPackageExists } from 'local-pkg'
 
@@ -28,6 +27,8 @@ export interface IOptions {
   strictness?: StrictnessPreset
 }
 
+// TODO there was no-relative-import-paths plugin, but it's not compatible with eslint 10
+// implement this rule manually in the productive plugin
 /**
  * Main config factory.
  *
@@ -82,13 +83,6 @@ const createConfig = ({
       rules: { 'prettier/prettier': 'error' },
     })
     .append(mergePresetConfigs(promiseConfig, strictness))
-    .append({
-      name: 'no-relative-import-paths',
-      plugins: { 'no-relative-import-paths': noRelativeImportPaths },
-      rules: {
-        'no-relative-import-paths/no-relative-import-paths': 'error',
-      },
-    })
     .append(mergePresetConfigs(sonarJsConfig, strictness))
     .append(mergePresetConfigs(productiveConfig, strictness))
     .onResolved((configs) => {
