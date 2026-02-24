@@ -41,7 +41,15 @@ const createConfig = ({
   ignores = [],
   strictness = StrictnessPreset.HARD,
 }: IOptions): ReturnType<typeof antfu> =>
-  antfu({ ignores, imports: false })
+  antfu({ autoRenamePlugins: false, ignores, imports: false })
+    //It's important for us to maintain original plugin names
+    .renamePlugins({
+      next: '@next/next',
+      node: 'n',
+      test: 'vitest',
+      ts: '@typescript-eslint',
+      yaml: 'yml',
+    })
     .remove('antfu/stylistic/rules')
     .override(
       'antfu/perfectionist/setup',

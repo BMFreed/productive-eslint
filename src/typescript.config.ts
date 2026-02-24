@@ -4,7 +4,6 @@ import type { TStrictnessPresetMap } from './strictness'
 
 import { StrictnessPreset } from './strictness'
 
-//TODO add dot-notation rule to the easy rules
 /** Easy: core + optional (agent-friendly). */
 const easyRules: TypedFlatConfigItem['rules'] = {
   '@typescript-eslint/array-type': 'error',
@@ -13,6 +12,10 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   '@typescript-eslint/consistent-indexed-object-style': 'error',
   '@typescript-eslint/consistent-type-assertions': 'error',
   '@typescript-eslint/default-param-last': 'error',
+  '@typescript-eslint/dot-notation': [
+    'error',
+    { allowIndexSignaturePropertyAccess: true },
+  ],
   '@typescript-eslint/explicit-function-return-type': [
     'error',
     { allowExpressions: true },
