@@ -10,7 +10,7 @@
 
 import { spawn } from 'node:child_process'
 import fs from 'node:fs/promises'
-import path from 'node:path'
+import path, { format } from 'node:path'
 import process from 'node:process'
 
 const ARGV_INDEX_OUTPUT_PATH = 2
@@ -146,9 +146,9 @@ const main = async (): Promise<void> => {
     .toISOString()
     .replaceAll(/[:.]/g, '-')
     .slice(0, TIMESTAMP_LENGTH)
-  const filename = filenameArg
-    ? path.basename(filenameArg)
-    : `rules-${timestamp}.json`
+  const filename = `rules-${
+    filenameArg ? path.basename(filenameArg) : timestamp
+  }.json`
   const outPath = path.join(snapshotDir, filename)
 
   await fs.mkdir(snapshotDir, { recursive: true })
