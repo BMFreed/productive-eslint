@@ -2,79 +2,100 @@ import type { TypedFlatConfigItem } from '@antfu/eslint-config'
 
 import preferArrowFunctions from 'eslint-plugin-prefer-arrow-functions'
 
-/** Configuration overrides for JavaScript rules */
-export const javascriptConfig: TypedFlatConfigItem = {
+import type { TStrictnessPresetMap } from './strictness'
+
+import { StrictnessPreset } from './strictness'
+
+const shared = {
   plugins: {
     'prefer-arrow-functions': preferArrowFunctions,
   },
-  rules: {
-    'arrow-body-style': ['error', 'as-needed'],
-    complexity: ['error', { max: 12 }],
-    'consistent-this': 'error',
-    curly: ['error', 'all'],
-    'default-case': 'error',
-    // Replaced by an identical rule in typescript-eslint
-    'dot-notation': 'off',
-    'for-direction': 'error',
-    'grouped-accessor-pairs': 'error',
-    'id-length': ['error', { exceptions: ['t'] }],
-    'logical-assignment-operators': [
-      'error',
-      'always',
-      { enforceForIfStatements: true },
-    ],
-    'max-depth': ['error', 2],
-    'new-cap': ['error', { capIsNew: false, newIsCap: true, properties: true }],
-    'no-bitwise': 'error',
-    'no-constant-binary-expression': 'error',
-    'no-constant-condition': 'error',
-    'no-constructor-return': 'error',
-    'no-empty-function': 'error',
-    'no-empty-static-block': 'error',
-    'no-implicit-coercion': ['error', { disallowTemplateShorthand: true }],
-    'no-inner-declarations': 'error',
-    'no-invalid-this': 'error',
-    'no-object-constructor': 'error',
-    'no-param-reassign': [
-      'error',
-      {
-        ignorePropertyModificationsFor: [
-          'accumulator',
-          'ctx',
-          'context',
-          'req',
-          'request',
-          'res',
-          'response',
-          '$scope',
-          'staticContext',
-          'ref',
-          'model',
-        ],
-        ignorePropertyModificationsForRegex: ['^.*(?:Ref|Model)$'],
-        props: true,
-      },
-    ],
-    'no-promise-executor-return': 'error',
-    // The default value forbids const enums, which contradicts this config's philosophy
-    'no-restricted-syntax': 'off',
-    'no-return-assign': 'error',
-    'no-script-url': 'error',
-    'no-sequences': 'error',
-    'no-shadow': 'error',
-    // Replaced by an identical rule in typescript-eslint
-    'no-throw-literal': 'off',
-    'no-unused-private-class-members': 'error',
-    'no-useless-concat': 'error',
-    'no-useless-escape': 'error',
-    'no-void': ['error', { allowAsStatement: true }],
-    'operator-assignment': 'error',
-    'prefer-arrow-functions/prefer-arrow-functions': 'error',
-    'prefer-object-spread': 'error',
-    // Replaced by an identical rule in typescript-eslint
-    'prefer-promise-reject-errors': 'off',
-    'require-atomic-updates': 'error',
-    // Is replaced by 'unusedLocals' in tsconfig
-    'unused-imports/no-unused-vars': 'off',
+} satisfies Pick<TypedFlatConfigItem, 'plugins'>
+
+/** Easy: core + optional (agent-friendly). */
+const easyRules: TypedFlatConfigItem['rules'] = {
+  'antfu/no-top-level-await': 'off',
+  'arrow-body-style': ['error', 'as-needed'],
+  curly: ['error', 'all'],
+  'default-case': 'error',
+  'grouped-accessor-pairs': 'error',
+  'id-length': ['error', { exceptions: ['t'] }],
+  'logical-assignment-operators': [
+    'error',
+    'always',
+    { enforceForIfStatements: true },
+  ],
+  'no-empty-function': 'error',
+  'no-empty-static-block': 'error',
+  'no-inner-declarations': 'error',
+  'no-object-constructor': 'error',
+  'no-shadow': 'error',
+  'no-throw-literal': 'off',
+  'no-unused-private-class-members': 'error',
+  'no-useless-concat': 'error',
+  'no-useless-escape': 'error',
+  'no-void': ['error', { allowAsStatement: true }],
+  'operator-assignment': 'error',
+  'prefer-arrow-functions/prefer-arrow-functions': 'error',
+  'prefer-object-spread': 'error',
+  'unused-imports/no-unused-vars': 'off',
+}
+
+/** Medium: rest of current rules (not in easy, not in hard). */
+const mediumRules: TypedFlatConfigItem['rules'] = {
+  'consistent-this': 'error',
+  'dot-notation': 'off',
+  'for-direction': 'error',
+  'new-cap': ['error', { capIsNew: false, newIsCap: true, properties: true }],
+  'no-bitwise': 'error',
+  'no-constant-binary-expression': 'error',
+  'no-constant-condition': 'error',
+  'no-constructor-return': 'error',
+  'no-implicit-coercion': ['error', { disallowTemplateShorthand: true }],
+  'no-invalid-this': 'error',
+  'no-param-reassign': [
+    'error',
+    {
+      ignorePropertyModificationsFor: [
+        'accumulator',
+        'ctx',
+        'context',
+        'req',
+        'request',
+        'res',
+        'response',
+        '$scope',
+        'staticContext',
+        'ref',
+        'model',
+      ],
+      ignorePropertyModificationsForRegex: ['^.*(?:Ref|Model)$'],
+      props: true,
+    },
+  ],
+  'no-promise-executor-return': 'error',
+  'no-restricted-syntax': 'off',
+  'no-return-assign': 'error',
+  'no-script-url': 'error',
+  'no-sequences': 'error',
+  'prefer-promise-reject-errors': 'off',
+}
+
+/** Hard: structural/architectural (complexity, depth, atomic updates). */
+const hardRules: TypedFlatConfigItem['rules'] = {
+  complexity: ['error', { max: 12 }],
+  'max-depth': ['error', 2],
+  'require-atomic-updates': 'error',
+}
+
+/** JavaScript rules by strictness preset. */
+export const javascriptConfig: TStrictnessPresetMap = {
+  [StrictnessPreset.EASY]: {
+    ...shared,
+    rules: easyRules,
+  },
+  [StrictnessPreset.HARD]: { rules: hardRules },
+  [StrictnessPreset.MEDIUM]: {
+    rules: mediumRules,
   },
 }

@@ -3,7 +3,7 @@
  * update).
  *
  * Usage: pnpm exec jiti scripts/compare-eslint-rules.ts <before.json>
- * <after.json> Example: pnpm exec jiti scripts/compare-eslint-rules.ts\
+ * <after.json> Example: pnpm rules:compare\
  * .eslint-snapshots/rules-before.json .eslint-snapshots/rules-after.json
  */
 
@@ -19,8 +19,8 @@ interface IRulesSnapshotFile {
 
 const loadSnapshot = async (filePath: string): Promise<IRulesSnapshotFile> => {
   const absolutePath = path.resolve(filePath)
-  const content = await fs.readFile(absolutePath)
-  return JSON.parse(content) as IRulesSnapshotFile
+  const buffer = await fs.readFile(absolutePath)
+  return JSON.parse(buffer.toString('utf8')) as IRulesSnapshotFile
 }
 
 const main = async (): Promise<void> => {
@@ -70,9 +70,9 @@ const main = async (): Promise<void> => {
     }
   }
 
-  console.log('Added:', added.length)
-  console.log('Removed:', removed.length)
-  console.log('Changed:', changed.length)
+  console.log('Added:', added, `\nTotal: ${added.length}`)
+  console.log('Removed:', removed, `\nTotal: ${removed.length}`)
+  console.log('Changed:', changed, `\nTotal: ${changed.length}`)
 
   if (added.length > 0) {
     console.log(`\n+ ${added.join('\n+ ')}`)

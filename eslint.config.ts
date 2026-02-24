@@ -1,6 +1,6 @@
 import createConfig from './src/index.config'
 
-export default createConfig()
+export default createConfig({ ignores: ['**/*.md'] })
   .override('antfu/typescript/rules', {
     languageOptions: { parserOptions: { projectService: true } },
   })

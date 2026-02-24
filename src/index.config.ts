@@ -15,22 +15,45 @@ import { productiveConfig } from './productive.config'
 import { promiseConfig } from './promise.config'
 import { rxjsConfig } from './rxjs.config'
 import { sonarJsConfig } from './sonarJs.config'
+import { mergePresetConfigs, StrictnessPreset } from './strictness'
 import { typescriptConfig } from './typescript.config'
 import { unicornConfig } from './unicorn.config'
 import { vueConfig } from './vue.config'
 
+/** Options for the main config factory. */
+export interface IOptions {
+  /** Files to ignore. Defaults to empty array. */
+  ignores?: string[]
+  /** Preset: easy, medium, or hard. Defaults to hard. */
+  strictness?: StrictnessPreset
+}
+
 /**
  * Main config factory.
  *
- * @param options The options for generating the ESLint configurations.
+ * @param options The options for generating the ESLint configuration.
+ * @param options.strictness Preset: easy (agent-friendly), medium (easy +
+ *   rest), or hard (easy + medium + user rules). Defaults to hard.
  * @returns The generated ESLint configuration.
  */
-const createConfig: typeof antfu = (options = {}) =>
-  antfu({ ...options, imports: false })
+const createConfig = ({
+  ignores = [],
+  strictness = StrictnessPreset.HARD,
+}: IOptions): ReturnType<typeof antfu> =>
+  antfu({ ignores, imports: false })
     .remove('antfu/stylistic/rules')
-    .override('antfu/perfectionist/setup', perfectionistConfig)
-    .override('antfu/javascript/rules', javascriptConfig)
-    .override('antfu/typescript/rules', typescriptConfig)
+    .override(
+      'antfu/perfectionist/setup',
+      mergePresetConfigs(perfectionistConfig, strictness),
+    )
+    .override(
+      'antfu/javascript/rules',
+      mergePresetConfigs(javascriptConfig, strictness),
+    )
+    .override(
+      'antfu/typescript/rules',
+      mergePresetConfigs(typescriptConfig, strictness),
+    )
     .override('antfu/disables/config-files', {
       files: ['**/*.plugin.?([cm])[jt]s?(x)'],
       rules: {
@@ -42,20 +65,23 @@ const createConfig: typeof antfu = (options = {}) =>
     .override('antfu/disables/dts', {
       rules: { 'import/no-default-export': 'off' },
     })
-    .override('antfu/unicorn/rules', unicornConfig)
+    .override(
+      'antfu/unicorn/rules',
+      mergePresetConfigs(unicornConfig, strictness),
+    )
     .override('antfu/jsdoc/rules', (baseConfig) => ({
       ...baseConfig,
-      ...jsdocConfig,
+      ...mergePresetConfigs(jsdocConfig, strictness),
     }))
-    .append(importConfig)
+    .append(mergePresetConfigs(importConfig, strictness))
     .append({ ...cssPlugin.configs.recommended, name: 'css' })
-    .append(boundariesConfig)
+    .append(mergePresetConfigs(boundariesConfig, strictness))
     .append({
       name: 'prettier',
       plugins: { prettier },
       rules: { 'prettier/prettier': 'error' },
     })
-    .append(promiseConfig)
+    .append(mergePresetConfigs(promiseConfig, strictness))
     .append({
       name: 'no-relative-import-paths',
       plugins: { 'no-relative-import-paths': noRelativeImportPaths },
@@ -63,22 +89,22 @@ const createConfig: typeof antfu = (options = {}) =>
         'no-relative-import-paths/no-relative-import-paths': 'error',
       },
     })
-    .append(sonarJsConfig)
-    .append(productiveConfig)
-    // Vue config rules require a hard override instead of the default
-    // merge behaviour of the .override() method
+    .append(mergePresetConfigs(sonarJsConfig, strictness))
+    .append(mergePresetConfigs(productiveConfig, strictness))
     .onResolved((configs) => {
       const baseVueConfig = configs.find(
         (config) => (config.name as ConfigNames) === 'antfu/vue/rules',
       )
 
       if (baseVueConfig) {
-        baseVueConfig.rules = vueConfig.rules ?? {}
+        const merged = mergePresetConfigs(vueConfig, strictness)
+        baseVueConfig.rules = merged.rules ?? {}
       }
 
       if (isPackageExists('rxjs')) {
-        configs.push(rxjsConfig)
+        configs.push(mergePresetConfigs(rxjsConfig, strictness))
       }
     })
 
 export default createConfig
+export { StrictnessPreset } from './strictness'

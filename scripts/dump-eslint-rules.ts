@@ -10,7 +10,7 @@
 
 import { spawn } from 'node:child_process'
 import fs from 'node:fs/promises'
-import path, { format } from 'node:path'
+import path from 'node:path'
 import process from 'node:process'
 
 const ARGV_INDEX_OUTPUT_PATH = 2
