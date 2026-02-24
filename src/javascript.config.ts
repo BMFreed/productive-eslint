@@ -18,6 +18,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   'arrow-body-style': ['error', 'as-needed'],
   curly: ['error', 'all'],
   'default-case': 'error',
+  'dot-notation': 'off',
   'grouped-accessor-pairs': 'error',
   'id-length': ['error', { exceptions: ['t'] }],
   'logical-assignment-operators': [
@@ -29,6 +30,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   'no-empty-static-block': 'error',
   'no-inner-declarations': 'error',
   'no-object-constructor': 'error',
+  'no-restricted-syntax': 'off',
   'no-shadow': 'error',
   'no-throw-literal': 'off',
   'no-unused-private-class-members': 'error',
@@ -38,13 +40,13 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   'operator-assignment': 'error',
   'prefer-arrow-functions/prefer-arrow-functions': 'error',
   'prefer-object-spread': 'error',
+  'prefer-promise-reject-errors': 'off',
   'unused-imports/no-unused-vars': 'off',
 }
 
 /** Medium: rest of current rules (not in easy, not in hard). */
 const mediumRules: TypedFlatConfigItem['rules'] = {
   'consistent-this': 'error',
-  'dot-notation': 'off',
   'for-direction': 'error',
   'new-cap': ['error', { capIsNew: false, newIsCap: true, properties: true }],
   'no-bitwise': 'error',
@@ -74,11 +76,9 @@ const mediumRules: TypedFlatConfigItem['rules'] = {
     },
   ],
   'no-promise-executor-return': 'error',
-  'no-restricted-syntax': 'off',
   'no-return-assign': 'error',
   'no-script-url': 'error',
   'no-sequences': 'error',
-  'prefer-promise-reject-errors': 'off',
 }
 
 /** Hard: structural/architectural (complexity, depth, atomic updates). */
