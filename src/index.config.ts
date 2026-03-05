@@ -44,8 +44,12 @@ import { yamlConfigs } from './yaml.config'
 export interface IOptions {
   /** Files to ignore. Defaults to empty array. */
   ignores?: string[]
+  /** Enable RxJS rules. Auto-detected from installed packages when not set. */
+  rxjs?: boolean
   /** Preset: easy, medium, or hard. Defaults to hard. */
   strictness?: StrictnessPreset
+  /** Enable Vue rules. Auto-detected from installed packages when not set. */
+  vue?: boolean
 }
 
 const buildVueConfigs = (strictness: StrictnessPreset): TFlatConfigItem[] => [
@@ -95,14 +99,20 @@ const buildVueConfigs = (strictness: StrictnessPreset): TFlatConfigItem[] => [
  *
  * @param options The options for generating the ESLint configuration.
  * @param options.ignores Additional glob patterns to ignore.
+ * @param options.rxjs Enable RxJS rules. Auto-detected when not set.
  * @param options.strictness Preset: easy (agent-friendly), medium (easy +
  *   rest), or hard (easy + medium + user rules). Defaults to hard.
+ * @param options.vue Enable Vue rules. Auto-detected when not set.
  * @returns The generated ESLint configuration.
  */
 const createConfig = ({
   ignores = [],
+  rxjs,
   strictness = StrictnessPreset.HARD,
+  vue,
 }: IOptions): FlatConfigComposer<Linter.Config> => {
+  const enableVue = vue ?? (isPackageExists('vue') || isPackageExists('nuxt'))
+  const enableRxjs = rxjs ?? isPackageExists('rxjs')
   const configs: (TFlatConfigItem | TFlatConfigItem[])[] = [
     // --- Global ignores ---
     { ignores: [...GLOB_EXCLUDE, ...ignores], name: 'ignores' },
@@ -199,9 +209,7 @@ const createConfig = ({
     },
 
     // --- Vue (conditional) ---
-    ...(isPackageExists('vue') || isPackageExists('nuxt')
-      ? buildVueConfigs(strictness)
-      : []),
+    ...(enableVue ? buildVueConfigs(strictness) : []),
 
     // --- Import ---
     {
@@ -269,9 +277,7 @@ const createConfig = ({
     disablesConfigs,
 
     // --- RxJS (conditional) ---
-    ...(isPackageExists('rxjs')
-      ? [mergePresetConfigs(rxjsConfig, strictness)]
-      : []),
+    ...(enableRxjs ? [mergePresetConfigs(rxjsConfig, strictness)] : []),
   ]
 
   return new FlatConfigComposer<Linter.Config>(configs.flat() as Linter.Config)

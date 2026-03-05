@@ -21,7 +21,8 @@
     "config",
     "eslintconfig",
     "eslint-config",
-    "practical"
+    "practical",
+    "productive"
   ],
   "main": "./dist/index.config.js",
   "types": "./dist/index.config.d.ts",
