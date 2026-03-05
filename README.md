@@ -23,14 +23,14 @@ npm i -D productive-eslint eslint typescript prettier prettier-plugin-jsdoc
    - Prettier 3.6+
 
 2. Create eslint.config.ts in project root:
-   ````
+   ````typescript
    import productiveEslint from 'productive-eslint'
 
    export default productiveEslint()
    ````
 
 3. Add scripts to package.json:
-   ````
+   ````json
    "scripts": {
    "lint": "eslint .",
    "lint:fix": "eslint . --fix"
