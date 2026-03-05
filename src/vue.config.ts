@@ -124,7 +124,6 @@ const easyRules: TFlatConfigItem['rules'] = {
     'always',
     { avoidQuotes: true, ignoreConstructors: false },
   ],
-  'vue/order-in-components': 'error',
   'vue/padding-line-between-blocks': ['error', 'always'],
   'vue/prefer-import-from-vue': 'error',
   'vue/prefer-separate-static-class': 'error',
