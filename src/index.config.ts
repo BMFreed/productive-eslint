@@ -189,6 +189,7 @@ const createConfig = ({
         parser: tsParser,
         parserOptions: {
           extraFileExtensions: ['.vue'],
+          projectService: true,
           sourceType: 'module',
         },
       },

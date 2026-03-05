@@ -25,11 +25,8 @@ npm i -D productive-eslint eslint typescript prettier prettier-plugin-jsdoc
 2. Create eslint.config.ts in project root:
    ````
    import productiveEslint from 'productive-eslint'
-   
+
    export default productiveEslint()
-     .override('typescript/rules', {
-       languageOptions: { parserOptions: { projectService: true } },
-     })
    ````
 
 3. Add scripts to package.json:
@@ -65,8 +62,8 @@ When the ESLint config lives at the **workspace root**, auto-detection may not f
 import productiveEslint from 'productive-eslint'
 
 export default productiveEslint({
-  vue: true,
   rxjs: true,
+  vue: true,
 })
 ```
 

@@ -326,9 +326,9 @@ Do not reference `this.propName` inside the getter or setter for `propName` — 
 Do not pass function references directly to array methods. Use an inline arrow function to avoid unexpected arguments.
 ```js
 // Bad
-items.map(parseInt)
+items.map(Number.parseInt)
 // Good
-items.map((item) => parseInt(item, 10))
+items.map((item) => Number.parseInt(item, 10))
 ```
 
 ### unicorn/no-magic-array-flat-depth
@@ -1030,11 +1030,7 @@ Reduce `if` nesting to 2 levels or below. Use early returns, guard clauses, or e
 Remove `else`/`else if` blocks. Use early returns or omit the else entirely.
 ```ts
 // Bad
-if (condition) {
-  return a
-} else {
-  return b
-}
+return condition ? a : b;
 // Good
 if (condition) {
   return a
