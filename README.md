@@ -45,5 +45,17 @@ npm i -D productive-eslint eslint typescript prettier prettier-plugin-jsdoc
 
 ---
 
-📄 License: MIT © Bogdan Binitskiy  
+### AI Agent Integration
+This package ships a `FIXES.md` file describing how to fix every rule that `eslint --fix` cannot resolve automatically.
+
+Add the following instruction to your `CLAUDE.md`, `.cursorrules`, or similar AI agent config:
+
+```
+When fixing ESLint errors that `eslint --fix` cannot resolve,
+look up the rule in node_modules/productive-eslint/FIXES.md.
+```
+
+---
+
+📄 License: MIT © Bogdan Binitskiy
 💻 Contributor: [Roman Nikitin](https://github.com/Stelsovich1)
