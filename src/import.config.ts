@@ -1,10 +1,8 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-
 import importPlugin from 'eslint-plugin-import'
 
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
 
 const shared = {
   name: 'imports',
@@ -14,10 +12,10 @@ const shared = {
       typescript: true,
     },
   },
-} satisfies Pick<TypedFlatConfigItem, 'name' | 'plugins' | 'settings'>
+} satisfies Pick<TFlatConfigItem, 'name' | 'plugins' | 'settings'>
 
 /** Easy: core + optional. */
-const easyRules: TypedFlatConfigItem['rules'] = {
+const easyRules: TFlatConfigItem['rules'] = {
   'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
   'import/extensions': [
     'error',
@@ -43,7 +41,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
 }
 
 /** Medium: rest (not in easy). */
-const mediumRules: TypedFlatConfigItem['rules'] = {
+const mediumRules: TFlatConfigItem['rules'] = {
   'import/export': 'error',
   'import/no-cycle': 'error',
 }

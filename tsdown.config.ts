@@ -1,8 +1,8 @@
 import { defineConfig } from 'tsdown'
 
 /**
- * Packages used by our plugin (productive) and by @antfu/eslint-config; keep
- * external to avoid bundling and version drift.
+ * Packages used by the productive plugin and shared with ESLint; keep external
+ * to avoid bundling and version drift.
  */
 const externalDeps = [
   '@eslint-community/eslint-utils',

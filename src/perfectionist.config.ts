@@ -1,16 +1,22 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-import type { Config } from 'eslint/config'
-
 import perfectionist from 'eslint-plugin-perfectionist'
 
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
 
 /** All perfectionist rules are easy (autofix sort). */
-const rules: TypedFlatConfigItem['rules'] = {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- plugin types may omit configs
-  ...(perfectionist.configs?.['recommended-natural'] as Config).rules,
+const rules: TFlatConfigItem['rules'] = {
+  'perfectionist/sort-array-includes': [
+    'error',
+    { order: 'asc', type: 'natural' },
+  ],
+  'perfectionist/sort-classes': ['error', { order: 'asc', type: 'natural' }],
+  'perfectionist/sort-decorators': ['error', { order: 'asc', type: 'natural' }],
+  'perfectionist/sort-enums': ['error', { order: 'asc', type: 'natural' }],
+  'perfectionist/sort-export-attributes': [
+    'error',
+    { order: 'asc', type: 'natural' },
+  ],
   'perfectionist/sort-exports': [
     'error',
     {
@@ -22,6 +28,14 @@ const rules: TypedFlatConfigItem['rules'] = {
       groups: ['lib', 'model', 'ui'],
       type: 'natural',
     },
+  ],
+  'perfectionist/sort-heritage-clauses': [
+    'error',
+    { order: 'asc', type: 'natural' },
+  ],
+  'perfectionist/sort-import-attributes': [
+    'error',
+    { order: 'asc', type: 'natural' },
   ],
   'perfectionist/sort-imports': [
     'error',
@@ -51,6 +65,7 @@ const rules: TypedFlatConfigItem['rules'] = {
       type: 'natural',
     },
   ],
+  'perfectionist/sort-interfaces': ['error', { order: 'asc', type: 'natural' }],
   'perfectionist/sort-intersection-types': [
     'error',
     {
@@ -70,6 +85,8 @@ const rules: TypedFlatConfigItem['rules'] = {
       ],
     },
   ],
+  'perfectionist/sort-jsx-props': ['error', { order: 'asc', type: 'natural' }],
+  'perfectionist/sort-maps': ['error', { order: 'asc', type: 'natural' }],
   'perfectionist/sort-modules': [
     'error',
     {
@@ -89,6 +106,24 @@ const rules: TypedFlatConfigItem['rules'] = {
       ],
     },
   ],
+  'perfectionist/sort-named-exports': [
+    'error',
+    { order: 'asc', type: 'natural' },
+  ],
+  'perfectionist/sort-named-imports': [
+    'error',
+    { order: 'asc', type: 'natural' },
+  ],
+  'perfectionist/sort-object-types': [
+    'error',
+    { order: 'asc', type: 'natural' },
+  ],
+  'perfectionist/sort-objects': ['error', { order: 'asc', type: 'natural' }],
+  'perfectionist/sort-sets': ['error', { order: 'asc', type: 'natural' }],
+  'perfectionist/sort-switch-case': [
+    'error',
+    { order: 'asc', type: 'natural' },
+  ],
   'perfectionist/sort-union-types': [
     'error',
     {
@@ -107,6 +142,10 @@ const rules: TypedFlatConfigItem['rules'] = {
         'nullish',
       ],
     },
+  ],
+  'perfectionist/sort-variable-declarations': [
+    'error',
+    { order: 'asc', type: 'natural' },
   ],
 }
 

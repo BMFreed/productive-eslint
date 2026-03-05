@@ -1,28 +1,26 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
 import { productiveEslintPlugin } from './plugins/productive.plugin'
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
 
 const shared = {
   name: 'productive',
   plugins: {
     productive: productiveEslintPlugin,
   },
-} satisfies Pick<TypedFlatConfigItem, 'name' | 'plugins'>
+} satisfies Pick<TFlatConfigItem, 'name' | 'plugins'>
 
 /** Easy: productive rules excluded (research). */
-const easyRules: TypedFlatConfigItem['rules'] = {}
+const easyRules: TFlatConfigItem['rules'] = {}
 
 /** Medium: empty (all productive rules are in hard). */
-const mediumRules: TypedFlatConfigItem['rules'] = {}
+const mediumRules: TFlatConfigItem['rules'] = {}
 
 /**
  * Hard: all productive rules (structural: nested if, no-else,
  * prefer-const-enum).
  */
-const hardRules: TypedFlatConfigItem['rules'] = {
+const hardRules: TFlatConfigItem['rules'] = {
   'productive/no-abusive-nested-if': ['error', 2],
   'productive/no-else': 'error',
   'productive/prefer-const-enum': 'off',

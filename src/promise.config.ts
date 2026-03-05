@@ -1,18 +1,16 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-
 import promise from 'eslint-plugin-promise'
 
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
 
 const shared = {
   name: 'promise',
   plugins: { promise },
-} satisfies Pick<TypedFlatConfigItem, 'name' | 'plugins'>
+} satisfies Pick<TFlatConfigItem, 'name' | 'plugins'>
 
 /** Easy: core + optional. */
-const easyRules: TypedFlatConfigItem['rules'] = {
+const easyRules: TFlatConfigItem['rules'] = {
   'promise/always-return': 'error',
   'promise/catch-or-return': 'error',
   'promise/no-multiple-resolved': 'error',
@@ -24,12 +22,12 @@ const easyRules: TypedFlatConfigItem['rules'] = {
 }
 
 /** Medium: rest. */
-const mediumRules: TypedFlatConfigItem['rules'] = {
+const mediumRules: TFlatConfigItem['rules'] = {
   'promise/prefer-await-to-then': 'error',
 }
 
 /** Hard: structural promise flow. */
-const hardRules: TypedFlatConfigItem['rules'] = {
+const hardRules: TFlatConfigItem['rules'] = {
   'promise/no-nesting': 'error',
   'promise/no-promise-in-callback': 'error',
 }

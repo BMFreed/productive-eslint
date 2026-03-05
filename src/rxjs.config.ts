@@ -1,19 +1,17 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-
 import rxjs from '@smarttools/eslint-plugin-rxjs'
 
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
 
 const shared = {
   files: ['**/*.{ts,tsx,js,jsx,mjs,cjs}'],
   name: 'rxjs',
   plugins: { rxjs },
-} satisfies Pick<TypedFlatConfigItem, 'files' | 'name' | 'plugins'>
+} satisfies Pick<TFlatConfigItem, 'files' | 'name' | 'plugins'>
 
 /** Easy: core + optional. */
-const easyRules: TypedFlatConfigItem['rules'] = {
+const easyRules: TFlatConfigItem['rules'] = {
   'rxjs/no-compat': 'error',
   'rxjs/no-create': 'error',
   'rxjs/no-ignored-error': 'error',
@@ -30,7 +28,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
 }
 
 /** Medium: rest. */
-const mediumRules: TypedFlatConfigItem['rules'] = {
+const mediumRules: TFlatConfigItem['rules'] = {
   'rxjs/finnish': 'error',
   'rxjs/no-async-subscribe': 'error',
   'rxjs/no-cyclic-action': 'error',
@@ -53,7 +51,7 @@ const mediumRules: TypedFlatConfigItem['rules'] = {
  * Hard: structural reactive flow (nested subscribe, connectable, shareReplay,
  * switchMap).
  */
-const hardRules: TypedFlatConfigItem['rules'] = {
+const hardRules: TFlatConfigItem['rules'] = {
   'rxjs/no-connectable': 'error',
   'rxjs/no-nested-subscribe': 'error',
   'rxjs/no-sharereplay': 'error',

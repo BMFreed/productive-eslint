@@ -1,13 +1,24 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
+import pluginUnicorn from 'eslint-plugin-unicorn'
 
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
+
+const shared = {
+  plugins: { unicorn: pluginUnicorn },
+} satisfies Pick<TFlatConfigItem, 'plugins'>
 
 /** Easy: core + optional (research). */
-const easyRules: TypedFlatConfigItem['rules'] = {
+const easyRules: TFlatConfigItem['rules'] = {
+  'unicorn/consistent-empty-array-spread': 'error',
+  'unicorn/error-message': 'error',
+  'unicorn/escape-case': 'error',
+  'unicorn/new-for-builtins': 'error',
   'unicorn/no-empty-file': 'error',
+  'unicorn/no-instanceof-builtins': 'error',
   'unicorn/no-new-array': 'error',
+  'unicorn/no-new-buffer': 'error',
+
   'unicorn/no-unnecessary-array-flat-depth': 'error',
   'unicorn/no-unnecessary-array-splice-count': 'error',
   'unicorn/no-unnecessary-await': 'error',
@@ -20,6 +31,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   'unicorn/no-useless-switch-case': 'error',
   'unicorn/no-useless-undefined': 'error',
   'unicorn/no-zero-fractions': 'error',
+  'unicorn/number-literal-case': 'error',
   'unicorn/numeric-separators-style': 'error',
   'unicorn/prefer-add-event-listener': 'error',
   'unicorn/prefer-array-find': 'error',
@@ -50,6 +62,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   'unicorn/prefer-modern-math-apis': 'error',
   'unicorn/prefer-native-coercion-functions': 'error',
   'unicorn/prefer-negative-index': 'error',
+  'unicorn/prefer-node-protocol': 'error',
   'unicorn/prefer-number-properties': 'error',
   'unicorn/prefer-object-from-entries': 'error',
   'unicorn/prefer-optional-catch-binding': 'error',
@@ -77,7 +90,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
 }
 
 /** Medium: rest of unicorn rules. */
-const mediumRules: TypedFlatConfigItem['rules'] = {
+const mediumRules: TFlatConfigItem['rules'] = {
   'unicorn/consistent-date-clone': 'error',
   'unicorn/consistent-destructuring': 'error',
   'unicorn/consistent-existence-index-check': 'error',
@@ -107,7 +120,7 @@ const mediumRules: TypedFlatConfigItem['rules'] = {
  * Hard: structural (document-cookie, event listener refs, default params, await
  * in promise methods, array method this).
  */
-const hardRules: TypedFlatConfigItem['rules'] = {
+const hardRules: TFlatConfigItem['rules'] = {
   'unicorn/no-array-method-this-argument': 'error',
   'unicorn/no-await-in-promise-methods': 'error',
   'unicorn/no-document-cookie': 'error',
@@ -117,7 +130,7 @@ const hardRules: TypedFlatConfigItem['rules'] = {
 
 /** Unicorn rules by strictness preset. */
 export const unicornConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: { rules: easyRules },
+  [StrictnessPreset.EASY]: { ...shared, rules: easyRules },
   [StrictnessPreset.HARD]: { rules: hardRules },
   [StrictnessPreset.MEDIUM]: { rules: mediumRules },
 }

@@ -1,18 +1,16 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-
 import sonarjs from 'eslint-plugin-sonarjs'
 
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
 
 const shared = {
   name: 'sonarjs',
   plugins: { sonarjs },
-} satisfies Pick<TypedFlatConfigItem, 'name' | 'plugins'>
+} satisfies Pick<TFlatConfigItem, 'name' | 'plugins'>
 
 /** Easy: core + optional. */
-const easyRules: TypedFlatConfigItem['rules'] = {
+const easyRules: TFlatConfigItem['rules'] = {
   'sonarjs/no-fallthrough': 'error',
   'sonarjs/no-redundant-boolean': 'error',
   'sonarjs/no-redundant-jump': 'error',
@@ -22,7 +20,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
 }
 
 /** Medium: rest. */
-const mediumRules: TypedFlatConfigItem['rules'] = {
+const mediumRules: TFlatConfigItem['rules'] = {
   'sonarjs/bool-param-default': 'error',
   'sonarjs/comma-or-logical-or-case': 'error',
   'sonarjs/future-reserved-words': 'error',
@@ -67,7 +65,7 @@ const mediumRules: TypedFlatConfigItem['rules'] = {
  * Hard: structural (expression complexity, duplicated branches, nested switch,
  * loop control, async constructor, invariant returns).
  */
-const hardRules: TypedFlatConfigItem['rules'] = {
+const hardRules: TFlatConfigItem['rules'] = {
   'sonarjs/expression-complexity': ['error', { max: 2 }],
   'sonarjs/no-all-duplicated-branches': 'error',
   'sonarjs/no-async-constructor': 'error',

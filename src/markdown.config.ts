@@ -1,0 +1,92 @@
+import markdownPlugin from '@eslint/markdown'
+
+import type { TFlatConfigItem } from './utils/strictness'
+
+import { GLOB_MARKDOWN, GLOB_MARKDOWN_CODE } from './utils/globs'
+
+const GLOB_MARKDOWN_IN_MARKDOWN = '**/*.md/*.md'
+
+/** Markdown config objects (not strictness-mapped, always active). */
+export const markdownConfigs: TFlatConfigItem[] = [
+  {
+    name: 'markdown/setup',
+    plugins: { markdown: markdownPlugin },
+  },
+  {
+    files: [GLOB_MARKDOWN],
+    ignores: [GLOB_MARKDOWN_IN_MARKDOWN],
+    name: 'markdown/processor',
+    processor: 'markdown/markdown',
+  },
+  {
+    files: [GLOB_MARKDOWN],
+    language: 'markdown/gfm',
+    name: 'markdown/parser',
+  },
+  {
+    files: [GLOB_MARKDOWN],
+    name: 'markdown/rules',
+    rules: {
+      'markdown/fenced-code-language': 'error',
+      'markdown/heading-increment': 'error',
+      'markdown/no-duplicate-definitions': 'error',
+      'markdown/no-empty-definitions': 'error',
+      'markdown/no-empty-images': 'error',
+      'markdown/no-empty-links': 'error',
+      'markdown/no-invalid-label-refs': 'error',
+      'markdown/no-missing-atx-heading-space': 'error',
+      'markdown/no-missing-label-refs': 'off',
+      'markdown/no-missing-link-fragments': 'error',
+      'markdown/no-multiple-h1': 'error',
+      'markdown/no-reference-like-urls': 'error',
+      'markdown/no-reversed-media-syntax': 'error',
+      'markdown/no-space-in-emphasis': 'error',
+      'markdown/no-unused-definitions': 'error',
+      'markdown/require-alt-text': 'error',
+      'markdown/table-column-count': 'error',
+    },
+  },
+  {
+    files: [GLOB_MARKDOWN],
+    name: 'markdown/disables',
+    rules: {
+      'no-irregular-whitespace': 'off',
+      'perfectionist/sort-exports': 'off',
+      'perfectionist/sort-imports': 'off',
+      'regexp/no-legacy-features': 'off',
+      'regexp/no-missing-g-flag': 'off',
+      'regexp/no-useless-dollar-replacements': 'off',
+      'regexp/no-useless-flag': 'off',
+    },
+  },
+  {
+    files: [GLOB_MARKDOWN_CODE],
+    languageOptions: {
+      parserOptions: { ecmaFeatures: { impliedStrict: true } },
+    },
+    name: 'markdown/disables/code',
+    rules: {
+      '@typescript-eslint/consistent-type-imports': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-namespace': 'off',
+      '@typescript-eslint/no-redeclare': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-use-before-define': 'off',
+      'n/prefer-global/process': 'off',
+      'no-alert': 'off',
+      'no-console': 'off',
+      'no-labels': 'off',
+      'no-lone-blocks': 'off',
+      'no-restricted-syntax': 'off',
+      'no-undef': 'off',
+      'no-unused-expressions': 'off',
+      'no-unused-labels': 'off',
+      'no-unused-vars': 'off',
+      'unicode-bom': 'off',
+      'unused-imports/no-unused-imports': 'off',
+      'unused-imports/no-unused-vars': 'off',
+    },
+  },
+]

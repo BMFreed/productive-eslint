@@ -1,10 +1,8 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
-
 import boundaries from 'eslint-plugin-boundaries'
 
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
 
 const shared = {
   name: 'boundaries',
@@ -23,16 +21,16 @@ const shared = {
       typescript: { alwaysTryTypes: true },
     },
   },
-} satisfies Pick<TypedFlatConfigItem, 'name' | 'plugins' | 'settings'>
+} satisfies Pick<TFlatConfigItem, 'name' | 'plugins' | 'settings'>
 
 /** Easy: boundaries excluded (research). */
-const easyRules: TypedFlatConfigItem['rules'] = {}
+const easyRules: TFlatConfigItem['rules'] = {}
 
 /** Medium: empty (boundaries rules are in hard). */
-const mediumRules: TypedFlatConfigItem['rules'] = {}
+const mediumRules: TFlatConfigItem['rules'] = {}
 
 /** Hard: FSD/architecture (element-types, entry-point). */
-const hardRules: TypedFlatConfigItem['rules'] = {
+const hardRules: TFlatConfigItem['rules'] = {
   'boundaries/element-types': [
     'error',
     {

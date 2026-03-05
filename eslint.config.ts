@@ -1,7 +1,7 @@
 import createConfig from './src/index.config'
 
 export default createConfig({ ignores: ['**/*.md'] })
-  .override('antfu/typescript/rules', {
+  .override('typescript/rules', {
     languageOptions: { parserOptions: { projectService: true } },
   })
   // At the moment, Jiti does not support typescript path aliases,

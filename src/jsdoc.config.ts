@@ -1,12 +1,16 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
+import pluginJsdoc from 'eslint-plugin-jsdoc'
 
-import type { TStrictnessPresetMap } from './strictness'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
+
+const shared = {
+  files: ['./src/**/*'],
+  plugins: { jsdoc: pluginJsdoc },
+} satisfies Pick<TFlatConfigItem, 'files' | 'plugins'>
 
 /** All jsdoc rules apply for easy preset. */
-const easyRules: TypedFlatConfigItem['rules'] = {
-  'jsdoc/no-bad-blocks': 'error',
+const easyRules: TFlatConfigItem['rules'] = {
   'jsdoc/require-jsdoc': [
     'error',
     {
@@ -32,7 +36,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
 /** JSDoc rules by strictness preset. */
 export const jsdocConfig: TStrictnessPresetMap = {
   [StrictnessPreset.EASY]: {
-    files: ['./src/**/*'],
+    ...shared,
     rules: easyRules,
   },
   [StrictnessPreset.HARD]: {},

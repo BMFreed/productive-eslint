@@ -1,4 +1,4 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
+import type { Linter } from 'eslint'
 
 /**
  * Strictness presets for ESLint config.
@@ -15,10 +15,20 @@ export enum StrictnessPreset {
 }
 
 /**
+ * Relaxed flat config item type. Loosens `plugins` and `rules` typing because
+ * many ESLint plugins lack proper type definitions, and
+ * exactOptionalPropertyTypes causes issues with rule value inference.
+ */
+export type TFlatConfigItem = Omit<Linter.Config, 'plugins' | 'rules'> & {
+  plugins?: Record<string, unknown>
+  rules?: Record<string, unknown>
+}
+
+/**
  * Map of preset name to a flat config item. Each preset holds only that level's
  * rules (no duplication).
  */
-export type TStrictnessPresetMap = Record<StrictnessPreset, TypedFlatConfigItem>
+export type TStrictnessPresetMap = Record<StrictnessPreset, TFlatConfigItem>
 
 const PRESET_ORDER: StrictnessPreset[] = [
   StrictnessPreset.EASY,
@@ -39,21 +49,21 @@ const presetLevel = (preset: StrictnessPreset): number => {
 export const mergePresetConfigs = (
   map: TStrictnessPresetMap,
   strictness: StrictnessPreset,
-): TypedFlatConfigItem => {
+): TFlatConfigItem => {
   const targetLevel = presetLevel(strictness)
   const presetsToMerge = PRESET_ORDER.filter(
     (preset) => presetLevel(preset) <= targetLevel,
   )
   const [first] = presetsToMerge
   const firstConfig = first ? map[first] : null
-  const base: TypedFlatConfigItem = firstConfig
+  const base: TFlatConfigItem = firstConfig
     ? (() => {
         const { rules: droppedRules, ...rest } = firstConfig
         void droppedRules
         return rest
       })()
     : {}
-  const mergedRules: NonNullable<TypedFlatConfigItem['rules']> = {}
+  const mergedRules: NonNullable<TFlatConfigItem['rules']> = {}
   for (const preset of presetsToMerge) {
     const config = map[preset]
     if (config.rules && Object.keys(config.rules).length > 0) {

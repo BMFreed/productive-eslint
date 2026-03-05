@@ -1,11 +1,9 @@
-import type { TypedFlatConfigItem } from '@antfu/eslint-config'
+import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
-import type { TStrictnessPresetMap } from './strictness'
-
-import { StrictnessPreset } from './strictness'
+import { StrictnessPreset } from './utils/strictness'
 
 /** Easy: core + optional (research). */
-const easyRules: TypedFlatConfigItem['rules'] = {
+const easyRules: TFlatConfigItem['rules'] = {
   'vue/attribute-hyphenation': ['error', 'never'],
   'vue/attributes-order': ['error', { alphabetical: true }],
   'vue/block-lang': ['error', { script: { lang: 'ts' } }],
@@ -30,6 +28,8 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   ],
   'vue/define-props-declaration': 'error',
   'vue/define-props-destructuring': 'error',
+  'vue/dot-location': ['error', 'property'],
+  'vue/dot-notation': ['error', { allowKeywords: true }],
   'vue/enforce-style-attribute': ['error', { allow: ['module'] }],
   'vue/html-comment-content-spacing': [
     'error',
@@ -38,7 +38,13 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   ],
   'vue/html-self-closing': ['error', { html: { void: 'always' } }],
   'vue/jsx-uses-vars': 'error',
+  'vue/max-attributes-per-line': 'off',
+  'vue/multi-word-component-names': 'off',
   'vue/no-arrow-functions-in-watch': 'error',
+  'vue/no-async-in-computed-properties': 'error',
+  'vue/no-child-content': 'error',
+  'vue/no-computed-properties-in-data': 'error',
+  'vue/no-deprecated-data-object-declaration': 'error',
   'vue/no-deprecated-delete-set': 'error',
   'vue/no-deprecated-destroyed-lifecycle': 'error',
   'vue/no-deprecated-dollar-listeners-api': 'error',
@@ -59,6 +65,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   'vue/no-deprecated-v-on-native-modifier': 'error',
   'vue/no-deprecated-v-on-number-modifiers': 'error',
   'vue/no-deprecated-vue-config-keycodes': 'error',
+  'vue/no-dupe-keys': 'error',
   'vue/no-dupe-v-else-if': 'error',
   'vue/no-duplicate-attributes': 'error',
   'vue/no-empty-component-block': 'error',
@@ -93,6 +100,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
     },
   ],
   'vue/no-restricted-v-bind': ['error', '/^v-/'],
+  'vue/no-setup-props-reactivity-loss': 'off',
   'vue/no-side-effects-in-computed-properties': 'error',
   'vue/no-template-key': 'error',
   'vue/no-template-shadow': 'error',
@@ -101,12 +109,15 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   'vue/no-unused-components': 'error',
   'vue/no-unused-refs': 'error',
   'vue/no-unused-vars': 'error',
+  'vue/no-use-computed-property-like-method': 'error',
   'vue/no-use-v-else-with-v-for': 'error',
   'vue/no-use-v-if-with-v-for': 'error',
   'vue/no-useless-mustaches': 'error',
   'vue/no-useless-template-attributes': 'error',
   'vue/no-useless-v-bind': 'error',
   'vue/no-v-for-template-key-on-child': 'error',
+  'vue/no-v-html': 'off',
+  'vue/no-v-text-v-html-on-component': 'error',
   'vue/no-watch-after-await': 'error',
   'vue/object-shorthand': [
     'error',
@@ -122,13 +133,20 @@ const easyRules: TypedFlatConfigItem['rules'] = {
   'vue/prefer-use-template-ref': 'error',
   'vue/prop-name-casing': ['error', 'camelCase'],
   'vue/require-component-is': 'error',
+  'vue/require-default-prop': 'off',
   'vue/require-explicit-emits': 'error',
   'vue/require-macro-variable-name': 'error',
+  'vue/require-prop-types': 'off',
   'vue/require-render-return': 'error',
+  'vue/require-slots-as-functions': 'error',
   'vue/require-toggle-inside-transition': 'error',
   'vue/require-typed-ref': 'error',
   'vue/require-v-for-key': 'error',
+  'vue/return-in-computed-property': 'error',
+  'vue/return-in-emits-validator': 'error',
   'vue/slot-name-casing': 'error',
+  'vue/space-infix-ops': 'error',
+  'vue/space-unary-ops': ['error', { nonwords: false, words: true }],
   'vue/this-in-template': 'error',
   'vue/use-v-on-exact': 'error',
   'vue/v-bind-style': ['error', 'shorthand', { sameNameShorthand: 'always' }],
@@ -174,7 +192,7 @@ const easyRules: TypedFlatConfigItem['rules'] = {
 }
 
 /** Medium: rest of vue rules. */
-const mediumRules: TypedFlatConfigItem['rules'] = {
+const mediumRules: TFlatConfigItem['rules'] = {
   'vue/eqeqeq': ['error', 'smart'],
   'vue/html-button-has-type': 'error',
   'vue/no-async-in-computed-properties': 'error',
