@@ -32,7 +32,6 @@ export const yamlConfigs: TFlatConfigItem[] = [
       'yml/no-irregular-whitespace': 'error',
       'yml/no-tab-indent': 'error',
       'yml/plain-scalar': 'error',
-      'yml/quotes': ['error', { avoidEscape: false, prefer: 'single' }],
       'yml/spaced-comment': 'error',
       'yml/vue-custom-block/no-parsing-error': 'error',
     },
