@@ -18,7 +18,6 @@ import { importConfig } from './import.config'
 import { javascriptConfig } from './javascript.config'
 import { jsdocConfig } from './jsdoc.config'
 import { jsoncConfigs } from './jsonc.config'
-import { markdownConfigs } from './markdown.config'
 import { nodeConfig } from './node.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { productiveConfig } from './productive.config'
@@ -30,11 +29,18 @@ import { tomlConfigs } from './toml.config'
 import { typescriptConfig } from './typescript.config'
 import { unicornConfig } from './unicorn.config'
 import {
+  GLOB_CSS,
   GLOB_EXCLUDE,
+  GLOB_JSON,
+  GLOB_JSON5,
+  GLOB_JSONC,
   GLOB_JSX,
+  GLOB_SRC,
+  GLOB_TOML,
   GLOB_TS,
   GLOB_TSX,
   GLOB_VUE,
+  GLOB_YAML,
 } from './utils/globs'
 import { mergePresetConfigs, StrictnessPreset } from './utils/strictness'
 import { vueConfig } from './vue.config'
@@ -54,6 +60,7 @@ export interface IOptions {
 
 const buildVueConfigs = (strictness: StrictnessPreset): TFlatConfigItem[] => [
   {
+    files: [GLOB_SRC, GLOB_VUE],
     languageOptions: {
       globals: {
         computed: 'readonly',
@@ -113,12 +120,14 @@ const createConfig = ({
 }: IOptions): FlatConfigComposer<Linter.Config> => {
   const enableVue = vue ?? (isPackageExists('vue') || isPackageExists('nuxt'))
   const enableRxjs = rxjs ?? isPackageExists('rxjs')
+  const jsFiles = enableVue ? [GLOB_SRC, GLOB_VUE] : [GLOB_SRC]
   const configs: (TFlatConfigItem | TFlatConfigItem[])[] = [
     // --- Global ignores ---
     { ignores: [...GLOB_EXCLUDE, ...ignores], name: 'ignores' },
 
     // --- JavaScript setup ---
     {
+      files: jsFiles,
       languageOptions: {
         ecmaVersion: 'latest',
         globals: {
@@ -139,36 +148,42 @@ const createConfig = ({
 
     // --- JavaScript rules ---
     {
+      files: jsFiles,
       name: 'javascript/rules',
       ...mergePresetConfigs(javascriptConfig, strictness),
     },
 
     // --- ESLint comments ---
     {
+      files: jsFiles,
       name: 'eslint-comments/rules',
       ...mergePresetConfigs(eslintCommentsConfig, strictness),
     },
 
     // --- Node ---
     {
+      files: jsFiles,
       name: 'node/rules',
       ...mergePresetConfigs(nodeConfig, strictness),
     },
 
     // --- Perfectionist ---
     {
+      files: jsFiles,
       name: 'perfectionist/rules',
       ...mergePresetConfigs(perfectionistConfig, strictness),
     },
 
     // --- JSDoc ---
     {
+      files: jsFiles,
       name: 'jsdoc/rules',
       ...mergePresetConfigs(jsdocConfig, strictness),
     },
 
     // --- Unicorn ---
     {
+      files: jsFiles,
       name: 'unicorn/rules',
       ...mergePresetConfigs(unicornConfig, strictness),
     },
@@ -205,6 +220,7 @@ const createConfig = ({
 
     // --- Regexp ---
     {
+      files: jsFiles,
       name: 'regexp/rules',
       ...mergePresetConfigs(regexpConfig, strictness),
     },
@@ -214,12 +230,14 @@ const createConfig = ({
 
     // --- Import ---
     {
+      files: jsFiles,
       name: 'imports',
       ...mergePresetConfigs(importConfig, strictness),
     },
 
     // --- CSS ---
     {
+      files: [GLOB_CSS],
       name: 'css',
       plugins: { css: cssPlugin },
       rules: {
@@ -239,12 +257,23 @@ const createConfig = ({
 
     // --- Boundaries ---
     {
+      files: jsFiles,
       name: 'boundaries',
       ...mergePresetConfigs(boundariesConfig, strictness),
     },
 
     // --- Prettier ---
     {
+      files: [
+        GLOB_SRC,
+        GLOB_VUE,
+        GLOB_CSS,
+        GLOB_JSON,
+        GLOB_JSON5,
+        GLOB_JSONC,
+        GLOB_YAML,
+        GLOB_TOML,
+      ],
       name: 'prettier',
       plugins: { prettier },
       rules: { 'prettier/prettier': 'error' },
@@ -252,18 +281,21 @@ const createConfig = ({
 
     // --- Promise ---
     {
+      files: jsFiles,
       name: 'promise',
       ...mergePresetConfigs(promiseConfig, strictness),
     },
 
     // --- SonarJS ---
     {
+      files: jsFiles,
       name: 'sonarjs',
       ...mergePresetConfigs(sonarJsConfig, strictness),
     },
 
     // --- Productive ---
     {
+      files: jsFiles,
       name: 'productive',
       ...mergePresetConfigs(productiveConfig, strictness),
     },
@@ -272,7 +304,6 @@ const createConfig = ({
     jsoncConfigs,
     yamlConfigs,
     tomlConfigs,
-    markdownConfigs,
 
     // --- Disables ---
     disablesConfigs,

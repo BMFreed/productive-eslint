@@ -10,8 +10,7 @@ export const GLOB_JSON5 = '**/*.json5'
 export const GLOB_JSONC = '**/*.jsonc'
 export const GLOB_YAML = '**/*.y?(a)ml'
 export const GLOB_TOML = '**/*.toml'
-export const GLOB_MARKDOWN = '**/*.md'
-export const GLOB_MARKDOWN_CODE = `${GLOB_MARKDOWN}/${GLOB_SRC}`
+export const GLOB_CSS = '**/*.css'
 
 export const GLOB_TESTS = [
   `**/__tests__/**/*.${GLOB_SRC_EXT}`,
@@ -46,7 +45,6 @@ export const GLOB_EXCLUDE = [
   '**/.output',
   '**/.vite-inspect',
   '**/.yarn',
-  '**/CHANGELOG*.md',
   '**/*.min.*',
   '**/LICENSE*',
   '**/__snapshots__',
