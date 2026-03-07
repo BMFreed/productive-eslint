@@ -90,20 +90,7 @@ const rules: TFlatConfigItem['rules'] = {
   'perfectionist/sort-modules': [
     'error',
     {
-      groups: [
-        'declare-enum',
-        'enum',
-        ['declare-interface', 'declare-type'],
-        ['interface', 'type'],
-        'declare-class',
-        'class',
-        'declare-function',
-        'function',
-        'export-enum',
-        ['export-interface', 'export-type'],
-        'export-class',
-        'export-function',
-      ],
+      type: 'unsorted',
     },
   ],
   'perfectionist/sort-named-exports': [
