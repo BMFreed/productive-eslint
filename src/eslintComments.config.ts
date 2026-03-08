@@ -17,8 +17,10 @@ const easyRules: TFlatConfigItem['rules'] = {
 
 /** ESLint comments rules by strictness preset. */
 export const eslintCommentsConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
+  },
+  [StrictnessPreset.EASY]: {
     rules: easyRules,
   },
   [StrictnessPreset.HARD]: {},

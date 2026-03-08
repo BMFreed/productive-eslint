@@ -1,6 +1,5 @@
 import type { Linter } from 'eslint'
 
-import cssPlugin from '@eslint/css'
 import tsParser from '@typescript-eslint/parser'
 import { FlatConfigComposer } from 'eslint-flat-config-utils'
 import prettier from 'eslint-plugin-prettier'
@@ -12,6 +11,7 @@ import vueParser from 'vue-eslint-parser'
 import type { TFlatConfigItem } from './utils/strictness'
 
 import { boundariesConfig } from './boundaries.config'
+import { cssConfig } from './css.config'
 import { disablesConfigs } from './disables.config'
 import { eslintCommentsConfig } from './eslintComments.config'
 import { importConfig } from './import.config'
@@ -52,7 +52,7 @@ export interface IOptions {
   ignores?: string[]
   /** Enable RxJS rules. Auto-detected from installed packages when not set. */
   rxjs?: boolean
-  /** Preset: easy, medium, or hard. Defaults to hard. */
+  /** Preset: autoFixable, easy, medium, or hard. Defaults to hard. */
   strictness?: StrictnessPreset
   /** Enable Vue rules. Auto-detected from installed packages when not set. */
   vue?: boolean
@@ -107,8 +107,9 @@ const buildVueConfigs = (strictness: StrictnessPreset): TFlatConfigItem[] => [
  * @param options The options for generating the ESLint configuration.
  * @param options.ignores Additional glob patterns to ignore.
  * @param options.rxjs Enable RxJS rules. Auto-detected when not set.
- * @param options.strictness Preset: easy (agent-friendly), medium (easy +
- *   rest), or hard (easy + medium + user rules). Defaults to hard.
+ * @param options.strictness Preset: autoFixable (only auto-fixable rules), easy
+ *   (autoFixable + agent-friendly), medium (easy + rest), or hard (easy +
+ *   medium + user rules). Defaults to hard.
  * @param options.vue Enable Vue rules. Auto-detected when not set.
  * @returns The generated ESLint configuration.
  */
@@ -238,21 +239,9 @@ const createConfig = ({
     // --- CSS ---
     {
       files: [GLOB_CSS],
+      language: 'css/css',
       name: 'css',
-      plugins: { css: cssPlugin },
-      rules: {
-        'css/font-family-fallbacks': 'error',
-        'css/no-duplicate-imports': 'error',
-        'css/no-duplicate-keyframe-selectors': 'error',
-        'css/no-empty-blocks': 'error',
-        'css/no-important': 'error',
-        'css/no-invalid-at-rule-placement': 'error',
-        'css/no-invalid-at-rules': 'error',
-        'css/no-invalid-named-grid-areas': 'error',
-        'css/no-invalid-properties': 'error',
-        'css/no-unmatchable-selectors': 'error',
-        'css/use-baseline': 'error',
-      },
+      ...mergePresetConfigs(cssConfig, strictness),
     },
 
     // --- Boundaries ---

@@ -28,8 +28,10 @@ const hardRules: TFlatConfigItem['rules'] = {
 
 /** Productive rules by strictness preset. */
 export const productiveConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
+  },
+  [StrictnessPreset.EASY]: {
     rules: easyRules,
   },
   [StrictnessPreset.HARD]: { rules: hardRules },

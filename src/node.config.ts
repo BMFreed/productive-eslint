@@ -23,8 +23,10 @@ const easyRules: TFlatConfigItem['rules'] = {
 
 /** Node rules by strictness preset. */
 export const nodeConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
+  },
+  [StrictnessPreset.EASY]: {
     rules: easyRules,
   },
   [StrictnessPreset.HARD]: {},

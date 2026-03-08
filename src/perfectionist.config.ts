@@ -4,7 +4,7 @@ import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
 
 import { StrictnessPreset } from './utils/strictness'
 
-/** All perfectionist rules are easy (autofix sort). */
+/** All perfectionist rules are auto-fixable (autofix sort). */
 const rules: TFlatConfigItem['rules'] = {
   'perfectionist/sort-array-includes': [
     'error',
@@ -138,10 +138,11 @@ const rules: TFlatConfigItem['rules'] = {
 
 /** Perfectionist sort rules by strictness preset. */
 export const perfectionistConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     plugins: { perfectionist },
     rules,
   },
+  [StrictnessPreset.EASY]: {},
   [StrictnessPreset.HARD]: {},
   [StrictnessPreset.MEDIUM]: {},
 }

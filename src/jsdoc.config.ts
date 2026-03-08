@@ -35,8 +35,10 @@ const easyRules: TFlatConfigItem['rules'] = {
 
 /** JSDoc rules by strictness preset. */
 export const jsdocConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
+  },
+  [StrictnessPreset.EASY]: {
     rules: easyRules,
   },
   [StrictnessPreset.HARD]: {},

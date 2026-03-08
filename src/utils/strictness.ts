@@ -3,12 +3,14 @@ import type { Linter } from 'eslint'
 /**
  * Strictness presets for ESLint config.
  *
- * - Easy: agent-friendly rules (autofix or trivial manual fixes)
+ * - AutoFixable: only rules with ESLint autofix support
+ * - Easy: autoFixable + agent-friendly rules (trivial manual fixes)
  * - Medium: easy + remaining rules from current config
  * - Hard: easy + medium + extra rules (user-defined)
  */
 /** Strictness presets for ESLint config. */
 export enum StrictnessPreset {
+  AUTO_FIXABLE = 'autoFixable',
   EASY = 'easy',
   HARD = 'hard',
   MEDIUM = 'medium',
@@ -31,6 +33,7 @@ export type TFlatConfigItem = Omit<Linter.Config, 'plugins' | 'rules'> & {
 export type TStrictnessPresetMap = Record<StrictnessPreset, TFlatConfigItem>
 
 const PRESET_ORDER: StrictnessPreset[] = [
+  StrictnessPreset.AUTO_FIXABLE,
   StrictnessPreset.EASY,
   StrictnessPreset.MEDIUM,
   StrictnessPreset.HARD,
@@ -44,7 +47,8 @@ const presetLevel = (preset: StrictnessPreset): number => {
 /**
  * Merges preset configs up to and including the given strictness. Uses
  * structural fields (name, files, plugins, settings, etc.) from the first
- * config, and merges rules from easy, then medium, then hard.
+ * config, and merges rules from autoFixable, then easy, then medium, then
+ * hard.
  */
 export const mergePresetConfigs = (
   map: TStrictnessPresetMap,

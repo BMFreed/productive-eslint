@@ -9,13 +9,17 @@ const shared = {
   plugins: { sonarjs },
 } satisfies Pick<TFlatConfigItem, 'name' | 'plugins'>
 
-/** Easy: core + optional. */
+/** Auto-fixable: rules with ESLint autofix support. */
+const autoFixableRules: TFlatConfigItem['rules'] = {
+  'sonarjs/prefer-immediate-return': 'error',
+}
+
+/** Easy: remaining agent-friendly rules (no autofix). */
 const easyRules: TFlatConfigItem['rules'] = {
   'sonarjs/no-fallthrough': 'error',
   'sonarjs/no-redundant-boolean': 'error',
   'sonarjs/no-redundant-jump': 'error',
   'sonarjs/non-existent-operator': 'error',
-  'sonarjs/prefer-immediate-return': 'error',
   'sonarjs/public-static-readonly': 'error',
 }
 
@@ -76,10 +80,11 @@ const hardRules: TFlatConfigItem['rules'] = {
 
 /** SonarJS rules by strictness preset. */
 export const sonarJsConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
-    rules: easyRules,
+    rules: autoFixableRules,
   },
+  [StrictnessPreset.EASY]: { rules: easyRules },
   [StrictnessPreset.HARD]: { rules: hardRules },
   [StrictnessPreset.MEDIUM]: {
     rules: mediumRules,

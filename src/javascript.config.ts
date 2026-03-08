@@ -12,21 +12,57 @@ const shared = {
   },
 } satisfies Pick<TFlatConfigItem, 'plugins'>
 
-/** Easy: core + optional (agent-friendly). */
+/** Auto-fixable: rules with ESLint autofix support. */
+const autoFixableRules: TFlatConfigItem['rules'] = {
+  'arrow-body-style': ['error', 'as-needed'],
+  curly: ['error', 'all'],
+  'dot-notation': 'off',
+  'no-array-constructor': 'error',
+  'no-extra-bind': 'error',
+  'no-extra-boolean-cast': 'error',
+  'no-regex-spaces': 'error',
+  'no-restricted-syntax': 'off',
+  'no-throw-literal': 'off',
+  'no-undef-init': 'error',
+  'no-unneeded-ternary': ['error', { defaultAssignment: false }],
+  'no-useless-computed-key': 'error',
+  'no-useless-rename': 'error',
+  'no-useless-return': 'error',
+  'no-var': 'error',
+  'object-shorthand': [
+    'error',
+    'always',
+    { avoidQuotes: true, ignoreConstructors: false },
+  ],
+  'one-var': ['error', { initialized: 'never' }],
+  'operator-assignment': 'error',
+  'prefer-arrow-callback': [
+    'error',
+    { allowNamedFunctions: false, allowUnboundThis: true },
+  ],
+  'prefer-exponentiation-operator': 'error',
+  'prefer-object-spread': 'error',
+  'prefer-promise-reject-errors': 'off',
+  'prefer-template': 'error',
+  'unicode-bom': ['error', 'never'],
+  'unused-imports/no-unused-imports': 'error',
+  'unused-imports/no-unused-vars': 'off',
+  yoda: ['error', 'never'],
+}
+
+/** Easy: remaining agent-friendly rules (no autofix). */
 const easyRules: TFlatConfigItem['rules'] = {
   'accessor-pairs': [
     'error',
     { enforceForClassMembers: true, setWithoutGet: true },
   ],
   'array-callback-return': 'error',
-  'arrow-body-style': ['error', 'as-needed'],
   'block-scoped-var': 'error',
   'constructor-super': 'error',
-  curly: ['error', 'all'],
   'default-case': 'error',
   'default-case-last': 'error',
-  'dot-notation': 'off',
   eqeqeq: ['error', 'smart'],
+  'prefer-arrow-functions/prefer-arrow-functions': 'error',
   'grouped-accessor-pairs': 'error',
   'id-length': ['error', { exceptions: ['t'] }],
   'logical-assignment-operators': [
@@ -35,7 +71,6 @@ const easyRules: TFlatConfigItem['rules'] = {
     { enforceForIfStatements: true },
   ],
   'no-alert': 'error',
-  'no-array-constructor': 'error',
   'no-async-promise-executor': 'error',
   'no-caller': 'error',
   'no-case-declarations': 'error',
@@ -59,8 +94,6 @@ const easyRules: TFlatConfigItem['rules'] = {
   'no-eval': 'error',
   'no-ex-assign': 'error',
   'no-extend-native': 'error',
-  'no-extra-bind': 'error',
-  'no-extra-boolean-cast': 'error',
   'no-fallthrough': 'error',
   'no-func-assign': 'error',
   'no-global-assign': 'error',
@@ -86,7 +119,6 @@ const easyRules: TFlatConfigItem['rules'] = {
   'no-proto': 'error',
   'no-prototype-builtins': 'error',
   'no-redeclare': ['error', { builtinGlobals: false }],
-  'no-regex-spaces': 'error',
   'no-restricted-globals': [
     'error',
     { message: 'Use `globalThis` instead.', name: 'global' },
@@ -116,7 +148,6 @@ const easyRules: TFlatConfigItem['rules'] = {
       property: '__lookupSetter__',
     },
   ],
-  'no-restricted-syntax': 'off',
   'no-self-assign': ['error', { props: true }],
   'no-self-compare': 'error',
   'no-shadow': 'error',
@@ -124,12 +155,9 @@ const easyRules: TFlatConfigItem['rules'] = {
   'no-sparse-arrays': 'error',
   'no-template-curly-in-string': 'error',
   'no-this-before-super': 'error',
-  'no-throw-literal': 'off',
   'no-undef': 'error',
-  'no-undef-init': 'error',
   'no-unexpected-multiline': 'error',
   'no-unmodified-loop-condition': 'error',
-  'no-unneeded-ternary': ['error', { defaultAssignment: false }],
   'no-unreachable': 'error',
   'no-unreachable-loop': 'error',
   'no-unsafe-finally': 'error',
@@ -159,50 +187,25 @@ const easyRules: TFlatConfigItem['rules'] = {
   'no-useless-backreference': 'error',
   'no-useless-call': 'error',
   'no-useless-catch': 'error',
-  'no-useless-computed-key': 'error',
   'no-useless-concat': 'error',
   'no-useless-constructor': 'error',
   'no-useless-escape': 'error',
-  'no-useless-rename': 'error',
-  'no-useless-return': 'error',
-  'no-var': 'error',
   'no-void': ['error', { allowAsStatement: true }],
-
   'no-with': 'error',
-  'object-shorthand': [
-    'error',
-    'always',
-    { avoidQuotes: true, ignoreConstructors: false },
-  ],
-  'one-var': ['error', { initialized: 'never' }],
-  'operator-assignment': 'error',
-  'prefer-arrow-callback': [
-    'error',
-    { allowNamedFunctions: false, allowUnboundThis: true },
-  ],
-  'prefer-arrow-functions/prefer-arrow-functions': 'error',
   'prefer-const': [
     'error',
     { destructuring: 'all', ignoreReadBeforeAssign: true },
   ],
-  'prefer-exponentiation-operator': 'error',
-  'prefer-object-spread': 'error',
-  'prefer-promise-reject-errors': 'off',
   'prefer-regex-literals': ['error', { disallowRedundantWrapping: true }],
   'prefer-rest-params': 'error',
   'prefer-spread': 'error',
-  'prefer-template': 'error',
   'symbol-description': 'error',
-  'unicode-bom': ['error', 'never'],
-  'unused-imports/no-unused-imports': 'error',
-  'unused-imports/no-unused-vars': 'off',
   'use-isnan': [
     'error',
     { enforceForIndexOf: true, enforceForSwitchCase: true },
   ],
   'valid-typeof': ['error', { requireStringLiterals: true }],
   'vars-on-top': 'error',
-  yoda: ['error', 'never'],
 }
 
 /** Medium: rest of current rules (not in easy, not in hard). */
@@ -251,12 +254,11 @@ const hardRules: TFlatConfigItem['rules'] = {
 
 /** JavaScript rules by strictness preset. */
 export const javascriptConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
-    rules: easyRules,
+    rules: autoFixableRules,
   },
+  [StrictnessPreset.EASY]: { rules: easyRules },
   [StrictnessPreset.HARD]: { rules: hardRules },
-  [StrictnessPreset.MEDIUM]: {
-    rules: mediumRules,
-  },
+  [StrictnessPreset.MEDIUM]: { rules: mediumRules },
 }

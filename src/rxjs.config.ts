@@ -10,7 +10,14 @@ const shared = {
   plugins: { rxjs },
 } satisfies Pick<TFlatConfigItem, 'files' | 'name' | 'plugins'>
 
-/** Easy: core + optional. */
+/** Auto-fixable: rules with ESLint autofix support. */
+const autoFixableRules: TFlatConfigItem['rules'] = {
+  'rxjs/no-implicit-any-catch': 'error',
+  'rxjs/no-internal': 'error',
+  'rxjs/prefer-observer': 'error',
+}
+
+/** Easy: remaining agent-friendly rules (no autofix). */
 const easyRules: TFlatConfigItem['rules'] = {
   'rxjs/no-compat': 'error',
   'rxjs/no-create': 'error',
@@ -19,12 +26,9 @@ const easyRules: TFlatConfigItem['rules'] = {
   'rxjs/no-ignored-replay-buffer': 'error',
   'rxjs/no-ignored-subscribe': 'error',
   'rxjs/no-ignored-subscription': 'error',
-  'rxjs/no-implicit-any-catch': 'error',
   'rxjs/no-index': 'error',
-  'rxjs/no-internal': 'error',
   'rxjs/no-topromise': 'error',
   'rxjs/no-unbound-methods': 'error',
-  'rxjs/prefer-observer': 'error',
 }
 
 /** Medium: rest. */
@@ -61,10 +65,11 @@ const hardRules: TFlatConfigItem['rules'] = {
 
 /** RxJS rules by strictness preset. */
 export const rxjsConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
-    rules: easyRules,
+    rules: autoFixableRules,
   },
+  [StrictnessPreset.EASY]: { rules: easyRules },
   [StrictnessPreset.HARD]: { rules: hardRules },
   [StrictnessPreset.MEDIUM]: {
     rules: mediumRules,

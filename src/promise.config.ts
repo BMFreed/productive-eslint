@@ -9,12 +9,16 @@ const shared = {
   plugins: { promise },
 } satisfies Pick<TFlatConfigItem, 'name' | 'plugins'>
 
-/** Easy: core + optional. */
+/** Auto-fixable: rules with ESLint autofix support. */
+const autoFixableRules: TFlatConfigItem['rules'] = {
+  'promise/no-new-statics': 'error',
+}
+
+/** Easy: remaining agent-friendly rules (no autofix). */
 const easyRules: TFlatConfigItem['rules'] = {
   'promise/always-return': 'error',
   'promise/catch-or-return': 'error',
   'promise/no-multiple-resolved': 'error',
-  'promise/no-new-statics': 'error',
   'promise/no-return-in-finally': 'error',
   'promise/no-return-wrap': 'error',
   'promise/param-names': 'error',
@@ -34,10 +38,11 @@ const hardRules: TFlatConfigItem['rules'] = {
 
 /** Promise rules by strictness preset. */
 export const promiseConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
-    rules: easyRules,
+    rules: autoFixableRules,
   },
+  [StrictnessPreset.EASY]: { rules: easyRules },
   [StrictnessPreset.HARD]: { rules: hardRules },
   [StrictnessPreset.MEDIUM]: {
     rules: mediumRules,

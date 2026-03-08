@@ -14,7 +14,14 @@ const shared = {
   },
 } satisfies Pick<TFlatConfigItem, 'name' | 'plugins' | 'settings'>
 
-/** Easy: core + optional. */
+/** Auto-fixable: rules with ESLint autofix support. */
+const autoFixableRules: TFlatConfigItem['rules'] = {
+  'import/first': 'error',
+  'import/newline-after-import': ['error', { count: 1 }],
+  'import/no-empty-named-blocks': 'error',
+}
+
+/** Easy: remaining agent-friendly rules (no autofix). */
 const easyRules: TFlatConfigItem['rules'] = {
   'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
   'import/extensions': [
@@ -27,11 +34,8 @@ const easyRules: TFlatConfigItem['rules'] = {
       tsx: 'never',
     },
   ],
-  'import/first': 'error',
-  'import/newline-after-import': ['error', { count: 1 }],
   'import/no-commonjs': 'error',
   'import/no-duplicates': 'error',
-  'import/no-empty-named-blocks': 'error',
   'import/no-mutable-exports': 'error',
   'import/no-named-default': 'error',
   'import/no-namespace': 'error',
@@ -48,12 +52,11 @@ const mediumRules: TFlatConfigItem['rules'] = {
 
 /** Import rules by strictness preset. */
 export const importConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.EASY]: {
+  [StrictnessPreset.AUTO_FIXABLE]: {
     ...shared,
-    rules: easyRules,
+    rules: autoFixableRules,
   },
+  [StrictnessPreset.EASY]: { rules: easyRules },
   [StrictnessPreset.HARD]: {},
-  [StrictnessPreset.MEDIUM]: {
-    rules: mediumRules,
-  },
+  [StrictnessPreset.MEDIUM]: { rules: mediumRules },
 }
