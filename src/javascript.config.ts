@@ -62,7 +62,6 @@ const easyRules: TFlatConfigItem['rules'] = {
   'default-case': 'error',
   'default-case-last': 'error',
   eqeqeq: ['error', 'smart'],
-  'prefer-arrow-functions/prefer-arrow-functions': 'error',
   'grouped-accessor-pairs': 'error',
   'id-length': ['error', { exceptions: ['t'] }],
   'logical-assignment-operators': [
@@ -192,6 +191,7 @@ const easyRules: TFlatConfigItem['rules'] = {
   'no-useless-escape': 'error',
   'no-void': ['error', { allowAsStatement: true }],
   'no-with': 'error',
+  'prefer-arrow-functions/prefer-arrow-functions': 'error',
   'prefer-const': [
     'error',
     { destructuring: 'all', ignoreReadBeforeAssign: true },

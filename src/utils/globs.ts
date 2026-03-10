@@ -50,4 +50,6 @@ export const GLOB_EXCLUDE = [
   '**/__snapshots__',
   '**/auto-import?(s).d.ts',
   '**/components.d.ts',
+  //https://github.com/typescript-eslint/typescript-eslint/issues/1350
+  '**/*.d.ts',
 ]

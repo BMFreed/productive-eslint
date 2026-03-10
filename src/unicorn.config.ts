@@ -67,10 +67,10 @@ const autoFixableRules: TFlatConfigItem['rules'] = {
 /** Easy: remaining agent-friendly rules (no autofix). */
 const easyRules: TFlatConfigItem['rules'] = {
   'unicorn/error-message': 'error',
-  'unicorn/no-useless-undefined': 'error',
   'unicorn/no-empty-file': 'error',
   'unicorn/no-unused-properties': 'error',
   'unicorn/no-useless-switch-case': 'error',
+  'unicorn/no-useless-undefined': 'error',
   'unicorn/prefer-add-event-listener': 'error',
   'unicorn/prefer-array-some': 'error',
   'unicorn/prefer-blob-reading-methods': 'error',
