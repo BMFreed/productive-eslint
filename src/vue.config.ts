@@ -10,7 +10,6 @@ const autoFixableRules: TFlatConfigItem['rules'] = {
   'vue/component-name-in-template-casing': ['error', 'PascalCase'],
   'vue/component-options-name-casing': ['error', 'PascalCase'],
   'vue/dot-location': ['error', 'property'],
-  'vue/dot-notation': ['error', { allowKeywords: true }],
   'vue/html-self-closing': ['error', { html: { void: 'always' } }],
   'vue/max-attributes-per-line': 'off',
   'vue/multi-word-component-names': 'off',
