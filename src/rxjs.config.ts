@@ -1,8 +1,8 @@
 import rxjs from '@smarttools/eslint-plugin-rxjs'
 
-import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
+import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
-import { StrictnessPreset } from './utils/strictness'
+import { Preset } from './utils/presets'
 
 const shared = {
   files: ['**/*.{ts,tsx,js,jsx,mjs,cjs}'],
@@ -17,61 +17,18 @@ const autoFixableRules: TFlatConfigItem['rules'] = {
   'rxjs/prefer-observer': 'error',
 }
 
-/** Easy: remaining agent-friendly rules (no autofix). */
-const easyRules: TFlatConfigItem['rules'] = {
+/** Recommended: mechanical non-autofixable rules for permanent analysis. */
+const recommendedRules: TFlatConfigItem['rules'] = {
   'rxjs/no-compat': 'error',
   'rxjs/no-create': 'error',
-  'rxjs/no-ignored-error': 'error',
-  'rxjs/no-ignored-observable': 'error',
-  'rxjs/no-ignored-replay-buffer': 'error',
-  'rxjs/no-ignored-subscribe': 'error',
-  'rxjs/no-ignored-subscription': 'error',
   'rxjs/no-index': 'error',
-  'rxjs/no-topromise': 'error',
-  'rxjs/no-unbound-methods': 'error',
 }
 
-/** Medium: rest. */
-const mediumRules: TFlatConfigItem['rules'] = {
-  'rxjs/finnish': 'error',
-  'rxjs/no-async-subscribe': 'error',
-  'rxjs/no-cyclic-action': 'error',
-  'rxjs/no-exposed-subjects': 'error',
-  'rxjs/no-ignored-notifier': 'error',
-  'rxjs/no-ignored-takewhile-value': 'error',
-  'rxjs/no-redundant-notify': 'error',
-  'rxjs/no-subclass': 'error',
-  'rxjs/no-subject-unsubscribe': 'error',
-  'rxjs/no-subject-value': 'error',
-  'rxjs/no-unsafe-catch': 'error',
-  'rxjs/no-unsafe-first': 'error',
-  'rxjs/no-unsafe-subject-next': 'error',
-  'rxjs/no-unsafe-takeuntil': 'error',
-  'rxjs/suffix-subjects': 'error',
-  'rxjs/throw-error': 'error',
-}
-
-/**
- * Hard: structural reactive flow (nested subscribe, connectable, shareReplay,
- * switchMap).
- */
-const hardRules: TFlatConfigItem['rules'] = {
-  'rxjs/no-connectable': 'error',
-  'rxjs/no-nested-subscribe': 'error',
-  'rxjs/no-sharereplay': 'error',
-  'rxjs/no-subscribe-handlers': 'error',
-  'rxjs/no-unsafe-switchmap': 'error',
-}
-
-/** RxJS rules by strictness preset. */
-export const rxjsConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.AUTO_FIXABLE]: {
+/** RxJS rules by preset. */
+export const rxjsConfig: TPresetMap = {
+  [Preset.AUTO_FIXABLE]: {
     ...shared,
     rules: autoFixableRules,
   },
-  [StrictnessPreset.EASY]: { rules: easyRules },
-  [StrictnessPreset.HARD]: { rules: hardRules },
-  [StrictnessPreset.MEDIUM]: {
-    rules: mediumRules,
-  },
+  [Preset.RECOMMENDED]: { rules: recommendedRules },
 }

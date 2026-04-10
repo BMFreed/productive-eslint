@@ -1,4 +1,4 @@
-import type { TFlatConfigItem } from './utils/strictness'
+import type { TFlatConfigItem } from './utils/presets'
 
 import { GLOB_SRC, GLOB_SRC_EXT } from './utils/globs'
 

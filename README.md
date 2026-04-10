@@ -1,9 +1,9 @@
-# A ESLint config for practical code analysis
-This is a config preset aimed at providing a fast and efficient way to distribute our team's desired ESLint configuration.
+# An ESLint config for practical code analysis
+This package provides an AI-first ESLint flat config for repository-wide mechanical checks.
 It is heavily inspired by Evgeny Orekhov's [eslint-config-hardcore](https://github.com/EvgenyOrekhov/eslint-config-hardcore).
 
-This config is extremely opinionated, so if certain sets of rules don't suit you - you are free to extend and override any
-given rules.
+The default preset is intentionally limited to rules that are safe as permanent lint noise: autofixable rules plus trivial
+non-autofixable checks that do not require architecture, API, or product decisions.
 
 ---
 
@@ -45,12 +45,34 @@ npm i -D productive-eslint eslint typescript prettier prettier-plugin-jsdoc
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `strictness` | `'easy' \| 'medium' \| 'hard'` | `'hard'` | Rule strictness preset |
+| `preset` | `Preset.AUTO_FIXABLE \| Preset.RECOMMENDED` | `Preset.RECOMMENDED` | Rule preset |
 | `ignores` | `string[]` | `[]` | Additional glob patterns to ignore |
 | `vue` | `boolean` | auto-detect | Enable Vue/Nuxt rules |
 | `rxjs` | `boolean` | auto-detect | Enable RxJS rules |
 
 By default, `vue` and `rxjs` are auto-detected based on installed packages.
+
+### Presets
+
+```ts
+import productiveEslint, { Preset } from 'productive-eslint'
+```
+
+`Preset.AUTO_FIXABLE` enables only rules with reliable ESLint autofix support.
+
+```ts
+export default productiveEslint({
+  preset: Preset.AUTO_FIXABLE,
+})
+```
+
+`Preset.RECOMMENDED` is the default permanent baseline. It includes `AUTO_FIXABLE` plus mechanical non-autofixable rules.
+
+```ts
+export default productiveEslint({
+  preset: Preset.RECOMMENDED,
+})
+```
 
 ---
 
@@ -70,14 +92,11 @@ export default productiveEslint({
 ---
 
 ### AI Agent Integration
-This package ships a `FIXES.md` file describing how to fix every rule that `eslint --fix` cannot resolve automatically.
 
-Add the following instruction to your `CLAUDE.md`, `.cursorrules`, or similar AI agent config:
+Repository-wide ESLint is kept mechanical on purpose. Nuanced checks such as type-safety debt, architecture boundaries,
+async risk, and complexity should be handled by focused agent diagnostics instead of being enabled as permanent lint noise.
 
-```
-When fixing ESLint errors that `eslint --fix` cannot resolve,
-look up the rule in node_modules/productive-eslint/FIXES.md.
-```
+CLI diagnostics are planned separately.
 
 ---
 

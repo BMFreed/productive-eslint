@@ -1,8 +1,8 @@
 import importPlugin from 'eslint-plugin-import'
 
-import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
+import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
-import { StrictnessPreset } from './utils/strictness'
+import { Preset } from './utils/presets'
 
 const shared = {
   name: 'imports',
@@ -21,8 +21,8 @@ const autoFixableRules: TFlatConfigItem['rules'] = {
   'import/no-empty-named-blocks': 'error',
 }
 
-/** Easy: remaining agent-friendly rules (no autofix). */
-const easyRules: TFlatConfigItem['rules'] = {
+/** Recommended: mechanical non-autofixable rules for permanent analysis. */
+const recommendedRules: TFlatConfigItem['rules'] = {
   'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
   'import/extensions': [
     'error',
@@ -34,29 +34,17 @@ const easyRules: TFlatConfigItem['rules'] = {
       tsx: 'never',
     },
   ],
-  'import/no-commonjs': 'error',
   'import/no-duplicates': 'error',
-  'import/no-mutable-exports': 'error',
   'import/no-named-default': 'error',
-  'import/no-namespace': 'error',
-  'import/no-relative-packages': 'error',
   'import/no-self-import': 'error',
   'import/no-useless-path-segments': 'error',
 }
 
-/** Medium: rest (not in easy). */
-const mediumRules: TFlatConfigItem['rules'] = {
-  'import/export': 'error',
-  'import/no-cycle': 'error',
-}
-
-/** Import rules by strictness preset. */
-export const importConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.AUTO_FIXABLE]: {
+/** Import rules by preset. */
+export const importConfig: TPresetMap = {
+  [Preset.AUTO_FIXABLE]: {
     ...shared,
     rules: autoFixableRules,
   },
-  [StrictnessPreset.EASY]: { rules: easyRules },
-  [StrictnessPreset.HARD]: {},
-  [StrictnessPreset.MEDIUM]: { rules: mediumRules },
+  [Preset.RECOMMENDED]: { rules: recommendedRules },
 }

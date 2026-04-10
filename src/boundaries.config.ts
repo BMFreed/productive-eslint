@@ -1,8 +1,8 @@
 import boundaries from 'eslint-plugin-boundaries'
 
-import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
+import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
-import { StrictnessPreset } from './utils/strictness'
+import { Preset } from './utils/presets'
 
 const shared = {
   name: 'boundaries',
@@ -23,94 +23,10 @@ const shared = {
   },
 } satisfies Pick<TFlatConfigItem, 'name' | 'plugins' | 'settings'>
 
-/** Easy: boundaries excluded (research). */
-const easyRules: TFlatConfigItem['rules'] = {}
-
-/** Medium: empty (boundaries rules are in hard). */
-const mediumRules: TFlatConfigItem['rules'] = {}
-
-/** Hard: FSD/architecture (element-types, entry-point). */
-const hardRules: TFlatConfigItem['rules'] = {
-  'boundaries/element-types': [
-    'error',
-    {
-      default: 'allow',
-      message: '${file.type} is not allowed to import (${dependency.type})',
-      rules: [
-        {
-          disallow: ['app', 'pages', 'widgets', 'features', 'entities'],
-          from: ['shared'],
-          message:
-            'Shared module must not import upper layers (${dependency.type})',
-        },
-        {
-          disallow: ['app', 'pages', 'widgets', 'features'],
-          from: ['entities'],
-          message: 'Entity must not import upper layers (${dependency.type})',
-        },
-        {
-          disallow: [['entities', { entity: '!${entity}' }]],
-          from: ['entities'],
-          message: 'Entity must not import other entity',
-        },
-        {
-          disallow: ['app', 'pages', 'widgets'],
-          from: ['features'],
-          message: 'Feature must not import upper layers (${dependency.type})',
-        },
-        {
-          disallow: [['features', { feature: '!${feature}' }]],
-          from: ['features'],
-          message: 'Feature must not import other feature',
-        },
-        {
-          disallow: ['app', 'pages'],
-          from: ['widgets'],
-          message: 'Feature must not import upper layers (${dependency.type})',
-        },
-        {
-          disallow: [['widgets', { widget: '!${widget}' }]],
-          from: ['widgets'],
-          message: 'Widget must not import other widget',
-        },
-        {
-          disallow: ['app'],
-          from: ['pages'],
-          message: 'Page must not import upper layers (${dependency.type})',
-        },
-        {
-          disallow: [['pages', { page: '!${page}' }]],
-          from: ['pages'],
-          message: 'Page must not import other page',
-        },
-      ],
-    },
-  ],
-  'boundaries/entry-point': [
-    'error',
-    {
-      default: 'disallow',
-      rules: [
-        { allow: '**', target: ['shared'] },
-        {
-          allow: 'index.{ts,vue}',
-          target: ['app', 'pages', 'widgets', 'features', 'entities'],
-        },
-      ],
-    },
-  ],
-}
-
-/** Boundaries rules by strictness preset. */
-export const boundariesConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.AUTO_FIXABLE]: {
+/** Boundaries setup by preset. Rules move to CLI architecture analysis. */
+export const boundariesConfig: TPresetMap = {
+  [Preset.AUTO_FIXABLE]: {
     ...shared,
   },
-  [StrictnessPreset.EASY]: {
-    rules: easyRules,
-  },
-  [StrictnessPreset.HARD]: { rules: hardRules },
-  [StrictnessPreset.MEDIUM]: {
-    rules: mediumRules,
-  },
+  [Preset.RECOMMENDED]: {},
 }

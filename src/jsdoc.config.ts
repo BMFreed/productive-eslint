@@ -1,46 +1,18 @@
 import pluginJsdoc from 'eslint-plugin-jsdoc'
 
-import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
+import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
-import { StrictnessPreset } from './utils/strictness'
+import { Preset } from './utils/presets'
 
 const shared = {
   files: ['./src/**/*'],
   plugins: { jsdoc: pluginJsdoc },
 } satisfies Pick<TFlatConfigItem, 'files' | 'plugins'>
 
-/** All jsdoc rules apply for easy preset. */
-const easyRules: TFlatConfigItem['rules'] = {
-  'jsdoc/require-jsdoc': [
-    'error',
-    {
-      checkConstructors: false,
-      contexts: [
-        'TSPropertySignature',
-        'TSMethodSignature',
-        'TSTypeAliasDeclaration',
-        'TSInterfaceDeclaration',
-        'TSEnumDeclaration',
-        'MethodDefinition',
-        'ClassDeclaration',
-        'ArrowFunctionExpression',
-        'ObjectExpression',
-        'PropertyDefinition',
-      ],
-      enableFixer: false,
-      publicOnly: true,
-    },
-  ],
-}
-
-/** JSDoc rules by strictness preset. */
-export const jsdocConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.AUTO_FIXABLE]: {
+/** JSDoc rules by preset. */
+export const jsdocConfig: TPresetMap = {
+  [Preset.AUTO_FIXABLE]: {
     ...shared,
   },
-  [StrictnessPreset.EASY]: {
-    rules: easyRules,
-  },
-  [StrictnessPreset.HARD]: {},
-  [StrictnessPreset.MEDIUM]: {},
+  [Preset.RECOMMENDED]: {},
 }

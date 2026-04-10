@@ -1,19 +1,14 @@
 import type { Linter } from 'eslint'
 
 /**
- * Strictness presets for ESLint config.
+ * Presets for ESLint config.
  *
- * - AutoFixable: only rules with ESLint autofix support
- * - Easy: autoFixable + agent-friendly rules (trivial manual fixes)
- * - Medium: easy + remaining rules from current config
- * - Hard: easy + medium + extra rules (user-defined)
+ * - AutoFixable: only rules with ESLint autofix support.
+ * - Recommended: autofixable rules plus mechanical non-autofixable rules.
  */
-/** Strictness presets for ESLint config. */
-export enum StrictnessPreset {
+export enum Preset {
   AUTO_FIXABLE = 'autoFixable',
-  EASY = 'easy',
-  HARD = 'hard',
-  MEDIUM = 'medium',
+  RECOMMENDED = 'recommended',
 }
 
 /**
@@ -30,34 +25,21 @@ export type TFlatConfigItem = Omit<Linter.Config, 'plugins' | 'rules'> & {
  * Map of preset name to a flat config item. Each preset holds only that level's
  * rules (no duplication).
  */
-export type TStrictnessPresetMap = Record<StrictnessPreset, TFlatConfigItem>
+export type TPresetMap = Record<Preset, TFlatConfigItem>
 
-const PRESET_ORDER: StrictnessPreset[] = [
-  StrictnessPreset.AUTO_FIXABLE,
-  StrictnessPreset.EASY,
-  StrictnessPreset.MEDIUM,
-  StrictnessPreset.HARD,
-]
-
-const presetLevel = (preset: StrictnessPreset): number => {
-  const idx = PRESET_ORDER.indexOf(preset)
-  return idx === -1 ? 0 : idx
-}
+const PRESET_ORDER: Preset[] = [Preset.AUTO_FIXABLE, Preset.RECOMMENDED]
 
 /**
- * Merges preset configs up to and including the given strictness. Uses
- * structural fields (name, files, plugins, settings, etc.) from the first
- * config, and merges rules from autoFixable, then easy, then medium, then
- * hard.
+ * Merges preset configs up to and including the given preset. Uses structural
+ * fields (name, files, plugins, settings, etc.) from the first config, and
+ * merges rules from autoFixable, then recommended.
  */
 export const mergePresetConfigs = (
-  map: TStrictnessPresetMap,
-  strictness: StrictnessPreset,
+  map: TPresetMap,
+  preset: Preset,
 ): TFlatConfigItem => {
-  const targetLevel = presetLevel(strictness)
-  const presetsToMerge = PRESET_ORDER.filter(
-    (preset) => presetLevel(preset) <= targetLevel,
-  )
+  const targetLevel = PRESET_ORDER.indexOf(preset)
+  const presetsToMerge = PRESET_ORDER.slice(0, targetLevel + 1)
   const [first] = presetsToMerge
   const firstConfig = first ? map[first] : null
   const base: TFlatConfigItem = firstConfig

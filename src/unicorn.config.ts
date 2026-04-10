@@ -1,8 +1,8 @@
 import pluginUnicorn from 'eslint-plugin-unicorn'
 
-import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
+import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
-import { StrictnessPreset } from './utils/strictness'
+import { Preset } from './utils/presets'
 
 const shared = {
   plugins: { unicorn: pluginUnicorn },
@@ -64,76 +64,17 @@ const autoFixableRules: TFlatConfigItem['rules'] = {
   'unicorn/throw-new-error': 'error',
 }
 
-/** Easy: remaining agent-friendly rules (no autofix). */
-const easyRules: TFlatConfigItem['rules'] = {
-  'unicorn/error-message': 'error',
-  'unicorn/no-empty-file': 'error',
-  'unicorn/no-unused-properties': 'error',
-  'unicorn/no-useless-switch-case': 'error',
+/** Recommended: mechanical non-autofixable rules for permanent analysis. */
+const recommendedRules: TFlatConfigItem['rules'] = {
   'unicorn/no-useless-undefined': 'error',
-  'unicorn/prefer-add-event-listener': 'error',
   'unicorn/prefer-array-some': 'error',
-  'unicorn/prefer-blob-reading-methods': 'error',
-  'unicorn/prefer-code-point': 'error',
-  'unicorn/prefer-default-parameters': 'error',
-  'unicorn/prefer-dom-node-text-content': 'error',
-  'unicorn/prefer-event-target': 'error',
-  'unicorn/prefer-json-parse-buffer': 'error',
-  'unicorn/prefer-logical-operator-over-ternary': 'error',
-  'unicorn/prefer-math-trunc': 'error',
-  'unicorn/prefer-number-properties': 'error',
-  'unicorn/prefer-query-selector': 'error',
   'unicorn/prefer-set-has': 'error',
-  'unicorn/prefer-single-call': 'error',
   'unicorn/prefer-spread': 'error',
   'unicorn/prefer-string-slice': 'error',
-  'unicorn/prefer-structured-clone': 'error',
-  'unicorn/prefer-top-level-await': 'error',
 }
 
-/** Medium: rest of unicorn rules. */
-const mediumRules: TFlatConfigItem['rules'] = {
-  'unicorn/consistent-date-clone': 'error',
-  'unicorn/consistent-destructuring': 'error',
-  'unicorn/consistent-existence-index-check': 'error',
-  'unicorn/custom-error-definition': 'error',
-  'unicorn/explicit-length-check': 'error',
-  'unicorn/no-abusive-eslint-disable': 'error',
-  'unicorn/no-accessor-recursion': 'error',
-  'unicorn/no-array-callback-reference': 'error',
-  'unicorn/no-array-for-each': 'error',
-  'unicorn/no-for-loop': 'error',
-  'unicorn/no-hex-escape': 'error',
-  'unicorn/no-lonely-if': 'error',
-  'unicorn/no-magic-array-flat-depth': 'error',
-  'unicorn/no-named-default': 'error',
-  'unicorn/no-negated-condition': 'error',
-  'unicorn/no-negation-in-equality-check': 'error',
-  'unicorn/no-nested-ternary': 'error',
-  'unicorn/no-single-promise-in-promise-methods': 'error',
-  'unicorn/no-typeof-undefined': 'error',
-  'unicorn/no-unreadable-array-destructuring': 'error',
-  'unicorn/relative-url-style': 'error',
-  'unicorn/require-number-to-fixed-digits-argument': 'error',
-  'unicorn/require-post-message-target-origin': 'error',
-}
-
-/**
- * Hard: structural (document-cookie, event listener refs, default params, await
- * in promise methods, array method this).
- */
-const hardRules: TFlatConfigItem['rules'] = {
-  'unicorn/no-array-method-this-argument': 'error',
-  'unicorn/no-await-in-promise-methods': 'error',
-  'unicorn/no-document-cookie': 'error',
-  'unicorn/no-invalid-remove-event-listener': 'error',
-  'unicorn/no-object-as-default-parameter': 'error',
-}
-
-/** Unicorn rules by strictness preset. */
-export const unicornConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.AUTO_FIXABLE]: { ...shared, rules: autoFixableRules },
-  [StrictnessPreset.EASY]: { rules: easyRules },
-  [StrictnessPreset.HARD]: { rules: hardRules },
-  [StrictnessPreset.MEDIUM]: { rules: mediumRules },
+/** Unicorn rules by preset. */
+export const unicornConfig: TPresetMap = {
+  [Preset.AUTO_FIXABLE]: { ...shared, rules: autoFixableRules },
+  [Preset.RECOMMENDED]: { rules: recommendedRules },
 }
