@@ -15,7 +15,10 @@ const externalDeps = [
 
 export default defineConfig({
   cjsDefault: false,
-  entry: ['./src/index.config.ts'],
+  entry: {
+    cli: './src/cli/index.ts',
+    'index.config': './src/index.config.ts',
+  },
   external: externalDeps,
   format: ['esm'],
   minify: true,

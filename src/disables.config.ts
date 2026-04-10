@@ -30,13 +30,6 @@ export const disablesConfigs: TFlatConfigItem[] = [
     },
   },
   {
-    files: ['**/*.js', '**/*.cjs'],
-    name: 'disables/cjs',
-    rules: {
-      '@typescript-eslint/no-require-imports': 'off',
-    },
-  },
-  {
     files: [
       `**/*.config.${GLOB_SRC_EXT}`,
       `**/*.config.*.${GLOB_SRC_EXT}`,

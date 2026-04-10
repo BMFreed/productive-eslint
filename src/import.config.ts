@@ -28,8 +28,7 @@ const recommendedRules: TFlatConfigItem['rules'] = {
     'error',
     'ignorePackages',
     {
-      js: 'never',
-      jsx: 'never',
+      mts: 'never',
       ts: 'never',
       tsx: 'never',
     },

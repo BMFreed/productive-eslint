@@ -34,7 +34,6 @@ import {
   GLOB_JSON,
   GLOB_JSON5,
   GLOB_JSONC,
-  GLOB_JSX,
   GLOB_SRC,
   GLOB_TOML,
   GLOB_TS,
@@ -42,6 +41,7 @@ import {
   GLOB_VUE,
   GLOB_YAML,
 } from './utils/globs'
+import { markProductiveComposer } from './utils/marker'
 import { mergePresetConfigs, Preset } from './utils/presets'
 import { vueConfig } from './vue.config'
 import { yamlConfig } from './yaml.config'
@@ -120,14 +120,14 @@ const createConfig = ({
 }: IOptions): FlatConfigComposer<Linter.Config> => {
   const enableVue = vue ?? (isPackageExists('vue') || isPackageExists('nuxt'))
   const enableRxjs = rxjs ?? isPackageExists('rxjs')
-  const jsFiles = enableVue ? [GLOB_SRC, GLOB_VUE] : [GLOB_SRC]
+  const sourceFiles = enableVue ? [GLOB_SRC, GLOB_VUE] : [GLOB_SRC]
   const configs: (TFlatConfigItem | TFlatConfigItem[])[] = [
     // --- Global ignores ---
     { ignores: [...GLOB_EXCLUDE, ...ignores], name: 'ignores' },
 
-    // --- JavaScript setup ---
+    // --- Base setup ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       languageOptions: {
         ecmaVersion: 'latest',
         globals: {
@@ -143,58 +143,58 @@ const createConfig = ({
         sourceType: 'module',
       },
       linterOptions: { reportUnusedDisableDirectives: true },
-      name: 'javascript/setup',
+      name: 'base/setup',
     },
 
-    // --- JavaScript rules ---
+    // --- Base rules ---
     {
-      files: jsFiles,
-      name: 'javascript/rules',
+      files: sourceFiles,
+      name: 'base/rules',
       ...mergePresetConfigs(javascriptConfig, preset),
     },
 
     // --- ESLint comments ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'eslint-comments/rules',
       ...mergePresetConfigs(eslintCommentsConfig, preset),
     },
 
     // --- Node ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'node/rules',
       ...mergePresetConfigs(nodeConfig, preset),
     },
 
     // --- Perfectionist ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'perfectionist/rules',
       ...mergePresetConfigs(perfectionistConfig, preset),
     },
 
     // --- JSDoc ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'jsdoc/rules',
       ...mergePresetConfigs(jsdocConfig, preset),
     },
 
     // --- Unicorn ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'unicorn/rules',
       ...mergePresetConfigs(unicornConfig, preset),
     },
 
-    // --- JSX setup ---
+    // --- TSX setup ---
     {
-      files: [GLOB_JSX, GLOB_TSX],
+      files: [GLOB_TSX],
       languageOptions: {
         parserOptions: { ecmaFeatures: { jsx: true } },
       },
-      name: 'jsx/setup',
+      name: 'tsx/setup',
     },
 
     // --- TypeScript parser ---
@@ -220,7 +220,7 @@ const createConfig = ({
 
     // --- Regexp ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'regexp/rules',
       ...mergePresetConfigs(regexpConfig, preset),
     },
@@ -230,7 +230,7 @@ const createConfig = ({
 
     // --- Import ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'imports',
       ...mergePresetConfigs(importConfig, preset),
     },
@@ -245,7 +245,7 @@ const createConfig = ({
 
     // --- Boundaries ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'boundaries',
       ...mergePresetConfigs(boundariesConfig, preset),
     },
@@ -269,21 +269,21 @@ const createConfig = ({
 
     // --- Promise ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'promise',
       ...mergePresetConfigs(promiseConfig, preset),
     },
 
     // --- SonarJS ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'sonarjs',
       ...mergePresetConfigs(sonarJsConfig, preset),
     },
 
     // --- Productive ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'productive',
       ...mergePresetConfigs(productiveConfig, preset),
     },
@@ -300,8 +300,10 @@ const createConfig = ({
     ...(enableRxjs ? [mergePresetConfigs(rxjsConfig, preset)] : []),
   ]
 
-  return new FlatConfigComposer<Linter.Config>(configs.flat() as Linter.Config)
+  return markProductiveComposer(
+    new FlatConfigComposer<Linter.Config>(configs.flat() as Linter.Config),
+  )
 }
 
-export default createConfig
+export { createConfig }
 export { Preset } from './utils/presets'

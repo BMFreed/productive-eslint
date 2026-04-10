@@ -32,5 +32,6 @@
     "suppressExcessPropertyErrors": false,
     "suppressImplicitAnyIndexErrors": false,
     "noStrictGenericChecks": false
-  }
+  },
+  "exclude": ["dist", "node_modules"]
 }

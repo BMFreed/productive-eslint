@@ -2,10 +2,11 @@ import rxjs from '@smarttools/eslint-plugin-rxjs'
 
 import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
+import { GLOB_SRC } from './utils/globs'
 import { Preset } from './utils/presets'
 
 const shared = {
-  files: ['**/*.{ts,tsx,js,jsx,mjs,cjs}'],
+  files: [GLOB_SRC],
   name: 'rxjs',
   plugins: { rxjs },
 } satisfies Pick<TFlatConfigItem, 'files' | 'name' | 'plugins'>

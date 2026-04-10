@@ -1,4 +1,4 @@
-import createConfig from './src/index.config'
+import { createConfig } from './src/index.config'
 
 export default createConfig({})
   //TODO exclude the no relative import paths rule from here when it's implemented in the productive plugin (cause below)

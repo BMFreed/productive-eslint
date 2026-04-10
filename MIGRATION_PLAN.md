@@ -234,6 +234,56 @@ The public CLI output should be Markdown only. Markdown is the best default form
 
 The implementation can still use structured internal result objects before rendering Markdown. Do not expose JSON in the initial CLI unless a concrete automation use case appears later.
 
+When an existing ESLint rule or config already defines the diagnostic truth, the CLI should reuse ESLint output as the canonical source of findings.
+
+Custom logic should be used for:
+
+- aggregation;
+- hotspot ranking;
+- severity/confidence normalization;
+- public-vs-internal classification;
+- weighted scoring;
+- Markdown rendering.
+
+Custom logic should not replace an existing rule family with a second independent implementation unless there is no adequate ESLint surface for that diagnostic.
+
+For CLI analyzers, the preferred execution model is:
+
+- run against the target project's real `eslint.config.*`;
+- reuse the project's parser, resolver, alias, ignore, and type-aware lint setup;
+- layer analyzer-specific diagnostic rules from `productive-eslint` on top;
+- avoid rebuilding parser/bootstrap logic independently when the project config
+  already provides it.
+- fail fast if the selected `--cwd` does not contain a supported
+  `productive-eslint` project config.
+
+In a monorepo, analyzers should initially target one project root per invocation
+via `--cwd`, rather than trying to infer and merge multiple ESLint roots
+automatically.
+
+In the first version, supported project configs should be limited to
+`productive-eslint` composer pipelines. Detection should use an explicit runtime
+marker on the returned composer, not source-text inspection of imports.
+
+That marker should live on the composer instance itself. Supported chain methods
+such as `.append(...)` and `.override(...)` should preserve it by returning the
+same composer object. If a project resolves the composer into a plain array
+before export, that export shape is unsupported in the first CLI version.
+
+`createConfig` should also be exported as a named API, and the marker should
+preferably be implemented with a private `Symbol` rather than a string property.
+
+Analyzer overlays should take precedence for analyzer-scoped diagnostics even if
+the project disables those rules for normal linting. Project-level `off`
+switches for analyzer rules should not be respected until there is an explicit
+repository-level analyzer configuration API.
+
+For file targeting, analyzers should start from the project's own ESLint file
+universe and ignore behavior, then narrow with `--include`, then subtract with
+`--exclude`. Project ignores still apply in the first version, and `--exclude`
+has final precedence over `--include`. `--top` should only limit rendered
+hotspots, not the actual analyzer scan.
+
 ### P0 Commands
 
 These commands are the must-have set for the first useful AI-agent CLI:
@@ -270,6 +320,24 @@ The command should classify findings instead of only counting them:
 - explicit `any` vs implicit type holes;
 - local fix vs migration-sized work.
 
+The canonical findings should come from focused ESLint runs with the TypeScript/Vue rule surface. TypeScript APIs can enrich and classify those findings, but should not replace the rule layer as the source of truth.
+
+Those focused runs should execute on top of the target project's actual ESLint
+config, so that Vue parsing, project references, aliases, and local ignores come
+from the project itself rather than from a second bootstrap layer inside the CLI.
+
+The first implementation should intentionally start narrower, using a small
+overlay ruleset based on:
+
+- `@typescript-eslint/no-explicit-any`
+- `@typescript-eslint/no-unsafe-assignment`
+- `@typescript-eslint/no-unsafe-member-access`
+- `@typescript-eslint/ban-ts-comment`
+
+This first vertical slice is enough to validate config loading, analyzer
+overlays, focused ESLint execution, hotspot grouping, and Markdown rendering
+before adding richer exported/public classification and broader type diagnostics.
+
 #### `analyze architecture`
 
 FSD and architecture dependency analysis.
@@ -289,6 +357,39 @@ The report should group violations by dependency direction, for example:
 - `features -> other feature`;
 - `pages -> other page`;
 - private API imports.
+
+This analyzer should reuse the current `boundaries` rule surface and a shared architecture model consumed by both ESLint config and CLI. The CLI must not define a second copy of FSD rules.
+
+When possible, it should run on top of the target project's own ESLint config
+and enable architecture diagnostics as a focused overlay rather than reconstructing
+resolver settings independently.
+
+The first implementation should extract the current `boundaries` source of truth
+out of [src/boundaries.config.ts](/home/bogdan/Work/productive-eslint/src/boundaries.config.ts)
+into a shared architecture module that owns:
+
+- `boundaries/elements`;
+- `boundaries/include`;
+- `import/resolver` settings used for architecture checks;
+- helpers for direction labels and capture-aware summaries.
+
+This matters because the current permanent baseline intentionally keeps
+architecture rules out of `RECOMMENDED`, so the analyzer must not assume the
+project preset already carries the necessary `boundaries` setup. The analyzer
+overlay should inject that shared setup explicitly while still running inside
+the target project's real ESLint environment.
+
+The narrow first vertical slice should use the canonical `boundaries` rule
+surface:
+
+- `boundaries/element-types`
+- `boundaries/entry-point`
+
+That is enough to produce:
+
+- file hotspots;
+- direction summaries such as `shared -> features`;
+- private-entry summaries such as `private entry imports`.
 
 #### `analyze complexity`
 
@@ -338,7 +439,11 @@ Suggested scoring direction:
 
 The weighted score should be computed by the CLI, not by the agent from prose instructions.
 
-The CLI should collect mechanical AST facts and return the score, raw metrics, signals, and reasons. The agent should use that output to decide whether to refactor, where to start, and how risky the change is.
+The CLI should collect ESLint findings plus mechanical metrics and return the score, raw metrics, signals, and reasons. The agent should use that output to decide whether to refactor, where to start, and how risky the change is.
+
+The underlying ESLint pass should still execute in the target project's lint
+environment, with complexity-related diagnostics enabled as needed for the
+analyzer.
 
 Initial scoring can be heuristic:
 
@@ -420,6 +525,11 @@ Should include:
 
 The command should help the agent distinguish intentional fire-and-forget from missing error handling.
 
+Canonical findings should come from focused ESLint runs over Promise-, TypeScript-, and related async rules. Additional flow logic should only enrich those findings.
+
+Those runs should inherit the target project's real lint environment rather than
+reconstructing async-related parser and resolver behavior separately.
+
 #### `analyze suppressions`
 
 Suppression and technical-debt marker analysis.
@@ -436,6 +546,11 @@ Should include:
 - optionally age or owner data if git metadata is added later.
 
 The command should identify places where the codebase has explicitly opted out of safety checks.
+
+`unused enables/disables` must come from ESLint semantics, not text parsing. Raw comment scanning is only for signals ESLint does not already define, such as `@ts-ignore` density.
+
+These checks should run inside the target project's ESLint environment so that
+directive behavior matches the project's actual lint execution.
 
 ### P1 Commands
 
