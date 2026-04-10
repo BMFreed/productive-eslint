@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["vue"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"]
+}

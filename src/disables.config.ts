@@ -1,4 +1,4 @@
-import type { TFlatConfigItem } from './utils/strictness'
+import type { TFlatConfigItem } from './utils/presets'
 
 import { GLOB_SRC, GLOB_SRC_EXT } from './utils/globs'
 
@@ -27,13 +27,6 @@ export const disablesConfigs: TFlatConfigItem[] = [
       'import/no-default-export': 'off',
       'no-restricted-syntax': 'off',
       'unused-imports/no-unused-vars': 'off',
-    },
-  },
-  {
-    files: ['**/*.js', '**/*.cjs'],
-    name: 'disables/cjs',
-    rules: {
-      '@typescript-eslint/no-require-imports': 'off',
     },
   },
   {

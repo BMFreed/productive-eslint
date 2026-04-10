@@ -1,8 +1,8 @@
 import regexp from 'eslint-plugin-regexp'
 
-import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
+import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
-import { StrictnessPreset } from './utils/strictness'
+import { Preset } from './utils/presets'
 
 const shared = {
   plugins: { regexp },
@@ -51,46 +51,28 @@ const autoFixableRules: TFlatConfigItem['rules'] = {
   'regexp/use-ignore-case': 'error',
 }
 
-/** Easy: remaining agent-friendly rules (no autofix). */
-const easyRules: TFlatConfigItem['rules'] = {
-  'no-control-regex': 'error',
-  'no-misleading-character-class': 'error',
+/** Recommended: mechanical non-autofixable rules for permanent analysis. */
+const recommendedRules: TFlatConfigItem['rules'] = {
   'prefer-regex-literals': 'error',
-  'regexp/confusing-quantifier': 'error',
-  'regexp/no-contradiction-with-assertion': 'error',
   'regexp/no-dupe-characters-character-class': 'error',
-  'regexp/no-dupe-disjunctions': 'error',
-  'regexp/no-empty-alternative': 'error',
-  'regexp/no-empty-capturing-group': 'error',
   'regexp/no-empty-character-class': 'error',
   'regexp/no-empty-group': 'error',
   'regexp/no-empty-lookarounds-assertion': 'error',
   'regexp/no-empty-string-literal': 'error',
   'regexp/no-escape-backspace': 'error',
   'regexp/no-invalid-regexp': 'error',
-  'regexp/no-lazy-ends': 'error',
-  'regexp/no-legacy-features': 'error',
-  'regexp/no-misleading-capturing-group': 'error',
   'regexp/no-non-standard-flag': 'error',
   'regexp/no-obscure-range': 'error',
-  'regexp/no-optional-assertion': 'error',
-  'regexp/no-potentially-useless-backreference': 'error',
-  'regexp/no-super-linear-backtracking': 'error',
-  'regexp/no-unused-capturing-group': 'error',
-  'regexp/no-useless-assertions': 'error',
   'regexp/no-useless-backreference': 'error',
   'regexp/no-useless-dollar-replacements': 'error',
   'regexp/no-zero-quantifier': 'error',
-  'regexp/optimal-lookaround-quantifier': 'error',
 }
 
-/** Regexp rules by strictness preset. */
-export const regexpConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.AUTO_FIXABLE]: {
+/** Regexp rules by preset. */
+export const regexpConfig: TPresetMap = {
+  [Preset.AUTO_FIXABLE]: {
     ...shared,
     rules: autoFixableRules,
   },
-  [StrictnessPreset.EASY]: { rules: easyRules },
-  [StrictnessPreset.HARD]: {},
-  [StrictnessPreset.MEDIUM]: {},
+  [Preset.RECOMMENDED]: { rules: recommendedRules },
 }

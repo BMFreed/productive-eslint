@@ -1,8 +1,8 @@
 import perfectionist from 'eslint-plugin-perfectionist'
 
-import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
+import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
-import { StrictnessPreset } from './utils/strictness'
+import { Preset } from './utils/presets'
 
 /** All perfectionist rules are auto-fixable (autofix sort). */
 const rules: TFlatConfigItem['rules'] = {
@@ -136,13 +136,11 @@ const rules: TFlatConfigItem['rules'] = {
   ],
 }
 
-/** Perfectionist sort rules by strictness preset. */
-export const perfectionistConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.AUTO_FIXABLE]: {
+/** Perfectionist sort rules by preset. */
+export const perfectionistConfig: TPresetMap = {
+  [Preset.AUTO_FIXABLE]: {
     plugins: { perfectionist },
     rules,
   },
-  [StrictnessPreset.EASY]: {},
-  [StrictnessPreset.HARD]: {},
-  [StrictnessPreset.MEDIUM]: {},
+  [Preset.RECOMMENDED]: {},
 }

@@ -1,7 +1,8 @@
-import createConfig from './src/index.config'
+import { createConfig } from './src/index.config'
 
-//FIXES.md is excluded because it contains intentionally incorrect code examples
-export default createConfig({})
+export default createConfig({
+  ignores: ['test/fixtures/**'],
+})
   //TODO exclude the no relative import paths rule from here when it's implemented in the productive plugin (cause below)
   // At the moment, Jiti does not support typescript path aliases,
   // which makes this config unusable inside this repo.

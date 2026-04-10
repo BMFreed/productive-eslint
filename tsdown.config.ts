@@ -15,8 +15,13 @@ const externalDeps = [
 
 export default defineConfig({
   cjsDefault: false,
-  entry: ['./src/index.config.ts'],
-  external: externalDeps,
+  deps: {
+    neverBundle: externalDeps,
+  },
+  entry: {
+    cli: './src/cli/index.ts',
+    'index.config': './src/index.config.ts',
+  },
   format: ['esm'],
   minify: true,
   outExtensions: () => ({
@@ -24,4 +29,5 @@ export default defineConfig({
     js: '.js',
   }),
   shims: false,
+  target: 'node24',
 })

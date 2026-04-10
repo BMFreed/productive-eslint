@@ -8,7 +8,7 @@ import globals from 'globals'
 import { isPackageExists } from 'local-pkg'
 import vueParser from 'vue-eslint-parser'
 
-import type { TFlatConfigItem } from './utils/strictness'
+import type { TFlatConfigItem } from './utils/presets'
 
 import { boundariesConfig } from './boundaries.config'
 import { cssConfig } from './css.config'
@@ -16,8 +16,7 @@ import { disablesConfigs } from './disables.config'
 import { eslintCommentsConfig } from './eslintComments.config'
 import { importConfig } from './import.config'
 import { javascriptConfig } from './javascript.config'
-import { jsdocConfig } from './jsdoc.config'
-import { jsoncConfigs } from './jsonc.config'
+import { jsoncConfig } from './jsonc.config'
 import { nodeConfig } from './node.config'
 import { perfectionistConfig } from './perfectionist.config'
 import { productiveConfig } from './productive.config'
@@ -25,7 +24,7 @@ import { promiseConfig } from './promise.config'
 import { regexpConfig } from './regexp.config'
 import { rxjsConfig } from './rxjs.config'
 import { sonarJsConfig } from './sonarJs.config'
-import { tomlConfigs } from './toml.config'
+import { tomlConfig } from './toml.config'
 import { typescriptConfig } from './typescript.config'
 import { unicornConfig } from './unicorn.config'
 import {
@@ -34,7 +33,6 @@ import {
   GLOB_JSON,
   GLOB_JSON5,
   GLOB_JSONC,
-  GLOB_JSX,
   GLOB_SRC,
   GLOB_TOML,
   GLOB_TS,
@@ -42,23 +40,24 @@ import {
   GLOB_VUE,
   GLOB_YAML,
 } from './utils/globs'
-import { mergePresetConfigs, StrictnessPreset } from './utils/strictness'
+import { markProductiveComposer } from './utils/marker'
+import { mergePresetConfigs, Preset } from './utils/presets'
 import { vueConfig } from './vue.config'
-import { yamlConfigs } from './yaml.config'
+import { yamlConfig } from './yaml.config'
 
 /** Options for the main config factory. */
 export interface IOptions {
   /** Files to ignore. Defaults to empty array. */
   ignores?: string[]
+  /** Preset: autoFixable or recommended. Defaults to recommended. */
+  preset?: Preset
   /** Enable RxJS rules. Auto-detected from installed packages when not set. */
   rxjs?: boolean
-  /** Preset: autoFixable, easy, medium, or hard. Defaults to hard. */
-  strictness?: StrictnessPreset
   /** Enable Vue rules. Auto-detected from installed packages when not set. */
   vue?: boolean
 }
 
-const buildVueConfigs = (strictness: StrictnessPreset): TFlatConfigItem[] => [
+const buildVueConfigs = (preset: Preset): TFlatConfigItem[] => [
   {
     files: [GLOB_SRC, GLOB_VUE],
     languageOptions: {
@@ -95,7 +94,7 @@ const buildVueConfigs = (strictness: StrictnessPreset): TFlatConfigItem[] => [
     },
     name: 'vue/rules',
     processor: pluginVue.processors['.vue'] as Linter.Processor,
-    rules: mergePresetConfigs(vueConfig, strictness).rules ?? {},
+    rules: mergePresetConfigs(vueConfig, preset).rules ?? {},
   },
 ]
 
@@ -107,28 +106,27 @@ const buildVueConfigs = (strictness: StrictnessPreset): TFlatConfigItem[] => [
  * @param options The options for generating the ESLint configuration.
  * @param options.ignores Additional glob patterns to ignore.
  * @param options.rxjs Enable RxJS rules. Auto-detected when not set.
- * @param options.strictness Preset: autoFixable (only auto-fixable rules), easy
- *   (autoFixable + agent-friendly), medium (easy + rest), or hard (easy +
- *   medium + user rules). Defaults to hard.
+ * @param options.preset Preset: autoFixable (only auto-fixable rules) or
+ *   recommended (permanent mechanical baseline). Defaults to recommended.
  * @param options.vue Enable Vue rules. Auto-detected when not set.
  * @returns The generated ESLint configuration.
  */
 const createConfig = ({
   ignores = [],
+  preset = Preset.RECOMMENDED,
   rxjs,
-  strictness = StrictnessPreset.HARD,
   vue,
-}: IOptions): FlatConfigComposer<Linter.Config> => {
+}: IOptions = {}): FlatConfigComposer<Linter.Config> => {
   const enableVue = vue ?? (isPackageExists('vue') || isPackageExists('nuxt'))
   const enableRxjs = rxjs ?? isPackageExists('rxjs')
-  const jsFiles = enableVue ? [GLOB_SRC, GLOB_VUE] : [GLOB_SRC]
+  const sourceFiles = enableVue ? [GLOB_SRC, GLOB_VUE] : [GLOB_SRC]
   const configs: (TFlatConfigItem | TFlatConfigItem[])[] = [
     // --- Global ignores ---
     { ignores: [...GLOB_EXCLUDE, ...ignores], name: 'ignores' },
 
-    // --- JavaScript setup ---
+    // --- Base setup ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       languageOptions: {
         ecmaVersion: 'latest',
         globals: {
@@ -144,58 +142,51 @@ const createConfig = ({
         sourceType: 'module',
       },
       linterOptions: { reportUnusedDisableDirectives: true },
-      name: 'javascript/setup',
+      name: 'base/setup',
     },
 
-    // --- JavaScript rules ---
+    // --- Base rules ---
     {
-      files: jsFiles,
-      name: 'javascript/rules',
-      ...mergePresetConfigs(javascriptConfig, strictness),
+      files: sourceFiles,
+      name: 'base/rules',
+      ...mergePresetConfigs(javascriptConfig, preset),
     },
 
     // --- ESLint comments ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'eslint-comments/rules',
-      ...mergePresetConfigs(eslintCommentsConfig, strictness),
+      ...mergePresetConfigs(eslintCommentsConfig, preset),
     },
 
     // --- Node ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'node/rules',
-      ...mergePresetConfigs(nodeConfig, strictness),
+      ...mergePresetConfigs(nodeConfig, preset),
     },
 
     // --- Perfectionist ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'perfectionist/rules',
-      ...mergePresetConfigs(perfectionistConfig, strictness),
-    },
-
-    // --- JSDoc ---
-    {
-      files: jsFiles,
-      name: 'jsdoc/rules',
-      ...mergePresetConfigs(jsdocConfig, strictness),
+      ...mergePresetConfigs(perfectionistConfig, preset),
     },
 
     // --- Unicorn ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'unicorn/rules',
-      ...mergePresetConfigs(unicornConfig, strictness),
+      ...mergePresetConfigs(unicornConfig, preset),
     },
 
-    // --- JSX setup ---
+    // --- TSX setup ---
     {
-      files: [GLOB_JSX, GLOB_TSX],
+      files: [GLOB_TSX],
       languageOptions: {
         parserOptions: { ecmaFeatures: { jsx: true } },
       },
-      name: 'jsx/setup',
+      name: 'tsx/setup',
     },
 
     // --- TypeScript parser ---
@@ -216,24 +207,24 @@ const createConfig = ({
     {
       files: [GLOB_TS, GLOB_TSX],
       name: 'typescript/rules',
-      ...mergePresetConfigs(typescriptConfig, strictness),
+      ...mergePresetConfigs(typescriptConfig, preset),
     },
 
     // --- Regexp ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'regexp/rules',
-      ...mergePresetConfigs(regexpConfig, strictness),
+      ...mergePresetConfigs(regexpConfig, preset),
     },
 
     // --- Vue (conditional) ---
-    ...(enableVue ? buildVueConfigs(strictness) : []),
+    ...(enableVue ? buildVueConfigs(preset) : []),
 
     // --- Import ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'imports',
-      ...mergePresetConfigs(importConfig, strictness),
+      ...mergePresetConfigs(importConfig, preset),
     },
 
     // --- CSS ---
@@ -241,14 +232,14 @@ const createConfig = ({
       files: [GLOB_CSS],
       language: 'css/css',
       name: 'css',
-      ...mergePresetConfigs(cssConfig, strictness),
+      ...mergePresetConfigs(cssConfig, preset),
     },
 
     // --- Boundaries ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'boundaries',
-      ...mergePresetConfigs(boundariesConfig, strictness),
+      ...mergePresetConfigs(boundariesConfig, preset),
     },
 
     // --- Prettier ---
@@ -270,39 +261,41 @@ const createConfig = ({
 
     // --- Promise ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'promise',
-      ...mergePresetConfigs(promiseConfig, strictness),
+      ...mergePresetConfigs(promiseConfig, preset),
     },
 
     // --- SonarJS ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'sonarjs',
-      ...mergePresetConfigs(sonarJsConfig, strictness),
+      ...mergePresetConfigs(sonarJsConfig, preset),
     },
 
     // --- Productive ---
     {
-      files: jsFiles,
+      files: sourceFiles,
       name: 'productive',
-      ...mergePresetConfigs(productiveConfig, strictness),
+      ...mergePresetConfigs(productiveConfig, preset),
     },
 
     // --- Data formats ---
-    jsoncConfigs,
-    yamlConfigs,
-    tomlConfigs,
+    mergePresetConfigs(jsoncConfig, preset),
+    mergePresetConfigs(yamlConfig, preset),
+    mergePresetConfigs(tomlConfig, preset),
 
     // --- Disables ---
     disablesConfigs,
 
     // --- RxJS (conditional) ---
-    ...(enableRxjs ? [mergePresetConfigs(rxjsConfig, strictness)] : []),
+    ...(enableRxjs ? [mergePresetConfigs(rxjsConfig, preset)] : []),
   ]
 
-  return new FlatConfigComposer<Linter.Config>(configs.flat() as Linter.Config)
+  return markProductiveComposer(
+    new FlatConfigComposer<Linter.Config>(configs.flat() as Linter.Config),
+  )
 }
 
-export default createConfig
-export { StrictnessPreset } from './utils/strictness'
+export { createConfig }
+export { Preset } from './utils/presets'

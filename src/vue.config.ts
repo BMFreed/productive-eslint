@@ -1,6 +1,6 @@
-import type { TFlatConfigItem, TStrictnessPresetMap } from './utils/strictness'
+import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
-import { StrictnessPreset } from './utils/strictness'
+import { Preset } from './utils/presets'
 
 /** Auto-fixable: rules with ESLint autofix support. */
 const autoFixableRules: TFlatConfigItem['rules'] = {
@@ -59,12 +59,10 @@ const autoFixableRules: TFlatConfigItem['rules'] = {
   'vue/valid-next-tick': 'error',
 }
 
-/** Easy: remaining agent-friendly rules (no autofix). */
-const easyRules: TFlatConfigItem['rules'] = {
+/** Recommended: mechanical non-autofixable rules for permanent analysis. */
+const recommendedRules: TFlatConfigItem['rules'] = {
   'vue/block-lang': ['error', { script: { lang: 'ts' } }],
   'vue/comment-directive': ['error', { reportUnusedDisableDirectives: true }],
-  'vue/component-api-style': ['error', ['script-setup']],
-  'vue/custom-event-name-casing': ['error', 'camelCase'],
   'vue/define-macros-order': [
     'error',
     {
@@ -80,17 +78,12 @@ const easyRules: TFlatConfigItem['rules'] = {
   ],
   'vue/define-props-declaration': 'error',
   'vue/define-props-destructuring': 'error',
-  'vue/enforce-style-attribute': ['error', { allow: ['module'] }],
   'vue/html-comment-content-spacing': [
     'error',
     'always',
     { exceptions: ['-'] },
   ],
   'vue/jsx-uses-vars': 'error',
-  'vue/no-arrow-functions-in-watch': 'error',
-  'vue/no-async-in-computed-properties': 'error',
-  'vue/no-child-content': 'error',
-  'vue/no-computed-properties-in-data': 'error',
   'vue/no-deprecated-delete-set': 'error',
   'vue/no-deprecated-dollar-listeners-api': 'error',
   'vue/no-deprecated-events-api': 'error',
@@ -109,67 +102,28 @@ const easyRules: TFlatConfigItem['rules'] = {
   'vue/no-duplicate-attributes': 'error',
   'vue/no-empty-pattern': 'error',
   'vue/no-export-in-script-setup': 'error',
-  'vue/no-expose-after-await': 'error',
   'vue/no-irregular-whitespace': 'error',
-  'vue/no-lifecycle-after-await': 'error',
   'vue/no-lone-template': 'error',
   'vue/no-loss-of-precision': 'error',
   'vue/no-multiple-objects-in-class': 'error',
   'vue/no-multiple-slot-args': 'error',
-  'vue/no-mutating-props': 'error',
   'vue/no-parsing-error': 'error',
-  'vue/no-ref-object-reactivity-loss': 'error',
-  'vue/no-required-prop-with-default': 'error',
   'vue/no-reserved-component-names': 'error',
   'vue/no-reserved-keys': 'error',
   'vue/no-reserved-props': 'error',
-  'vue/no-restricted-block': 'error',
-  'vue/no-restricted-syntax': [
-    'error',
-    'DebuggerStatement',
-    'LabeledStatement',
-    'WithStatement',
-    {
-      message: 'Use ref instead of reactive for code consistency',
-      selector: 'CallExpression[callee.name="reactive"]',
-    },
-  ],
   'vue/no-restricted-v-bind': ['error', '/^v-/'],
-  'vue/no-side-effects-in-computed-properties': 'error',
   'vue/no-template-key': 'error',
-  'vue/no-template-shadow': 'error',
-  'vue/no-template-target-blank': 'error',
   'vue/no-textarea-mustache': 'error',
-  'vue/no-unused-components': 'error',
-  'vue/no-unused-refs': 'error',
-  'vue/no-unused-vars': 'error',
-  'vue/no-use-computed-property-like-method': 'error',
-  'vue/no-use-v-else-with-v-for': 'error',
-  'vue/no-use-v-if-with-v-for': 'error',
   'vue/no-useless-template-attributes': 'error',
   'vue/no-v-for-template-key-on-child': 'error',
-  'vue/no-v-text-v-html-on-component': 'error',
-  'vue/no-watch-after-await': 'error',
   'vue/prefer-true-attribute-shorthand': 'error',
-  'vue/prefer-use-template-ref': 'error',
-  'vue/prop-name-casing': ['error', 'camelCase'],
   'vue/require-component-is': 'error',
-  'vue/require-explicit-emits': 'error',
   'vue/require-macro-variable-name': 'error',
   'vue/require-render-return': 'error',
   'vue/require-slots-as-functions': 'error',
   'vue/require-toggle-inside-transition': 'error',
-  'vue/require-typed-ref': 'error',
-  'vue/require-v-for-key': 'error',
   'vue/return-in-computed-property': 'error',
   'vue/return-in-emits-validator': 'error',
-  'vue/slot-name-casing': 'error',
-  'vue/use-v-on-exact': 'error',
-  'vue/v-on-handler-style': [
-    'error',
-    ['method', 'inline-function'],
-    { ignoreIncludesComment: true },
-  ],
   'vue/valid-attribute-name': 'error',
   'vue/valid-define-emits': 'error',
   'vue/valid-define-options': 'error',
@@ -193,27 +147,8 @@ const easyRules: TFlatConfigItem['rules'] = {
   'vue/valid-v-text': 'error',
 }
 
-/** Medium: rest of vue rules. */
-const mediumRules: TFlatConfigItem['rules'] = {
-  'vue/eqeqeq': ['error', 'smart'],
-  'vue/html-button-has-type': 'error',
-  'vue/no-async-in-computed-properties': 'error',
-  'vue/no-child-content': 'error',
-  'vue/no-console': 'error',
-  'vue/no-constant-condition': 'error',
-  'vue/no-duplicate-attr-inheritance': 'error',
-  'vue/no-root-v-if': 'error',
-  'vue/no-sparse-arrays': 'error',
-  'vue/no-static-inline-styles': 'error',
-  'vue/no-v-html': 'error',
-  'vue/no-v-text': 'error',
-  'vue/no-v-text-v-html-on-component': 'error',
-}
-
-/** Vue rules by strictness preset. */
-export const vueConfig: TStrictnessPresetMap = {
-  [StrictnessPreset.AUTO_FIXABLE]: { rules: autoFixableRules },
-  [StrictnessPreset.EASY]: { rules: easyRules },
-  [StrictnessPreset.HARD]: {},
-  [StrictnessPreset.MEDIUM]: { rules: mediumRules },
+/** Vue rules by preset. */
+export const vueConfig: TPresetMap = {
+  [Preset.AUTO_FIXABLE]: { rules: autoFixableRules },
+  [Preset.RECOMMENDED]: { rules: recommendedRules },
 }
