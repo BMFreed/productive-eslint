@@ -55,6 +55,11 @@ test('types analyzer reports unsafe type boundary signals', async () => {
   assert.match(result.stdout, /@typescript-eslint\/no-unsafe-enum-comparison/u)
   assert.match(result.stdout, /@typescript-eslint\/no-unsafe-unary-minus/u)
   assert.match(result.stdout, /@typescript-eslint\/no-base-to-string/u)
+  assert.match(
+    result.stdout,
+    /@typescript-eslint\/switch-exhaustiveness-check/u,
+  )
+  assert.match(result.stdout, /@typescript-eslint\/unbound-method/u)
 })
 
 test('architecture analyzer reports forbidden dependency direction', async () => {
@@ -228,6 +233,8 @@ test('rxjs analyzer reports reactive flow hotspots', async () => {
   assert.match(result.stdout, /Reactive flow findings:/u)
   assert.match(result.stdout, /Error handling findings:/u)
   assert.match(result.stdout, /src\/index\.ts/u)
+  assert.match(result.stdout, /shareReplay can retain cached state/u)
+  assert.match(result.stdout, /Reactive flow findings: `5`/u)
   assert.match(result.stdout, /rxjs\/no-unsafe-takeuntil/u)
   assert.match(result.stdout, /deprecated-api/u)
 })

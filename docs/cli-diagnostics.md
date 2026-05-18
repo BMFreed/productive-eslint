@@ -49,11 +49,11 @@ Representative signals include:
 
 | Topic | Examples |
 |---|---|
-| `types` | unsafe arguments, unsafe enum comparisons, unsafe unary minus, object base stringification, unnecessary conditions |
+| `types` | unsafe arguments, unsafe enum comparisons, unsafe unary minus, object base stringification, unnecessary conditions, non-exhaustive switches, unbound methods |
 | `async` | awaiting non-thenables, async functions without await, missing return-await in error boundaries, invalid Promise API calls |
 | `complexity` | duplicated branches, identical conditions, invariant returns, nested conditionals |
 | `vue` | expose or lifecycle registration after await, ref reactivity loss, untyped refs, required props with defaults |
-| `rxjs` | async subscribe callbacks, missing error handlers, unsafe `takeUntil`, unbounded replay buffers, direct Subject unsubscribe |
+| `rxjs` | async subscribe callbacks, missing error handlers, unsafe `takeUntil`, unsafe `catchError`/`first`, unconstrained `shareReplay`, direct Subject access |
 | `migrations` | deprecated TypeScript symbols, deprecated imports, Node deprecated APIs, Vue deprecated APIs, RxJS compatibility APIs |
 
 ## CLI Flow

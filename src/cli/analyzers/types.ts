@@ -29,6 +29,8 @@ const TYPE_ANALYZER_RULES = {
   '@typescript-eslint/no-unsafe-member-access': 'error',
   '@typescript-eslint/no-unsafe-return': 'error',
   '@typescript-eslint/no-unsafe-unary-minus': 'error',
+  '@typescript-eslint/switch-exhaustiveness-check': 'error',
+  '@typescript-eslint/unbound-method': 'error',
 } as const satisfies Linter.RulesRecord
 
 const TYPESCRIPT_ESLINT_PLUGIN = pluginTs as unknown as ESLint.Plugin
@@ -58,6 +60,10 @@ const RULE_REASON_MAP: Record<string, string> = {
     'Unsafe return leaks a weakly typed value through an API boundary.',
   '@typescript-eslint/no-unsafe-unary-minus':
     'Unsafe unary minus depends on unchecked numeric coercion.',
+  '@typescript-eslint/switch-exhaustiveness-check':
+    'A switch over a union or enum is not exhaustive.',
+  '@typescript-eslint/unbound-method':
+    'An unbound method reference can lose its receiver at runtime.',
 }
 
 const RULE_SCORE_MAP: Record<string, number> = {
@@ -72,6 +78,8 @@ const RULE_SCORE_MAP: Record<string, number> = {
   '@typescript-eslint/no-unsafe-member-access': 3,
   '@typescript-eslint/no-unsafe-return': 4,
   '@typescript-eslint/no-unsafe-unary-minus': 3,
+  '@typescript-eslint/switch-exhaustiveness-check': 4,
+  '@typescript-eslint/unbound-method': 4,
 }
 
 const RULE_SEVERITY_MAP: Record<string, IAnalyzerFinding['severity']> = {
@@ -86,6 +94,8 @@ const RULE_SEVERITY_MAP: Record<string, IAnalyzerFinding['severity']> = {
   '@typescript-eslint/no-unsafe-member-access': 'medium',
   '@typescript-eslint/no-unsafe-return': 'high',
   '@typescript-eslint/no-unsafe-unary-minus': 'medium',
+  '@typescript-eslint/switch-exhaustiveness-check': 'high',
+  '@typescript-eslint/unbound-method': 'medium',
 }
 
 interface IExportedRange {
@@ -137,7 +147,10 @@ const EXPORT_RELEVANT_RULE_IDS = new Set([
 
 const CONTROL_FLOW_RULE_IDS = new Set([
   '@typescript-eslint/no-unnecessary-condition',
+  '@typescript-eslint/switch-exhaustiveness-check',
 ])
+
+const METHOD_BINDING_RULE_IDS = new Set(['@typescript-eslint/unbound-method'])
 
 const getScriptKind = (filePath: string): ts.ScriptKind => {
   if (filePath.endsWith('.tsx')) {
@@ -244,12 +257,29 @@ const classifyFinding = (
   finding: IAnalyzerFinding,
 ): ITypeClassification => {
   if (CONTROL_FLOW_RULE_IDS.has(finding.ruleId ?? '')) {
+    const exhaustiveSwitch =
+      finding.ruleId === '@typescript-eslint/switch-exhaustiveness-check'
+
     return {
       category: 'control-flow-signal',
-      labels: ['control-flow-signal', 'unnecessary-condition'],
-      reason:
-        'The condition is impossible or redundant according to the current TypeScript model.',
+      labels: [
+        'control-flow-signal',
+        exhaustiveSwitch ? 'non-exhaustive-switch' : 'unnecessary-condition',
+      ],
+      reason: exhaustiveSwitch
+        ? 'The switch does not cover every known TypeScript branch.'
+        : 'The condition is impossible or redundant according to the current TypeScript model.',
       scoreDelta: 0,
+    }
+  }
+
+  if (METHOD_BINDING_RULE_IDS.has(finding.ruleId ?? '')) {
+    return {
+      category: 'method-binding-signal',
+      labels: ['method-binding-signal', 'unbound-method'],
+      reason:
+        'The method reference may run without the object instance it depends on.',
+      scoreDelta: 1,
     }
   }
 
@@ -450,6 +480,9 @@ export const analyzeTypes = async (
   const controlFlowFindings = findings.filter(
     (finding) => finding.category === 'control-flow-signal',
   ).length
+  const methodBindingFindings = findings.filter(
+    (finding) => finding.category === 'method-binding-signal',
+  ).length
   const testFindings = findings.filter(
     (finding) => finding.category === 'test-only',
   ).length
@@ -469,6 +502,7 @@ export const analyzeTypes = async (
       `Vue component contract findings: \`${vueContractFindings}\``,
       `Shared-utility findings: \`${sharedUtilityFindings}\``,
       `Control-flow signal findings: \`${controlFlowFindings}\``,
+      `Method-binding signal findings: \`${methodBindingFindings}\``,
       `Test-only findings: \`${testFindings}\``,
     ],
     title: 'Types Analysis',

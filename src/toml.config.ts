@@ -1,10 +1,12 @@
 import pluginToml from 'eslint-plugin-toml'
-import * as parserToml from 'toml-eslint-parser'
+import { meta, parseForESLint } from 'toml-eslint-parser'
 
 import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
 import { GLOB_TOML } from './utils/globs'
 import { Preset } from './utils/presets'
+
+const parserToml = { meta, parseForESLint }
 
 const shared = {
   files: [GLOB_TOML],
@@ -24,11 +26,13 @@ const autoFixableRules: TFlatConfigItem['rules'] = {
   'toml/indent': ['error', 2],
   'toml/inline-table-curly-spacing': 'error',
   'toml/key-spacing': 'error',
+  'toml/keys-order': 'error',
   'toml/no-space-dots': 'error',
   'toml/padding-line-between-pairs': 'error',
   'toml/padding-line-between-tables': 'error',
   'toml/quoted-keys': 'error',
   'toml/table-bracket-spacing': 'error',
+  'toml/tables-order': 'error',
 }
 
 const recommendedRules: TFlatConfigItem['rules'] = {

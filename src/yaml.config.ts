@@ -1,10 +1,12 @@
 import pluginYaml from 'eslint-plugin-yml'
-import * as parserYaml from 'yaml-eslint-parser'
+import { meta, parseForESLint } from 'yaml-eslint-parser'
 
 import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
 import { GLOB_YAML } from './utils/globs'
 import { Preset } from './utils/presets'
+
+const parserYaml = { meta, parseForESLint }
 
 const shared = {
   files: [GLOB_YAML],

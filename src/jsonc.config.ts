@@ -1,10 +1,12 @@
 import pluginJsonc from 'eslint-plugin-jsonc'
-import * as parserJsonc from 'jsonc-eslint-parser'
+import { meta, parseForESLint } from 'jsonc-eslint-parser'
 
 import type { TFlatConfigItem, TPresetMap } from './utils/presets'
 
 import { GLOB_JSON, GLOB_JSON5, GLOB_JSONC } from './utils/globs'
 import { Preset } from './utils/presets'
+
+const parserJsonc = { meta, parseForESLint }
 
 const shared = {
   files: [GLOB_JSON, GLOB_JSON5, GLOB_JSONC],

@@ -19,15 +19,20 @@ const RXJS_RULES = {
   'rxjs/no-async-subscribe': 'error',
   'rxjs/no-exposed-subjects': 'error',
   'rxjs/no-ignored-error': 'error',
+  'rxjs/no-ignored-notifier': 'error',
   'rxjs/no-ignored-observable': 'error',
   'rxjs/no-ignored-replay-buffer': 'error',
   'rxjs/no-ignored-subscribe': 'error',
   'rxjs/no-ignored-subscription': 'error',
   'rxjs/no-nested-subscribe': 'error',
+  'rxjs/no-sharereplay': 'error',
   'rxjs/no-subject-unsubscribe': 'error',
   'rxjs/no-subject-value': 'error',
   'rxjs/no-topromise': 'error',
   'rxjs/no-unbound-methods': 'error',
+  'rxjs/no-unsafe-catch': 'error',
+  'rxjs/no-unsafe-first': 'error',
+  'rxjs/no-unsafe-subject-next': 'error',
   'rxjs/no-unsafe-switchmap': 'error',
   'rxjs/no-unsafe-takeuntil': 'error',
   'rxjs/throw-error': 'error',
@@ -68,6 +73,14 @@ const RXJS_PROFILES: Record<string, IRxjsProfile> = {
     score: 5,
     severity: 'high',
   },
+  'rxjs/no-ignored-notifier': {
+    category: 'subscription-lifecycle',
+    labels: ['subscription-lifecycle', 'ignored-notifier'],
+    reason:
+      'Notifier observables should be wired into teardown or cancellation flow explicitly.',
+    score: 5,
+    severity: 'medium',
+  },
   'rxjs/no-ignored-observable': {
     category: 'ignored-flow',
     labels: ['ignored-flow', 'ignored-observable'],
@@ -106,6 +119,14 @@ const RXJS_PROFILES: Record<string, IRxjsProfile> = {
     score: 5,
     severity: 'medium',
   },
+  'rxjs/no-sharereplay': {
+    category: 'state-exposure',
+    labels: ['state-exposure', 'share-replay-cache'],
+    reason:
+      'shareReplay can retain cached state unless its lifecycle is intentionally constrained.',
+    score: 5,
+    severity: 'medium',
+  },
   'rxjs/no-subject-unsubscribe': {
     category: 'subscription-lifecycle',
     labels: ['subscription-lifecycle', 'subject-unsubscribe'],
@@ -136,6 +157,30 @@ const RXJS_PROFILES: Record<string, IRxjsProfile> = {
       'Passing unbound methods into reactive callbacks can lose the expected receiver.',
     score: 4,
     severity: 'medium',
+  },
+  'rxjs/no-unsafe-catch': {
+    category: 'error-handling',
+    labels: ['error-handling', 'unsafe-catch'],
+    reason:
+      'Unsafe catchError placement can terminate or replace a wider stream than intended.',
+    score: 5,
+    severity: 'high',
+  },
+  'rxjs/no-unsafe-first': {
+    category: 'flow-composition',
+    labels: ['flow-composition', 'unsafe-first'],
+    reason:
+      'first without a predicate or safe fallback can fail when the stream completes empty.',
+    score: 4,
+    severity: 'medium',
+  },
+  'rxjs/no-unsafe-subject-next': {
+    category: 'state-access',
+    labels: ['state-access', 'unsafe-subject-next'],
+    reason:
+      'Calling next on a Subject directly should happen only at well-owned reactive boundaries.',
+    score: 5,
+    severity: 'high',
   },
   'rxjs/no-unsafe-switchmap': {
     category: 'flow-cancellation',
