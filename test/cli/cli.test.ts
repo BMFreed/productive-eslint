@@ -223,6 +223,53 @@ test('vue analyzer reports component semantic hotspots', async () => {
   assert.match(result.stdout, /vue\/no-v-html/u)
 })
 
+test('react analyzer reports hooks, render stability, and security hotspots', async () => {
+  const result = await analyze('react', ['react', 'semantic'])
+
+  assert.equal(result.code, 0)
+  assert.equal(result.stderr, '')
+  assert.match(result.stdout, /# React Analysis/u)
+  assert.match(result.stdout, /Hooks contract findings:/u)
+  assert.match(result.stdout, /Render stability findings:/u)
+  assert.match(result.stdout, /Render purity findings:/u)
+  assert.match(result.stdout, /Security findings:/u)
+  assert.match(result.stdout, /src\/App\.tsx/u)
+  assert.match(result.stdout, /src\/useRiskyCounter\.ts/u)
+  assert.match(result.stdout, /react-hooks\/exhaustive-deps/u)
+  assert.match(result.stdout, /react-hooks\/set-state-in-render/u)
+  assert.match(result.stdout, /react-hooks\/globals/u)
+  assert.match(result.stdout, /react\/no-danger/u)
+})
+
+test('tailwind analyzer reports utility review hotspots', async () => {
+  const result = await analyze('tailwind', ['tailwind', 'utility'])
+
+  assert.equal(result.code, 0)
+  assert.equal(result.stderr, '')
+  assert.match(result.stdout, /# Tailwind Analysis/u)
+  assert.match(result.stdout, /Contradicting utility findings:/u)
+  assert.match(result.stdout, /Unnecessary arbitrary value findings:/u)
+  assert.match(result.stdout, /Unknown utility findings:/u)
+  assert.match(result.stdout, /Unknown utility findings: `5`/u)
+  assert.match(result.stdout, /src\/App\.tsx/u)
+  assert.match(result.stdout, /tailwindcss\/no-custom-classname/u)
+  assert.match(result.stdout, /app-shell/u)
+  assert.match(result.stdout, /badge-pill/u)
+  assert.match(result.stdout, /status-chip/u)
+  assert.match(result.stdout, /panel-frame/u)
+  assert.match(result.stdout, /custom-card/u)
+})
+
+test('tailwind analyzer fails clearly when tailwind support is not configured', async () => {
+  const result = await analyze('tailwind', ['types', 'explicit-any'])
+
+  assert.notEqual(result.code, 0)
+  assert.match(
+    result.stderr,
+    /Tailwind analysis requires `createConfig\(\{ tailwind: \{ cssConfigPath \} \}\)`/u,
+  )
+})
+
 test('rxjs analyzer reports reactive flow hotspots', async () => {
   const result = await analyze('rxjs', ['rxjs', 'flow'])
 
@@ -261,6 +308,39 @@ test('risk analyzer aggregates universal analyzer hotspots', async () => {
   assert.match(result.stdout, /Types findings:/u)
   assert.match(result.stdout, /risk:api/u)
   assert.match(result.stdout, /src\/index\.ts/u)
+})
+
+test('risk analyzer includes api default-export risk for storybook story files', async () => {
+  const result = await analyze('risk', ['api', 'storybook-default-export'])
+
+  assert.equal(result.code, 0)
+  assert.equal(result.stderr, '')
+  assert.match(result.stdout, /# Risk Analysis/u)
+  assert.match(result.stdout, /API findings: `1`/u)
+  assert.match(result.stdout, /risk:api/u)
+  assert.match(result.stdout, /src\/Button\.stories\.tsx/u)
+})
+
+test('architecture analyzer no-ops cleanly when fsd support is disabled', async () => {
+  const result = await analyze('architecture', ['substrate', 'fsd-disabled'])
+
+  assert.equal(result.code, 0)
+  assert.equal(result.stderr, '')
+  assert.match(result.stdout, /# Architecture Analysis/u)
+  assert.match(result.stdout, /Findings: `0`/u)
+  assert.match(result.stdout, /FSD architecture support: `disabled`/u)
+  assert.match(result.stdout, /fsd: false/u)
+})
+
+test('risk analyzer skips architecture findings when fsd support is disabled', async () => {
+  const result = await analyze('risk', ['substrate', 'fsd-disabled'])
+
+  assert.equal(result.code, 0)
+  assert.equal(result.stderr, '')
+  assert.match(result.stdout, /# Risk Analysis/u)
+  assert.match(result.stdout, /Architecture findings: `0`/u)
+  assert.match(result.stdout, /Types findings:/u)
+  assert.doesNotMatch(result.stdout, /risk:architecture/u)
 })
 
 test('include and exclude filters apply together', async () => {

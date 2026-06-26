@@ -3,12 +3,16 @@ import { access } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 
-import { isMarkedProductiveComposer } from '../../utils/marker'
+import {
+  getProductiveCapabilities,
+  isMarkedProductiveComposer,
+} from '../../utils/marker'
 import { CliError } from './errors'
 
 const ESLINT_CONFIG_NAMES = ['eslint.config.ts', 'eslint.config.mts']
 
 export interface ILoadedProjectConfig {
+  capabilities: NonNullable<ReturnType<typeof getProductiveCapabilities>>
   composer: ReturnType<typeof ensureProductiveComposer>
   configPath: string
 }
@@ -48,6 +52,20 @@ const unwrapDefaultExport = (value: unknown): unknown => {
   return moduleValue.default ?? value
 }
 
+const ensureProductiveCapabilities = (
+  value: unknown,
+): NonNullable<ReturnType<typeof getProductiveCapabilities>> => {
+  const capabilities = getProductiveCapabilities(value)
+
+  if (!capabilities) {
+    throw new CliError(
+      'The selected project does not export a supported productive-eslint composer pipeline.',
+    )
+  }
+
+  return capabilities
+}
+
 export const loadProjectConfig = async (
   cwd: string,
 ): Promise<ILoadedProjectConfig> => {
@@ -71,6 +89,7 @@ export const loadProjectConfig = async (
     const loadedConfig = unwrapDefaultExport(loadedModule)
 
     return {
+      capabilities: ensureProductiveCapabilities(loadedConfig),
       composer: ensureProductiveComposer(loadedConfig),
       configPath,
     }

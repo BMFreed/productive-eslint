@@ -1,5 +1,7 @@
 /**
- * Dumps all active ESLint rules for a set of target files into a JSON snapshot.
+ * Dumps all active ESLint rules for a set of representative target files into a
+ * JSON snapshot. The target list intentionally includes TSX and Vue samples so
+ * optional React and Tailwind rule families appear in the union snapshot.
  * Run from repo root. Before comparing after a dependency update, run again and
  * use scripts/compare-eslint-rules.ts to diff the two snapshots.
  *
@@ -24,9 +26,11 @@ const TARGETS: string[] = [
   'src/index.config.ts',
   'src/javascript.config.ts',
   'src/typescript.config.ts',
-  'src/vue.config.ts',
   'src/import.config.ts',
   'src/plugins/productive.plugin.ts',
+  'scripts/rules-snapshot/ReactSample.tsx',
+  'scripts/rules-snapshot/TailwindSample.tsx',
+  'scripts/rules-snapshot/Sample.vue',
   'eslint.config.ts',
 ]
 

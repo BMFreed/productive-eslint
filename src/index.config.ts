@@ -3,14 +3,17 @@ import type { Linter } from 'eslint'
 import tsParser from '@typescript-eslint/parser'
 import { FlatConfigComposer } from 'eslint-flat-config-utils'
 import prettier from 'eslint-plugin-prettier'
-import pluginVue from 'eslint-plugin-vue'
 import globals from 'globals'
-import { isPackageExists } from 'local-pkg'
-import vueParser from 'vue-eslint-parser'
 
 import type { TFlatConfigItem } from './utils/presets'
 
 import { boundariesConfig } from './boundaries.config'
+import { buildReactConfigs } from './config/react.feature'
+import { resolveNormalizedOptions } from './config/runtime'
+import { buildStorybookConfigs } from './config/storybook.feature'
+import { buildTailwindConfigs } from './config/tailwind.feature'
+import type { IOptions, IReactOptions, ITailwindOptions } from './config/types'
+import { buildVueConfigs } from './config/vue.feature'
 import { cssConfig } from './css.config'
 import { disablesConfigs } from './disables.config'
 import { eslintCommentsConfig } from './eslintComments.config'
@@ -42,61 +45,7 @@ import {
 } from './utils/globs'
 import { markProductiveComposer } from './utils/marker'
 import { mergePresetConfigs, Preset } from './utils/presets'
-import { vueConfig } from './vue.config'
 import { yamlConfig } from './yaml.config'
-
-/** Options for the main config factory. */
-export interface IOptions {
-  /** Files to ignore. Defaults to empty array. */
-  ignores?: string[]
-  /** Preset: autoFixable or recommended. Defaults to recommended. */
-  preset?: Preset
-  /** Enable RxJS rules. Auto-detected from installed packages when not set. */
-  rxjs?: boolean
-  /** Enable Vue rules. Auto-detected from installed packages when not set. */
-  vue?: boolean
-}
-
-const buildVueConfigs = (preset: Preset): TFlatConfigItem[] => [
-  {
-    files: [GLOB_SRC, GLOB_VUE],
-    languageOptions: {
-      globals: {
-        computed: 'readonly',
-        defineEmits: 'readonly',
-        defineExpose: 'readonly',
-        defineProps: 'readonly',
-        onMounted: 'readonly',
-        onUnmounted: 'readonly',
-        reactive: 'readonly',
-        ref: 'readonly',
-        shallowReactive: 'readonly',
-        shallowRef: 'readonly',
-        toRef: 'readonly',
-        toRefs: 'readonly',
-        watch: 'readonly',
-        watchEffect: 'readonly',
-      },
-    },
-    name: 'vue/setup',
-    plugins: { vue: pluginVue },
-  },
-  {
-    files: [GLOB_VUE],
-    languageOptions: {
-      parser: vueParser,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-        extraFileExtensions: ['.vue'],
-        parser: tsParser,
-        sourceType: 'module',
-      },
-    },
-    name: 'vue/rules',
-    processor: pluginVue.processors['.vue'] as Linter.Processor,
-    rules: mergePresetConfigs(vueConfig, preset).rules ?? {},
-  },
-]
 
 // TODO there was no-relative-import-paths plugin, but it's not compatible with eslint 10
 // implement this rule manually in the productive plugin
@@ -104,25 +53,41 @@ const buildVueConfigs = (preset: Preset): TFlatConfigItem[] => [
  * Main config factory.
  *
  * @param options The options for generating the ESLint configuration.
+ * @param options.fsd Enable FSD architecture boundaries setup. Defaults to
+ *   true.
  * @param options.ignores Additional glob patterns to ignore.
+ * @param options.react Enable React rules or configure compiler checks.
+ * @param options.storybook Enable Storybook rules for stories and `.storybook`
+ *   config files.
  * @param options.rxjs Enable RxJS rules. Auto-detected when not set.
  * @param options.preset Preset: autoFixable (only auto-fixable rules) or
  *   recommended (permanent mechanical baseline). Defaults to recommended.
+ * @param options.tailwind Enable Tailwind rules with explicit CSS config path.
  * @param options.vue Enable Vue rules. Auto-detected when not set.
  * @returns The generated ESLint configuration.
  */
-const createConfig = ({
-  ignores = [],
-  preset = Preset.RECOMMENDED,
-  rxjs,
-  vue,
-}: IOptions = {}): FlatConfigComposer<Linter.Config> => {
-  const enableVue = vue ?? (isPackageExists('vue') || isPackageExists('nuxt'))
-  const enableRxjs = rxjs ?? isPackageExists('rxjs')
-  const sourceFiles = enableVue ? [GLOB_SRC, GLOB_VUE] : [GLOB_SRC]
+const createConfig = (options: IOptions = {}): FlatConfigComposer<Linter.Config> => {
+  const normalizedOptions = resolveNormalizedOptions(options)
+  const {
+    capabilities,
+    fsd,
+    ignores,
+    preset,
+    react,
+    rxjs,
+    storybook,
+    tailwind,
+    vue,
+  } = normalizedOptions
+  const sourceFiles = vue.enabled ? [GLOB_SRC, GLOB_VUE] : [GLOB_SRC]
   const configs: (TFlatConfigItem | TFlatConfigItem[])[] = [
     // --- Global ignores ---
-    { ignores: [...GLOB_EXCLUDE, ...ignores], name: 'ignores' },
+    {
+      ignores: storybook.enabled
+        ? [...GLOB_EXCLUDE, ...ignores, '!.storybook']
+        : [...GLOB_EXCLUDE, ...ignores],
+      name: 'ignores',
+    },
 
     // --- Base setup ---
     {
@@ -217,8 +182,29 @@ const createConfig = ({
       ...mergePresetConfigs(regexpConfig, preset),
     },
 
+    // --- React (conditional) ---
+    ...(react.enabled
+      ? buildReactConfigs({
+          enableReactCompiler: react.compiler,
+          preset,
+          reactVersion: react.version,
+        })
+      : []),
+
     // --- Vue (conditional) ---
-    ...(enableVue ? buildVueConfigs(preset) : []),
+    ...(vue.enabled ? buildVueConfigs(preset) : []),
+
+    // --- Storybook (conditional) ---
+    ...(storybook.enabled ? buildStorybookConfigs(preset) : []),
+
+    // --- Tailwind (conditional) ---
+    ...(tailwind.enabled
+      ? buildTailwindConfigs({
+          enableVue: vue.enabled,
+          preset,
+          tailwind: { cssConfigPath: tailwind.cssConfigPath },
+        })
+      : []),
 
     // --- Import ---
     {
@@ -236,11 +222,15 @@ const createConfig = ({
     },
 
     // --- Boundaries ---
-    {
-      files: sourceFiles,
-      name: 'boundaries',
-      ...mergePresetConfigs(boundariesConfig, preset),
-    },
+    ...(fsd
+      ? [
+          {
+            files: sourceFiles,
+            name: 'boundaries',
+            ...mergePresetConfigs(boundariesConfig, preset),
+          },
+        ]
+      : []),
 
     // --- Prettier ---
     {
@@ -289,13 +279,15 @@ const createConfig = ({
     disablesConfigs,
 
     // --- RxJS (conditional) ---
-    ...(enableRxjs ? [mergePresetConfigs(rxjsConfig, preset)] : []),
+    ...(rxjs.enabled ? [mergePresetConfigs(rxjsConfig, preset)] : []),
   ]
 
   return markProductiveComposer(
     new FlatConfigComposer<Linter.Config>(configs.flat() as Linter.Config),
+    capabilities,
   )
 }
 
 export { createConfig }
+export type { IOptions, IReactOptions, ITailwindOptions } from './config/types'
 export { Preset } from './utils/presets'

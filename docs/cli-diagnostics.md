@@ -21,6 +21,8 @@ productive-eslint analyze architecture --cwd .
 | `dead-code` | safe-delete and unused-code candidates |
 | `imports` | import graph, dependency shape, import hygiene hotspots |
 | `api` | public contract and export policy risks |
+| `react` | React hooks, render purity, render stability, and JSX security issues |
+| `tailwind` | contradictory utilities, unjustified arbitrary values, and unknown utility usage |
 | `vue` | Vue component contract, lifecycle, reactivity, and template safety issues |
 | `rxjs` | subscription lifecycle, error handling, and reactive state boundaries |
 | `migrations` | deprecated Node, TypeScript, dependency, Vue, and RxJS API usage |
@@ -37,13 +39,26 @@ productive-eslint analyze architecture --cwd .
 - `imports`
 - `api`
 
-Framework-specific analyzers such as `vue`, `rxjs`, and `migrations` remain
+Framework-specific analyzers such as `react`, `tailwind`, `vue`, `rxjs`, and `migrations` remain
 explicit commands.
+
+For UI projects, keep `risk` as the universal pass and run React/Tailwind
+audits separately:
+
+```bash
+productive-eslint analyze risk --cwd .
+productive-eslint analyze react --cwd .
+productive-eslint analyze tailwind --cwd .
+```
 
 ## Signal Coverage
 
 The analyzer rulesets are intentionally stronger than the permanent presets.
 They are meant to surface review leads, not enforce a merge gate.
+
+For the UI stack, `react` and `tailwind` are not just alternate entry points
+to the permanent preset. They intentionally carry review-only rules that stay
+out of ordinary `eslint .` noise.
 
 Representative signals include:
 
@@ -52,9 +67,17 @@ Representative signals include:
 | `types` | unsafe arguments, unsafe enum comparisons, unsafe unary minus, object base stringification, unnecessary conditions, non-exhaustive switches, unbound methods |
 | `async` | awaiting non-thenables, async functions without await, missing return-await in error boundaries, invalid Promise API calls |
 | `complexity` | duplicated branches, identical conditions, invariant returns, nested conditionals |
+| `react` | missing hook dependencies, state updates during render, ref or global mutation during render, unstable nested components, raw HTML rendering |
+| `tailwind` | contradictory utilities, unknown classes, unnecessary arbitrary values |
 | `vue` | expose or lifecycle registration after await, ref reactivity loss, untyped refs, required props with defaults |
 | `rxjs` | async subscribe callbacks, missing error handlers, unsafe `takeUntil`, unsafe `catchError`/`first`, unconstrained `shareReplay`, direct Subject access |
 | `migrations` | deprecated TypeScript symbols, deprecated imports, Node deprecated APIs, Vue deprecated APIs, RxJS compatibility APIs |
+
+The Tailwind analyzer runs real `tailwindcss/*` ESLint rules on top of the
+target project's Tailwind support. It covers direct `class`/`className`
+attributes and static helper usage such as `cn`, `clsx`, `classnames`, and
+`cva`, but it does not evaluate dynamic runtime branches or arbitrary
+expression results.
 
 ## CLI Flow
 

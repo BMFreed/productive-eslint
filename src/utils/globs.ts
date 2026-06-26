@@ -3,6 +3,13 @@ export const GLOB_SRC = `**/*.${GLOB_SRC_EXT}`
 export const GLOB_TS = '**/*.@(ts|mts)'
 export const GLOB_TSX = '**/*.tsx'
 export const GLOB_VUE = '**/*.vue'
+export const GLOB_STORYBOOK_STORY = '**/*.story.@(ts|tsx|mts)'
+export const GLOB_STORYBOOK_STORIES = '**/*.stories.@(ts|tsx|mts)'
+export const GLOB_STORYBOOK_STORY_FILES = [
+  GLOB_STORYBOOK_STORIES,
+  GLOB_STORYBOOK_STORY,
+]
+export const GLOB_STORYBOOK_CONFIG = '.storybook/**/*.@(ts|mts)'
 
 export const GLOB_JSON = '**/*.json'
 export const GLOB_JSON5 = '**/*.json5'

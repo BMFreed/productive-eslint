@@ -2,6 +2,11 @@ import { createConfig } from './src/index.config'
 
 export default createConfig({
   ignores: ['test/fixtures/**'],
+  react: true,
+  tailwind: {
+    cssConfigPath: 'scripts/rules-snapshot/tailwind.css',
+  },
+  vue: true,
 })
   //TODO exclude the no relative import paths rule from here when it's implemented in the productive plugin (cause below)
   // At the moment, Jiti does not support typescript path aliases,

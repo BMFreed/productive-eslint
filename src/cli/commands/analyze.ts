@@ -12,9 +12,9 @@ export const runAnalyzeCommand = async (
     throw new CliError(`Unknown analyzer topic "${options.topic}".`)
   }
 
-  const { composer } = await loadProjectConfig(options.cwd)
+  const { capabilities, composer } = await loadProjectConfig(options.cwd)
   const analyzer = ANALYZE_TOPICS[options.topic]
-  const report = await analyzer(composer, options)
+  const report = await analyzer(composer, { ...options, capabilities })
 
   return renderMarkdownReport(report)
 }

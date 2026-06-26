@@ -10,9 +10,11 @@ import { analyzeComplexity } from './analyzers/complexity'
 import { analyzeDeadCode } from './analyzers/dead-code'
 import { analyzeImports } from './analyzers/imports'
 import { analyzeMigrations } from './analyzers/migrations'
+import { analyzeReact } from './analyzers/react'
 import { analyzeRisk } from './analyzers/risk'
 import { analyzeRxjs } from './analyzers/rxjs'
 import { analyzeSuppressions } from './analyzers/suppressions'
+import { analyzeTailwind } from './analyzers/tailwind'
 import { analyzeTypes } from './analyzers/types'
 import { analyzeVue } from './analyzers/vue'
 
@@ -24,9 +26,11 @@ export type TAnalyzeTopic =
   | 'dead-code'
   | 'imports'
   | 'migrations'
+  | 'react'
   | 'risk'
   | 'rxjs'
   | 'suppressions'
+  | 'tailwind'
   | 'types'
   | 'vue'
 
@@ -43,9 +47,11 @@ export const ANALYZE_TOPICS: Record<TAnalyzeTopic, TAnalyzer> = {
   'dead-code': analyzeDeadCode,
   imports: analyzeImports,
   migrations: analyzeMigrations,
+  react: analyzeReact,
   risk: analyzeRisk,
   rxjs: analyzeRxjs,
   suppressions: analyzeSuppressions,
+  tailwind: analyzeTailwind,
   types: analyzeTypes,
   vue: analyzeVue,
 }

@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "storybook": "^10.4.6"
+  }
+}
