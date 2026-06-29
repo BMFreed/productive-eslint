@@ -12,7 +12,10 @@ import type {
   TSeverity,
 } from '../runtime/report-types'
 
-import { GLOB_SRC, GLOB_VUE } from '../../utils/globs'
+import {
+  GLOB_SRC,
+  GLOB_VUE,
+} from '../../utils/globs'
 import { CliError } from '../runtime/errors'
 import { runAnalyzerLint } from '../runtime/eslint-runtime'
 import { summarizeByFile } from '../runtime/summarize-by-file'

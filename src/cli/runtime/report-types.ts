@@ -1,6 +1,9 @@
+import type { IResolvedCapabilities } from '../../config/types'
+
 export type TSeverity = 'high' | 'low' | 'medium'
 
 export interface IAnalyzerContext {
+  capabilities?: IResolvedCapabilities
   cwd: string
   exclude: string[]
   include: string[]

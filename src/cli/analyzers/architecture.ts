@@ -13,7 +13,6 @@ import type {
 
 import {
   architectureDependenciesRule,
-  architectureSetupConfig,
   formatDirectionLabel,
   matchArchitectureElement,
 } from '../../architecture/model'
@@ -40,9 +39,10 @@ interface IArchitectureDetails {
 const applyArchitectureOverlay = (
   composer: FlatConfigComposer<Linter.Config>,
   cwd: string,
+  includeVueFiles: boolean,
 ): FlatConfigComposer<Linter.Config> =>
   composer.clone().append({
-    files: [GLOB_SRC, GLOB_VUE],
+    files: includeVueFiles ? [GLOB_SRC, GLOB_VUE] : [GLOB_SRC],
     name: 'productive-eslint/analyze-architecture',
     rules: {
       'boundaries/dependencies': architectureDependenciesRule,
@@ -50,19 +50,6 @@ const applyArchitectureOverlay = (
     settings: {
       'boundaries/root-path': cwd,
     },
-  })
-
-const hasVueBoundariesPlugin = (config: Linter.Config[]): boolean =>
-  config.some((item) => {
-    if (!item.plugins?.['boundaries']) {
-      return false
-    }
-
-    if (!item.files) {
-      return true
-    }
-
-    return Array.isArray(item.files) && item.files.includes(GLOB_VUE)
   })
 
 const extractImportSource = (sourceLine: string): string | null => {
@@ -246,18 +233,30 @@ export const analyzeArchitecture = async (
     throw new CliError('--top must be at least 1.')
   }
 
+  if (!context.capabilities) {
+    throw new CliError(
+      'Architecture analysis requires productive-eslint runtime capabilities.',
+    )
+  }
+
+  if (!context.capabilities.architecture.enabled) {
+    return {
+      fileCount: 0,
+      findingsCount: 0,
+      nextStep:
+        'FSD architecture analysis is disabled for this project because `createConfig({ fsd: false })` omits boundaries setup.',
+      suggestedOrder: [],
+      summaries: [],
+      summaryLines: ['FSD architecture support: `disabled`'],
+      title: 'Architecture Analysis',
+    }
+  }
+
   const config = await applyArchitectureOverlay(
     composer,
     context.cwd,
+    context.capabilities.vue.enabled,
   ).toConfigs()
-
-  if (!hasVueBoundariesPlugin(config)) {
-    config.push({
-      files: [GLOB_VUE],
-      name: 'productive-eslint/analyze-architecture-vue-plugin',
-      plugins: architectureSetupConfig.plugins,
-    })
-  }
 
   const results = await runAnalyzerLint({
     config,

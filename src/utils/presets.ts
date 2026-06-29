@@ -59,3 +59,7 @@ export const mergePresetConfigs = (
   const hasRules = Object.keys(mergedRules).length > 0
   return hasRules ? { ...base, rules: mergedRules } : base
 }
+
+/** Returns true when a flat config item carries at least one rule entry. */
+export const hasRuleEntries = (config: TFlatConfigItem): boolean =>
+  Object.keys(config.rules ?? {}).length > 0

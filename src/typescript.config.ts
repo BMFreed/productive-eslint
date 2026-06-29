@@ -99,7 +99,7 @@ const recommendedRules: TFlatConfigItem['rules'] = {
     },
     { format: ['StrictPascalCase'], selector: ['typeParameter'] },
     {
-      format: ['strictCamelCase', 'UPPER_CASE'],
+      format: ['strictCamelCase', 'UPPER_CASE', 'StrictPascalCase'],
       modifiers: ['const'],
       selector: 'variable',
     },
